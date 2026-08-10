@@ -99,6 +99,11 @@ a { color: inherit; text-decoration: none; }
   font-size: 14px; padding: 11px; border-radius: 8px; letter-spacing: 0.01em;
 }
 .mission-btn:active { opacity: 0.9; }
+.mission-external-badge {
+  font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--amber-dark); background: var(--nudge-bg);
+  border: 1px dashed var(--amber-dark); border-radius: 5px; padding: 4px 8px; display: inline-block;
+}
 
 /* ---- Ship's log (backup/restore) ---- */
 .log-card {
@@ -191,11 +196,15 @@ a { color: inherit; text-decoration: none; }
   </div>
 
   <div class="foot-note">
-    Combined progress reading and backup work when all three files are hosted together
-    on the same site (e.g. Netlify Drop or GitHub Pages). Opened directly from Files/AirDrop,
-    each app still saves its own progress normally — this hub just may not be able to read
-    across apps until it's online. Backup keys used: <code>step1-bridge-progress-v1</code> and
-    <code>number-sense-sketchbook-v1</code>.
+    Combined progress reading and backup cover Math Decoder and Number Sense Sketchbook,
+    which work when all three local files are hosted together on the same site (e.g. Netlify Drop
+    or GitHub Pages). Opened directly from Files/AirDrop, each app still saves its own progress
+    normally — this hub just may not be able to read across apps until it's online. Backup keys
+    used: <code>step1-bridge-progress-v1</code> and <code>number-sense-sketchbook-v1</code>.
+    <br /><br />
+    The Number Theory Sketchbook is hosted separately at
+    <code>numbertheorysketchbook.vercel.app</code>, so its progress isn't included in the Voyage
+    Progress bar or in this page's export/import backup — it keeps its own save data on that site.
   </div>
 
 </div>
@@ -230,6 +239,15 @@ a { color: inherit; text-decoration: none; }
       },
       xp: function (data) { return data && typeof data.xp === "number" ? data.xp : 0; },
       unit: "entries"
+    }
+  ];
+
+  var EXTERNAL_APPS = [
+    {
+      href: "https://numbertheorysketchbook.vercel.app/",
+      emoji: "⚓",
+      name: "Number Theory Sketchbook",
+      desc: "15 compartments · Chief Engineer training manual — primes, factors, multiples & more"
     }
   ];
 
@@ -290,6 +308,24 @@ a { color: inherit; text-decoration: none; }
         statsHtml +
         '<a class="mission-btn" href="' + app.href + '">Launch Mission →</a>';
 
+      container.appendChild(card);
+    });
+
+    EXTERNAL_APPS.forEach(function (app) {
+      var card = document.createElement("div");
+      card.className = "mission-card";
+      card.innerHTML =
+        '<div class="mission-top">' +
+          '<div class="mission-emoji">' + app.emoji + '</div>' +
+          '<div class="mission-info">' +
+            '<div class="mission-name">' + app.name + '</div>' +
+            '<div class="mission-desc">' + app.desc + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="mission-stats is-empty">' +
+          '<span class="mission-external-badge">Hosted separately &middot; new tab</span>' +
+        '</div>' +
+        '<a class="mission-btn" href="' + app.href + '" target="_blank" rel="noopener">Open Sketchbook ↗</a>';
       container.appendChild(card);
     });
 
