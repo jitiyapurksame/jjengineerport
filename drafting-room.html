@@ -206,6 +206,7 @@ textarea.freetext, input.freetext {
     { id: "propulsion", name: "Propulsion", sub: "Forces & Motion", emoji: "⚙️" },
     { id: "navigation", name: "Navigation & Stars", sub: "Astronomy", emoji: "🧭" },
     { id: "boiler", name: "Boiler Room", sub: "Energy", emoji: "🔥" },
+    { id: "wireless", name: "Wireless Room", sub: "Waves", emoji: "📡" },
     { id: "garden", name: "Ship's Garden", sub: "Biology", emoji: "🌿" },
     { id: "lab", name: "Lab Deck", sub: "Chemistry", emoji: "🧪" },
     { id: "chartroom", name: "Chartroom", sub: "Maths", emoji: "📐" }
@@ -448,6 +449,111 @@ textarea.freetext, input.freetext {
       pattern: { question: "What kind of relationship is this between real length and model length?", options: ["Directly proportional — a straight line through the origin", "No relationship", "Inverse — model shrinks unevenly as real length grows"], correct: 0 },
       predict: { question: "Using the 1:1000 scale, how long (in mm) would a model of a 500 m ship be?", keywords: ["500"] },
       explain: { prompt: "Explain what 'scale' means and why every dimension needs the same ratio for a model to look realistic." }
+    },
+    {
+      id: "wave-shape", moduleId: "wireless", name: "Wave Shape — Ship's Horn Sound", level: "Foundation", emoji: "🌊",
+      observe: { text: "The ship's horn makes a sound wave. On an oscilloscope, J.J. sees the wave rise smoothly to a peak and fall back down, over and over." },
+      sketch: { prompt: "Sketch one wave and label its peak and wavelength.", nodes: [
+          { label: "Crest (peak)", shape: "circle", target: { x: 0.3, y: 0.25 } },
+          { label: "Resting line", shape: "line-h", target: { x: 0.5, y: 0.75 } },
+          { label: "Wavelength (one full cycle)", shape: "line-h", target: { x: 0.5, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><path d="M20,110 Q80,30 140,110 T260,110" fill="none" stroke="#D9A441" stroke-width="2"/><circle cx="80" cy="30" r="4" fill="#3FA37A"/><text x="60" y="20" fill="#3FA37A" font-family="monospace" font-size="8">Crest</text><line x1="20" y1="110" x2="260" y2="110" stroke="#fff" stroke-width="1" stroke-dasharray="3,3"/><line x1="20" y1="125" x2="140" y2="125" stroke="#fff" stroke-width="1"/><text x="45" y="140" fill="#fff" font-family="monospace" font-size="8">Wavelength</text></svg>' },
+      variables: { options: ["Wave height (amplitude)", "Wavelength", "Horn's paint color", "Frequency"], correct: ["Wave height (amplitude)", "Wavelength", "Frequency"] },
+      table: { columns: ["Position (cm)", "Height (mm)"], rows: [["0", "0"], ["1", "5"], ["2", { blank: true, answer: "8" }], ["3", "5"], ["4", "0"]] },
+      graph: { xLabel: "Position (cm)", yLabel: "Height (mm)", xMax: 5, yMax: 10, points: [[0, 0], [1, 5], [2, 8], [3, 5], [4, 0]] },
+      pattern: { question: "What shape does the height graph make along one wave?", options: ["A smooth curve that rises to a peak then falls (a crest shape)", "A straight line", "A flat line"], correct: 0 },
+      predict: { question: "If the wave kept repeating, would the next section rise to another peak, or dip below the resting line into a trough?", keywords: ["trough", "dip", "below", "drop"] },
+      explain: { prompt: "Explain what 'wavelength' means using the shape you sketched." }
+    },
+    {
+      id: "doppler", moduleId: "wireless", name: "Doppler Effect — Passing Ship's Horn", level: "Cambridge", emoji: "🚨",
+      observe: { text: "As a ship sails past J.J. on the dock, its horn sounds higher-pitched while approaching and lower-pitched while moving away, even though the horn itself never changes." },
+      sketch: { prompt: "Sketch the compressed and stretched wave patterns around the listener.", nodes: [
+          { label: "Approaching ship (compressed waves)", shape: "dots", target: { x: 0.25, y: 0.5 } },
+          { label: "Listener (J.J.)", shape: "circle", target: { x: 0.5, y: 0.5 } },
+          { label: "Departing ship (stretched waves)", shape: "dots", target: { x: 0.78, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><g stroke="#D9A441" stroke-width="2"><line x1="30" y1="60" x2="30" y2="90"/><line x1="45" y1="55" x2="45" y2="95"/><line x1="58" y1="60" x2="58" y2="90"/></g><text x="15" y="110" fill="#D9A441" font-family="monospace" font-size="7">Compressed</text><circle cx="150" cy="75" r="10" fill="#fff"/><text x="130" y="100" fill="#fff" font-family="monospace" font-size="8">Listener</text><g stroke="#3FA37A" stroke-width="2"><line x1="220" y1="60" x2="220" y2="90"/><line x1="245" y1="55" x2="245" y2="95"/><line x1="275" y1="60" x2="275" y2="90"/></g><text x="210" y="110" fill="#3FA37A" font-family="monospace" font-size="7">Stretched</text></svg>' },
+      variables: { options: ["Ship's speed and direction", "Listener's position", "Sound wave spacing", "Ship's paint color"], correct: ["Ship's speed and direction", "Listener's position", "Sound wave spacing"] },
+      table: { columns: ["Ship position", "Wave spacing", "Pitch heard"], rows: [["Approaching", "Compressed", "Higher"], ["At listener", "Normal", { blank: true, answer: "Normal" }], ["Departing", "Stretched", "Lower"]] },
+      graph: { xLabel: "Ship position (1=Approach, 2=At, 3=Depart)", yLabel: "Pitch (relative)", xMax: 4, yMax: 150, points: [[1, 120], [2, 100], [3, 80]] },
+      pattern: { question: "What's the pattern in pitch as the ship passes?", options: ["Pitch starts high, drops through normal, ends low", "Pitch stays the same the whole time", "Pitch starts low and rises"], correct: 0 },
+      predict: { question: "If the ship sailed twice as fast, would the pitch change be bigger or smaller than before?", keywords: ["bigger", "greater", "more", "stronger"] },
+      explain: { prompt: "Explain why a fast-moving sound source changes the pitch heard by a stationary listener." }
+    },
+    {
+      id: "em-spectrum", moduleId: "wireless", name: "EM Spectrum — Ship Radar & Radio", level: "Scholarship", emoji: "📡",
+      observe: { text: "The ship uses different parts of the electromagnetic spectrum: radio waves for communication, microwaves for radar, and visible light for the crew to see — all travel at the same speed but have very different wavelengths." },
+      sketch: { prompt: "Sketch the spectrum from long to short wavelength.", nodes: [
+          { label: "Radio waves (long λ)", shape: "line-h", target: { x: 0.15, y: 0.5 } },
+          { label: "Microwaves (radar)", shape: "dots", target: { x: 0.45, y: 0.5 } },
+          { label: "Visible light (short λ)", shape: "line-diag", target: { x: 0.8, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><line x1="20" y1="75" x2="280" y2="75" stroke="#fff" stroke-width="2"/><text x="20" y="65" fill="#D9A441" font-family="monospace" font-size="8">Radio (long λ)</text><text x="120" y="65" fill="#fff" font-family="monospace" font-size="8">Microwave</text><text x="220" y="65" fill="#3FA37A" font-family="monospace" font-size="8">Light (short λ)</text></svg>' },
+      variables: { options: ["Wavelength", "Frequency", "Wave type (radio/micro/light)", "Ship's antenna color"], correct: ["Wavelength", "Frequency", "Wave type (radio/micro/light)"] },
+      table: { columns: ["Wave type", "Wavelength (relative)"], rows: [["Radio", "Very long"], ["Microwave (radar)", { blank: true, answer: "Medium" }], ["Visible light", "Very short"]] },
+      graph: { xLabel: "Wave type (1=Radio, 2=Microwave, 3=Light)", yLabel: "Wavelength (relative)", xMax: 4, yMax: 1000, points: [[1, 900], [2, 300], [3, 20]] },
+      pattern: { question: "What's the pattern from radio to visible light across the spectrum?", options: ["Wavelength keeps getting shorter (and frequency keeps getting higher)", "Wavelength stays the same", "Wavelength keeps getting longer"], correct: 0 },
+      predict: { question: "X-rays have an even shorter wavelength than visible light. Would their frequency be higher or lower than light's?", keywords: ["higher", "greater", "more"] },
+      explain: { prompt: "Explain the relationship between wavelength and frequency across the electromagnetic spectrum." }
+    },
+    {
+      id: "heat-transfer", moduleId: "boiler", name: "Heat Transfer — Engine Room Warmth", level: "Foundation", emoji: "🌡️",
+      observe: { text: "Heat moves through the engine room three ways: conduction through the metal pipes, convection as warm air rises and circulates, and radiation as heat radiates directly off the hot boiler surface." },
+      sketch: { prompt: "Sketch the three ways heat travels and label each.", nodes: [
+          { label: "Conduction (through metal)", shape: "line-h", target: { x: 0.2, y: 0.5 } },
+          { label: "Convection (rising air)", shape: "arrow-up", target: { x: 0.5, y: 0.5 } },
+          { label: "Radiation (from boiler)", shape: "ray", target: { x: 0.8, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><line x1="20" y1="75" x2="90" y2="75" stroke="#fff" stroke-width="4"/><text x="15" y="95" fill="#fff" font-family="monospace" font-size="8">Conduction</text><line x1="150" y1="110" x2="150" y2="45" stroke="#3FA37A" stroke-width="2"/><polygon points="150,40 144,50 156,50" fill="#3FA37A"/><text x="118" y="125" fill="#3FA37A" font-family="monospace" font-size="8">Convection</text><circle cx="240" cy="75" r="6" fill="#D9A441"/><g stroke="#D9A441" stroke-width="2"><line x1="240" y1="60" x2="240" y2="50"/><line x1="255" y1="65" x2="264" y2="58"/><line x1="255" y1="85" x2="264" y2="92"/></g><text x="210" y="105" fill="#D9A441" font-family="monospace" font-size="8">Radiation</text></svg>' },
+      variables: { options: ["Conduction (through metal)", "Convection (moving air)", "Radiation (direct heat)", "Boiler's paint color"], correct: ["Conduction (through metal)", "Convection (moving air)", "Radiation (direct heat)"] },
+      table: { columns: ["Transfer type", "Needs a medium?"], rows: [["Conduction", "Yes (solid)"], ["Convection", { blank: true, answer: "Yes (fluid)" }], ["Radiation", "No (works in a vacuum)"]] },
+      graph: { xLabel: "Distance from boiler (m)", yLabel: "Temperature (°C)", xMax: 6, yMax: 100, points: [[0, 90], [1, 70], [2, 55], [3, 40], [4, 30]] },
+      pattern: { question: "What's the pattern in temperature as you move away from the boiler?", options: ["Temperature decreases with distance", "Temperature increases with distance", "Temperature stays the same"], correct: 0 },
+      predict: { question: "Would wrapping the pipes in insulation make the temperature drop faster or slower with distance?", keywords: ["slower", "less", "reduce"] },
+      explain: { prompt: "Explain the difference between conduction, convection and radiation using the engine room example." }
+    },
+    {
+      id: "predator-prey", moduleId: "garden", name: "Predator-Prey — Fish & Plankton", level: "Cambridge", emoji: "🐟",
+      observe: { text: "In a monitored bay, plankton (food) and small fish (predators) were counted monthly. When plankton is abundant, fish numbers rise; when fish eat too much plankton, both populations fall, then plankton recovers and the cycle repeats." },
+      sketch: { prompt: "Sketch the two population curves over time.", nodes: [
+          { label: "Plankton population curve", shape: "line-diag", target: { x: 0.35, y: 0.4 } },
+          { label: "Fish population curve", shape: "line-diag", target: { x: 0.65, y: 0.6 } },
+          { label: "Time axis", shape: "line-h", target: { x: 0.5, y: 0.85 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><path d="M20,60 Q80,20 140,60 T260,60" fill="none" stroke="#3FA37A" stroke-width="2"/><text x="20" y="15" fill="#3FA37A" font-family="monospace" font-size="8">Plankton</text><path d="M20,100 Q80,130 140,100 T260,100" fill="none" stroke="#D9A441" stroke-width="2"/><text x="20" y="140" fill="#D9A441" font-family="monospace" font-size="8">Fish</text></svg>' },
+      variables: { options: ["Plankton population", "Fish population", "Month", "Water color"], correct: ["Plankton population", "Fish population", "Month"] },
+      table: { columns: ["Month", "Plankton (000s)"], rows: [["1", "80"], ["2", "50"], ["3", { blank: true, answer: "30" }], ["4", "60"]] },
+      graph: { xLabel: "Month", yLabel: "Plankton (000s)", xMax: 5, yMax: 100, points: [[1, 80], [2, 50], [3, 30], [4, 60]] },
+      pattern: { question: "What's the relationship between plankton and fish numbers?", options: ["They cycle — more plankton leads to more fish, which then reduces plankton", "They're unrelated", "Both always increase together forever"], correct: 0 },
+      predict: { question: "If fish numbers keep rising after month 4, what will probably happen to plankton next?", keywords: ["decrease", "fall", "drop", "decline"] },
+      explain: { prompt: "Explain why predator and prey populations tend to rise and fall in cycles rather than settling at a fixed number." }
+    },
+    {
+      id: "acid-base", moduleId: "lab", name: "Acid-Base — Testing Ballast Water", level: "Foundation", emoji: "🧫",
+      observe: { text: "J.J. tests water samples from the ballast tanks with pH paper. Pure seawater reads pH 8 (slightly alkaline). A sample near a leaking battery reads pH 3 (acidic)." },
+      sketch: { prompt: "Sketch the pH scale and mark where each sample sits.", nodes: [
+          { label: "pH scale (0-14)", shape: "line-h", target: { x: 0.5, y: 0.5 } },
+          { label: "Acidic sample marker", shape: "circle", target: { x: 0.2, y: 0.5 } },
+          { label: "Alkaline sample marker", shape: "circle", target: { x: 0.75, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><line x1="20" y1="75" x2="280" y2="75" stroke="#fff" stroke-width="3"/><text x="15" y="95" fill="#C1503A" font-family="monospace" font-size="8">0 (acid)</text><text x="270" y="95" fill="#3FA37A" font-family="monospace" font-size="7">14 (base)</text><circle cx="80" cy="75" r="6" fill="#C1503A"/><text x="55" y="60" fill="#C1503A" font-family="monospace" font-size="7">Battery leak</text><circle cx="200" cy="75" r="6" fill="#3FA37A"/><text x="175" y="60" fill="#3FA37A" font-family="monospace" font-size="7">Seawater</text></svg>' },
+      variables: { options: ["pH value", "Sample source", "Color of the pH paper", "Time of day tested"], correct: ["pH value", "Sample source"] },
+      table: { columns: ["Sample", "pH"], rows: [["Seawater", "8"], ["Near battery leak", "3"], ["Distilled water", { blank: true, answer: "7" }]] },
+      graph: { xLabel: "Sample (1=Battery leak, 2=Distilled, 3=Seawater)", yLabel: "pH", xMax: 4, yMax: 14, points: [[1, 3], [2, 7], [3, 8]] },
+      pattern: { question: "Where does pH 7 sit on the acid-alkaline scale?", options: ["Exactly neutral — neither acidic nor alkaline", "Strongly acidic", "Strongly alkaline"], correct: 0 },
+      predict: { question: "If a fourth sample read pH 12, would you expect it to be acidic or alkaline?", keywords: ["alkaline", "basic", "base"] },
+      explain: { prompt: "Explain what the pH scale tells you and why testing ballast water matters." }
+    },
+    {
+      id: "probability-dice", moduleId: "chartroom", name: "Probability — Watch Rotation Draw", level: "Foundation", emoji: "🎲",
+      observe: { text: "The crew uses a 6-sided die to randomly assign night watch order. J.J. rolled the die 24 times and recorded how often each number came up." },
+      sketch: { prompt: "Sketch the outcomes as bars against the expected line.", nodes: [
+          { label: "Die outcomes (1-6)", shape: "dots", target: { x: 0.3, y: 0.5 } },
+          { label: "Frequency bars", shape: "bar", target: { x: 0.6, y: 0.5 } },
+          { label: "Expected line (fair die)", shape: "line-h", target: { x: 0.5, y: 0.3 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><line x1="20" y1="55" x2="280" y2="55" stroke="#fff" stroke-width="1" stroke-dasharray="4,4"/><text x="230" y="48" fill="#fff" font-family="monospace" font-size="7">Expected</text><g fill="#D9A441"><rect x="30" y="60" width="30" height="60"/><rect x="70" y="50" width="30" height="70"/><rect x="110" y="60" width="30" height="60"/><rect x="150" y="70" width="30" height="50"/><rect x="190" y="60" width="30" height="60"/><rect x="230" y="60" width="30" height="60"/></g></svg>' },
+      variables: { options: ["Number rolled (1-6)", "Number of times rolled", "Die's color", "Time of the roll"], correct: ["Number rolled (1-6)", "Number of times rolled"] },
+      table: { columns: ["Number rolled", "Times out of 24"], rows: [["1", "4"], ["2", "5"], ["3", { blank: true, answer: "4" }], ["4", "3"], ["5", "4"], ["6", "4"]] },
+      graph: { xLabel: "Number rolled", yLabel: "Times out of 24", xMax: 7, yMax: 8, points: [[1, 4], [2, 5], [3, 4], [4, 3], [5, 4], [6, 4]] },
+      pattern: { question: "For a fair die rolled 24 times, about how many times would you expect each number?", options: ["About 4 times each (24 ÷ 6)", "Always exactly 6 times", "Completely random, with no expected pattern"], correct: 0 },
+      predict: { question: "If the die were rolled 240 times instead of 24, about how many times would you expect each number to come up?", keywords: ["40"] },
+      explain: { prompt: "Explain the difference between the theoretical (expected) probability and what you actually get from real rolls." }
     }
   ];
 
@@ -530,7 +636,7 @@ textarea.freetext, input.freetext {
       '<div class="hdr-sub">Every model starts with a blank page. Pick a folder and get sketching.</div></div>' +
       '<div class="section">' + xpStripHtml() + '</div>' +
       '<div class="section"><div class="section-label">🗂️ Blueprint Folders</div><div class="folder-grid">' + folders + '</div></div>' +
-      '<div class="foot-note">15 models across 6 folders — a growing library. Progress is saved on this device.<br>Part of J.J.\'s Engineering Academy.</div>';
+      '<div class="foot-note">22 models across 7 folders — a growing library. Progress is saved on this device.<br>Part of J.J.\'s Engineering Academy.</div>';
 
     Array.prototype.forEach.call(app.querySelectorAll("[data-mod]"), function (btn) {
       btn.addEventListener("click", function () { go("module", { moduleId: btn.getAttribute("data-mod") }); });
