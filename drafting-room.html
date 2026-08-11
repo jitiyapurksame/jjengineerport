@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+<title>The Drafting Room — J.J.'s Engineering Academy</title>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="Drafting Room" />
+<meta name="description" content="Practice sketching and reading scientific models, ship-engineer style." />
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #F1ECDD;
+  --card: #FFFFFF;
+  --ink: #16293A;
+  --ink-soft: #5B6B78;
+  --teal: #0E2A45;
+  --teal-dark: #081826;
+  --blueprint: #0B3550;
+  --blueprint-line: rgba(255,255,255,0.09);
+  --blueprint-line-strong: rgba(217,164,65,0.35);
+  --amber: #D9A441;
+  --amber-dark: #B3822C;
+  --coral: #C1503A;
+  --lab: #7C5CBF;
+  --lab-bg: #F0EBFA;
+  --success: #3FA37A;
+  --success-bg: #E6F5EE;
+  --nudge-bg: #FCEFD9;
+  --nudge-ink: #8A5A18;
+  --danger: #C0392B;
+  --danger-bg: #FBEAE7;
+  --mono: 'Space Mono', 'Courier New', monospace;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body, #app { min-height: 100%; }
+body {
+  margin: 0;
+  background-color: var(--blueprint);
+  background-image:
+    repeating-linear-gradient(0deg, var(--blueprint-line) 0px, var(--blueprint-line) 1px, transparent 1px, transparent 24px),
+    repeating-linear-gradient(90deg, var(--blueprint-line) 0px, var(--blueprint-line) 1px, transparent 1px, transparent 24px),
+    repeating-linear-gradient(0deg, var(--blueprint-line-strong) 0px, var(--blueprint-line-strong) 1px, transparent 1px, transparent 120px),
+    repeating-linear-gradient(90deg, var(--blueprint-line-strong) 0px, var(--blueprint-line-strong) 1px, transparent 1px, transparent 120px);
+  color: var(--ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  min-height: 100vh;
+}
+button, input, textarea, select { font-family: inherit; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; }
+
+.wrap { max-width: 560px; margin: 0 auto; padding-bottom: 48px; }
+
+/* ---- Header ---- */
+.hdr {
+  padding: 20px 18px 18px; color: #fff; text-align: center; position: relative;
+}
+.hdr-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber); }
+.hdr-title { font-family: var(--mono); font-weight: 700; font-size: 21px; margin-top: 6px; }
+.hdr-sub { color: rgba(255,255,255,0.65); font-size: 12.5px; margin-top: 6px; line-height: 1.5; }
+.hdr-back {
+  position: absolute; left: 14px; top: 18px; font-family: var(--mono); font-size: 12px;
+  color: var(--amber); background: none; border: 1px solid var(--amber-dark); border-radius: 6px; padding: 6px 10px;
+}
+
+/* ---- XP strip ---- */
+.xp-strip {
+  margin: 0 16px; background: rgba(255,255,255,0.06); border: 1px dashed var(--blueprint-line-strong);
+  border-radius: 10px; padding: 12px 14px; color: #fff;
+}
+.xp-row { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--mono); font-size: 11.5px; letter-spacing: .03em; }
+.xp-row .lvl { color: var(--amber); font-weight: 700; }
+.xp-track { height: 8px; background: rgba(255,255,255,0.15); border-radius: 5px; overflow: hidden; margin-top: 8px; }
+.xp-fill { height: 100%; background: linear-gradient(90deg, var(--amber), #fff); border-radius: 5px; transition: width .4s ease; }
+
+/* ---- Sections / cards ---- */
+.section { padding: 16px 16px 0; }
+.section-label {
+  font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--amber); margin-bottom: 10px;
+}
+.folder-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.folder-card {
+  background: var(--card); border-radius: 12px; padding: 16px 14px; text-align: left;
+  border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 3px 10px rgba(0,0,0,0.18);
+}
+.folder-emoji { font-size: 24px; }
+.folder-name { font-family: var(--mono); font-weight: 700; font-size: 13.5px; color: var(--teal); margin-top: 8px; line-height: 1.3; }
+.folder-count { font-size: 11px; color: var(--ink-soft); margin-top: 4px; }
+.folder-progress { height: 5px; background: var(--bg); border-radius: 4px; margin-top: 8px; overflow: hidden; }
+.folder-progress-fill { height: 100%; background: var(--success); border-radius: 4px; }
+
+.model-card {
+  background: var(--card); border-radius: 10px; padding: 14px; margin-bottom: 10px;
+  border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  display: flex; align-items: center; gap: 12px; text-align: left; width: 100%;
+}
+.model-emoji {
+  font-size: 22px; width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  background: var(--bg); border-radius: 8px; border: 1px dashed var(--amber-dark);
+}
+.model-info { flex: 1; min-width: 0; }
+.model-name { font-family: var(--mono); font-weight: 700; font-size: 14px; color: var(--teal); }
+.model-level { font-size: 11px; color: var(--ink-soft); margin-top: 2px; }
+.model-check { font-size: 18px; color: var(--success); flex-shrink: 0; }
+
+/* ---- Run screen: step stepper ---- */
+.stepper { display: flex; gap: 4px; padding: 0 16px; margin-top: 4px; }
+.stepper .dot { flex: 1; height: 4px; border-radius: 3px; background: rgba(255,255,255,0.15); }
+.stepper .dot.done { background: var(--success); }
+.stepper .dot.active { background: var(--amber); }
+
+.run-card {
+  background: var(--card); border-radius: 12px; padding: 18px; margin: 14px 16px 0;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.22);
+}
+.step-eyebrow { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--amber-dark); }
+.step-title { font-family: var(--mono); font-weight: 700; font-size: 17px; color: var(--teal); margin-top: 4px; }
+.step-body { font-size: 14px; line-height: 1.55; color: var(--ink); margin-top: 10px; }
+
+.chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.chip {
+  font-family: var(--mono); font-size: 12.5px; padding: 8px 12px; border-radius: 20px;
+  border: 1.5px solid var(--teal); background: #fff; color: var(--teal);
+}
+.chip.selected { background: var(--teal); color: #fff; }
+.chip:disabled { opacity: 0.35; }
+.chip { display: inline-flex; align-items: center; }
+
+.boss-panel { margin-top: 14px; background: var(--teal); border-radius: 10px; padding: 14px; border: 2px dashed var(--coral); }
+.boss-title { font-family: var(--mono); font-weight: 700; font-size: 14px; color: var(--amber); }
+.boss-desc { font-size: 12px; color: rgba(255,255,255,0.8); margin: 6px 0 12px; line-height: 1.5; }
+.hint-box { margin-top: 10px; border-radius: 10px; overflow: hidden; border: 1.5px dashed var(--amber-dark); }
+.hint-box svg { width: 100%; display: block; }
+.hint-label { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--amber-dark); background: var(--nudge-bg); padding: 5px 8px; }
+
+table.dtable { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13.5px; }
+table.dtable th { font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-soft); text-align: left; padding: 6px 8px; border-bottom: 2px solid var(--teal); }
+table.dtable td { padding: 8px; border-bottom: 1px solid rgba(0,0,0,0.08); }
+table.dtable input {
+  width: 100%; padding: 7px 8px; border-radius: 6px; border: 1.5px solid var(--amber-dark);
+  font-family: var(--mono); font-size: 13px; background: var(--nudge-bg);
+}
+
+canvas.pad { width: 100%; touch-action: none; border-radius: 10px; border: 1.5px dashed var(--amber-dark); background: repeating-linear-gradient(0deg, rgba(14,42,69,0.05) 0, rgba(14,42,69,0.05) 1px, transparent 1px, transparent 20px), repeating-linear-gradient(90deg, rgba(14,42,69,0.05) 0, rgba(14,42,69,0.05) 1px, transparent 1px, transparent 20px), #fff; display: block; margin-top: 10px; }
+.pad-tools { display: flex; gap: 8px; margin-top: 8px; }
+
+.mc-row { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.mc-btn { text-align: left; padding: 11px 13px; border-radius: 8px; border: 1.5px solid rgba(14,42,69,0.2); background: #fff; font-size: 13.5px; color: var(--ink); }
+.mc-btn.selected { border-color: var(--teal); background: var(--bg); font-weight: 600; }
+
+textarea.freetext, input.freetext {
+  width: 100%; margin-top: 12px; padding: 10px 12px; border-radius: 8px; border: 1.5px solid rgba(14,42,69,0.2);
+  font-size: 13.5px; font-family: inherit; resize: vertical;
+}
+
+.feedback { margin-top: 12px; padding: 10px 12px; border-radius: 8px; font-size: 12.5px; display: none; }
+.feedback.show { display: block; }
+.feedback.ok { background: var(--success-bg); color: #1e5c40; border: 1px solid rgba(63,163,122,0.3); }
+.feedback.warn { background: var(--nudge-bg); color: var(--nudge-ink); border: 1px dashed var(--amber-dark); }
+
+.stamp {
+  display: none; font-family: var(--mono); font-weight: 700; font-size: 12px; letter-spacing: .08em;
+  color: var(--success); border: 2px solid var(--success); border-radius: 6px; padding: 5px 10px;
+  transform: rotate(-4deg); margin-top: 10px; text-align: center; width: fit-content;
+}
+.stamp.show { display: block; }
+
+.run-actions { display: flex; gap: 10px; margin-top: 16px; }
+.btn { flex: 1; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 13.5px; border: 2px solid var(--teal); background: transparent; color: var(--teal); text-align: center; }
+.btn.primary { background: var(--teal); color: #fff; }
+.btn.amber { border-color: var(--amber-dark); background: var(--amber); color: var(--teal-dark); }
+.btn:disabled { opacity: 0.4; }
+
+.complete-wrap { text-align: center; padding: 28px 18px; }
+.complete-emoji { font-size: 44px; }
+.complete-title { font-family: var(--mono); font-weight: 700; font-size: 19px; color: var(--teal); margin-top: 10px; }
+.complete-xp { font-family: var(--mono); font-size: 13px; color: var(--amber-dark); margin-top: 6px; }
+
+.foot-note { margin: 22px 16px 0; font-size: 11px; color: rgba(255,255,255,0.5); text-align: center; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div id="app" class="wrap"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var STORAGE_KEY = "jj-drafting-room-v1";
+  var storageOk = true;
+
+  var LEVELS = [
+    { name: "Deck Cadet", min: 0 },
+    { name: "Junior Engineer", min: 60 },
+    { name: "Third Engineer", min: 150 },
+    { name: "Second Engineer", min: 280 },
+    { name: "Chief Engineer", min: 450 }
+  ];
+
+  var MODULES = [
+    { id: "propulsion", name: "Propulsion", sub: "Forces & Motion", emoji: "⚙️" },
+    { id: "navigation", name: "Navigation & Stars", sub: "Astronomy", emoji: "🧭" },
+    { id: "boiler", name: "Boiler Room", sub: "Energy", emoji: "🔥" },
+    { id: "garden", name: "Ship's Garden", sub: "Biology", emoji: "🌿" },
+    { id: "lab", name: "Lab Deck", sub: "Chemistry", emoji: "🧪" },
+    { id: "chartroom", name: "Chartroom", sub: "Maths", emoji: "📐" }
+  ];
+
+  var STEP_ORDER = ["observe", "sketch", "variables", "table", "graph", "pattern", "predict", "explain"];
+  var STEP_LABEL = {
+    observe: "Observe", sketch: "Sketch & Label", variables: "Find Variables", table: "Build the Table",
+    graph: "Plot the Graph", pattern: "Find the Pattern", predict: "Predict", explain: "Explain"
+  };
+
+  // ---- Model library (prototype set — one model shown per module family) ----
+  var MODELS = [
+    {
+      id: "force-arrow", moduleId: "propulsion", name: "Force Arrow — Tugboat Push", level: "Foundation", emoji: "➡️",
+      observe: { text: "A tugboat is pushing a cargo barge across calm harbor water. The engine pushes forward with 4,000 N. Water resistance (drag) pushes back with 1,500 N. There is no wind." },
+      sketch: { prompt: "Sketch the tugboat and barge, then place each label where it belongs.", nodes: [
+          { label: "Push arrow →", shape: "arrow-right", target: { x: 0.28, y: 0.5 } },
+          { label: "Drag arrow ←", shape: "arrow-left", target: { x: 0.72, y: 0.5 } },
+          { label: "Barge", shape: "box", target: { x: 0.5, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><rect x="115" y="55" width="70" height="36" fill="none" stroke="#D9A441" stroke-width="2"/><text x="122" y="108" fill="#fff" font-family="monospace" font-size="10">Barge</text><line x1="55" y1="73" x2="112" y2="73" stroke="#3FA37A" stroke-width="3"/><polygon points="112,73 100,67 100,79" fill="#3FA37A"/><text x="45" y="60" fill="#3FA37A" font-family="monospace" font-size="9">Push 4000N</text><line x1="188" y1="73" x2="245" y2="73" stroke="#C1503A" stroke-width="3"/><polygon points="188,73 200,67 200,79" fill="#C1503A"/><text x="190" y="60" fill="#C1503A" font-family="monospace" font-size="9">Drag 1500N</text></svg>' },
+      variables: { options: ["Push force (4000 N)", "Drag force (1500 N)", "Barge's paint color", "Water temperature"], correct: ["Push force (4000 N)", "Drag force (1500 N)"] },
+      table: { columns: ["Force", "Magnitude (N)"], rows: [["Push (engine)", { blank: true, answer: "4000" }], ["Drag (water)", "1500"]] },
+      graph: { xLabel: "Force (1=Push, 2=Drag)", yLabel: "Magnitude (N)", xMax: 3, yMax: 5000, points: [[1, 4000], [2, 1500]] },
+      pattern: { question: "Which force is bigger, and what does that mean for the barge?", options: ["Push is bigger — the barge speeds up", "Drag is bigger — the barge slows down", "They're equal — the barge moves at a steady speed"], correct: 0 },
+      predict: { question: "If drag increased until it exactly matched the push force, what would happen to the barge's speed?", keywords: ["steady", "constant", "same speed", "no acceleration", "unchanged"] },
+      explain: { prompt: "In your own words: why does an unbalanced force change the barge's speed?" }
+    },
+    {
+      id: "distance-time", moduleId: "propulsion", name: "Distance-Time Graph — Engine Trial", level: "Cambridge", emoji: "📈",
+      observe: { text: "During an engine trial run, the ship's distance from the dock was logged every 2 minutes: 0 m, 100 m, 200 m, 300 m, 400 m." },
+      sketch: { prompt: "Sketch a distance-time graph and label its parts.", nodes: [
+          { label: "X-axis: Time", shape: "line-h", target: { x: 0.5, y: 0.82 } },
+          { label: "Y-axis: Distance", shape: "line-v", target: { x: 0.14, y: 0.47 } },
+          { label: "Straight line = constant speed", shape: "line-diag", target: { x: 0.5, y: 0.42 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><line x1="40" y1="20" x2="40" y2="120" stroke="#fff" stroke-width="2"/><line x1="40" y1="120" x2="270" y2="120" stroke="#fff" stroke-width="2"/><line x1="40" y1="120" x2="240" y2="30" stroke="#D9A441" stroke-width="3"/><text x="120" y="140" fill="#fff" font-family="monospace" font-size="10">Time</text><text x="8" y="70" fill="#fff" font-family="monospace" font-size="10">Dist.</text></svg>' },
+      variables: { options: ["Time (min)", "Distance (m)", "Ship's color", "Engine sound level"], correct: ["Time (min)", "Distance (m)"] },
+      table: { columns: ["Time (min)", "Distance (m)"], rows: [["0", "0"], ["2", "100"], ["4", "200"], ["6", { blank: true, answer: "300" }], ["8", "400"]] },
+      graph: { xLabel: "Time (min)", yLabel: "Distance (m)", xMax: 10, yMax: 500, points: [[0, 0], [2, 100], [4, 200], [6, 300], [8, 400]] },
+      pattern: { question: "What does the straight line tell you about the ship's speed?", options: ["Speed is constant", "Speed is increasing", "Speed is decreasing"], correct: 0 },
+      predict: { question: "At this rate, how far will the ship be from the dock at 10 minutes?", keywords: ["500"] },
+      explain: { prompt: "Explain how the graph's shape (a straight line) let you predict the distance at 10 minutes." }
+    },
+    {
+      id: "free-body", moduleId: "propulsion", name: "Free Body Diagram — Anchor Chain", level: "Foundation", emoji: "⚓",
+      observe: { text: "An anchor hangs still in the water, held by its chain. The chain pulls up on the anchor with 800 N of tension. Gravity pulls the anchor down with 800 N of weight." },
+      sketch: { prompt: "Sketch the anchor and place the force arrows acting on it.", nodes: [
+          { label: "Weight ↓ (mg)", shape: "arrow-down", target: { x: 0.5, y: 0.72 } },
+          { label: "Tension ↑ (chain)", shape: "arrow-up", target: { x: 0.5, y: 0.28 } },
+          { label: "Anchor", shape: "box", target: { x: 0.5, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><rect x="130" y="63" width="40" height="24" fill="none" stroke="#D9A441" stroke-width="2"/><text x="122" y="100" fill="#fff" font-family="monospace" font-size="9">Anchor</text><line x1="150" y1="60" x2="150" y2="20" stroke="#3FA37A" stroke-width="3"/><polygon points="150,15 144,25 156,25" fill="#3FA37A"/><text x="158" y="30" fill="#3FA37A" font-family="monospace" font-size="8">Tension 800N</text><line x1="150" y1="90" x2="150" y2="130" stroke="#C1503A" stroke-width="3"/><polygon points="150,135 144,125 156,125" fill="#C1503A"/><text x="158" y="128" fill="#C1503A" font-family="monospace" font-size="8">Weight 800N</text></svg>' },
+      variables: { options: ["Weight (800 N)", "Tension (800 N)", "Anchor's paint color", "Water depth"], correct: ["Weight (800 N)", "Tension (800 N)"] },
+      table: { columns: ["Force", "Magnitude (N)"], rows: [["Weight (down)", "800"], ["Tension (up)", { blank: true, answer: "800" }]] },
+      graph: { xLabel: "Force (1=Weight, 2=Tension)", yLabel: "Magnitude (N)", xMax: 3, yMax: 1000, points: [[1, 800], [2, 800]] },
+      pattern: { question: "What does it mean that weight and tension are equal here?", options: ["The anchor is balanced and stays still", "The anchor is sinking", "The anchor is rising"], correct: 0 },
+      predict: { question: "If the chain snapped (tension dropped to 0), what would happen to the anchor?", keywords: ["sink", "fall", "drop", "down"] },
+      explain: { prompt: "Explain what 'balanced forces' means using this anchor example." }
+    },
+    {
+      id: "projectile", moduleId: "propulsion", name: "Projectile Motion — Distress Flare", level: "Cambridge", emoji: "🎇",
+      observe: { text: "A distress flare is fired from the deck. It rises, curves over, and falls back down in an arc, landing well away from the launch point." },
+      sketch: { prompt: "Sketch the arc the flare follows and mark the key points.", nodes: [
+          { label: "Launch point", shape: "circle", target: { x: 0.15, y: 0.75 } },
+          { label: "Peak height (arc top)", shape: "circle", target: { x: 0.5, y: 0.25 } },
+          { label: "Landing point", shape: "circle", target: { x: 0.85, y: 0.75 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><path d="M30,120 Q150,10 270,120" fill="none" stroke="#D9A441" stroke-width="2" stroke-dasharray="5,4"/><circle cx="30" cy="120" r="6" fill="#3FA37A"/><text x="10" y="140" fill="#3FA37A" font-family="monospace" font-size="8">Launch</text><circle cx="150" cy="22" r="6" fill="#fff"/><text x="118" y="14" fill="#fff" font-family="monospace" font-size="8">Peak</text><circle cx="270" cy="120" r="6" fill="#C1503A"/><text x="230" y="140" fill="#C1503A" font-family="monospace" font-size="8">Landing</text></svg>' },
+      variables: { options: ["Launch angle", "Height reached", "Horizontal distance", "Flare's color"], correct: ["Launch angle", "Height reached", "Horizontal distance"] },
+      table: { columns: ["Time (s)", "Height (m)"], rows: [["0", "0"], ["1", "15"], ["2", { blank: true, answer: "20" }], ["3", "15"], ["4", "0"]] },
+      graph: { xLabel: "Time (s)", yLabel: "Height (m)", xMax: 5, yMax: 25, points: [[0, 0], [1, 15], [2, 20], [3, 15], [4, 0]] },
+      pattern: { question: "What shape does the height-time graph make?", options: ["A curve that rises then falls symmetrically (a parabola)", "A straight line going up", "A flat line"], correct: 0 },
+      predict: { question: "At what time is the flare at its highest point?", keywords: ["2"] },
+      explain: { prompt: "Explain why the flare's path is curved instead of straight up and back down." }
+    },
+    {
+      id: "moon-phase", moduleId: "navigation", name: "Moon Phase Tracker", level: "Cambridge", emoji: "🌓",
+      observe: { text: "Over 4 nights, J.J. recorded how much of the Moon's face was lit: Night 1 = 25%, Night 2 = 50%, Night 3 = ?, Night 4 = 100%." },
+      sketch: { prompt: "Sketch the Sun, Earth and Moon, and label the lit side of the Moon.", nodes: [
+          { label: "Sun", shape: "circle", target: { x: 0.12, y: 0.5 } },
+          { label: "Earth", shape: "circle", target: { x: 0.53, y: 0.5 } },
+          { label: "Moon", shape: "circle", target: { x: 0.8, y: 0.5 } },
+          { label: "Lit side (faces the Sun)", shape: "ray", target: { x: 0.8, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><circle cx="35" cy="75" r="24" fill="#D9A441"/><text x="14" y="112" fill="#D9A441" font-family="monospace" font-size="9">Sun</text><circle cx="160" cy="75" r="16" fill="#3FA37A"/><text x="146" y="105" fill="#3FA37A" font-family="monospace" font-size="9">Earth</text><circle cx="240" cy="75" r="9" fill="#888"/><path d="M240,66 A9,9 0 0 1 240,84 A9,9 0 0 1 240,66" fill="#D9A441"/><text x="212" y="98" fill="#fff" font-family="monospace" font-size="9">Moon (lit side → Sun)</text></svg>' },
+      variables: { options: ["Night number", "% of Moon lit", "Moon's distance from Earth (roughly constant)", "Time of sunrise"], correct: ["Night number", "% of Moon lit"] },
+      table: { columns: ["Night", "% Lit"], rows: [["1", "25"], ["2", "50"], ["3", { blank: true, answer: "75" }], ["4", "100"]] },
+      graph: { xLabel: "Night", yLabel: "% Lit", xMax: 5, yMax: 100, points: [[1, 25], [2, 50], [3, 75], [4, 100]] },
+      pattern: { question: "What's the pattern in % lit across these 4 nights?", options: ["Increasing, heading toward Full Moon", "Decreasing, heading toward New Moon", "Staying the same"], correct: 0 },
+      predict: { question: "If the pattern continues, is Night 5 closer to a Full Moon or a New Moon?", keywords: ["full"] },
+      explain: { prompt: "Explain what causes the Moon's lit fraction to change from night to night." }
+    },
+    {
+      id: "seasons", moduleId: "navigation", name: "Seasons — Earth's Tilt", level: "Foundation", emoji: "🌍",
+      observe: { text: "Earth is tilted on its axis by about 23.5°. As it orbits the Sun, different hemispheres lean toward or away from the Sun at different times of year." },
+      sketch: { prompt: "Sketch the Sun and the tilted Earth, and mark the tilt angle.", nodes: [
+          { label: "Sun", shape: "circle", target: { x: 0.5, y: 0.18 } },
+          { label: "Earth (tilted axis)", shape: "circle", target: { x: 0.5, y: 0.75 } },
+          { label: "Tilt angle line", shape: "line-diag", target: { x: 0.5, y: 0.75 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><circle cx="150" cy="25" r="16" fill="#D9A441"/><text x="130" y="15" fill="#D9A441" font-family="monospace" font-size="8">Sun</text><circle cx="150" cy="115" r="20" fill="#3FA37A"/><line x1="150" y1="115" x2="168" y2="82" stroke="#fff" stroke-width="2"/><text x="172" y="82" fill="#fff" font-family="monospace" font-size="8">23.5°</text></svg>' },
+      variables: { options: ["Tilt angle (23.5°)", "Position in orbit", "Earth's color", "Distance to the Moon"], correct: ["Tilt angle (23.5°)", "Position in orbit"] },
+      table: { columns: ["Month", "Hemisphere toward Sun", "N. Hemisphere season"], rows: [["Dec", "Southern", "Winter"], ["Mar", "Neither (equinox)", "Spring"], ["Jun", { blank: true, answer: "Northern" }, "Summer"], ["Sep", "Neither (equinox)", "Autumn"]] },
+      graph: { xLabel: "Month (1=Jan)", yLabel: "Daylight hours", xMax: 13, yMax: 16, points: [[1, 10], [4, 12], [6, 14], [9, 12], [12, 10]] },
+      pattern: { question: "What's the pattern in daylight hours across the year?", options: ["Rises to a summer peak then falls to a winter low (cyclical)", "Constant all year", "Random, with no pattern"], correct: 0 },
+      predict: { question: "Would a country south of the equator have summer at the same time as the Northern Hemisphere, or the opposite?", keywords: ["opposite", "reverse", "different"] },
+      explain: { prompt: "Explain why Earth's tilt — not its distance from the Sun — causes the seasons." }
+    },
+    {
+      id: "sunspot", moduleId: "navigation", name: "Sunspot Motion — Rotation Tracker", level: "Scholarship", emoji: "☀️",
+      observe: { text: "A large sunspot is tracked across the Sun's visible face over several days as the Sun rotates. Its position (longitude across the disk) is logged each day." },
+      sketch: { prompt: "Sketch the Sun's disk with the sunspot and the rotation direction.", nodes: [
+          { label: "Sun's disk", shape: "circle", target: { x: 0.5, y: 0.5 } },
+          { label: "Sunspot position", shape: "dots", target: { x: 0.35, y: 0.5 } },
+          { label: "Rotation direction", shape: "arrow-right", target: { x: 0.65, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><circle cx="150" cy="75" r="55" fill="none" stroke="#D9A441" stroke-width="2"/><circle cx="120" cy="75" r="4" fill="#C1503A"/><text x="90" y="98" fill="#C1503A" font-family="monospace" font-size="8">Sunspot</text><line x1="170" y1="30" x2="195" y2="20" stroke="#fff" stroke-width="2"/><polygon points="198,17 190,17 194,26" fill="#fff"/><text x="165" y="15" fill="#fff" font-family="monospace" font-size="8">Rotation</text></svg>' },
+      variables: { options: ["Day number", "Sunspot longitude (position)", "Sun's overall brightness", "Sunspot's exact shape"], correct: ["Day number", "Sunspot longitude (position)"] },
+      table: { columns: ["Day", "Longitude (°)"], rows: [["1", "10"], ["2", "24"], ["3", { blank: true, answer: "38" }], ["4", "52"]] },
+      graph: { xLabel: "Day", yLabel: "Longitude (°)", xMax: 5, yMax: 60, points: [[1, 10], [2, 24], [3, 38], [4, 52]] },
+      pattern: { question: "What does the steady increase in longitude each day tell you?", options: ["The Sun is rotating at a roughly constant rate", "The sunspot is moving on its own, unrelated to the Sun", "The measurements are random"], correct: 0 },
+      predict: { question: "Using the pattern (about 14° per day), estimate the longitude on Day 5.", keywords: ["66"] },
+      explain: { prompt: "Explain how tracking one sunspot's position over several days lets you work out the Sun's rotation rate." }
+    },
+    {
+      id: "energy-bar", moduleId: "boiler", name: "Energy Bar — Boiler Efficiency", level: "Foundation", emoji: "🌡️",
+      observe: { text: "The boiler takes in 1000 units of fuel energy. 600 units become useful steam energy. The rest is wasted as heat to the surroundings." },
+      sketch: { prompt: "Sketch three bars: input, useful output, wasted energy.", nodes: [
+          { label: "Input bar", shape: "bar", target: { x: 0.23, y: 0.47 } },
+          { label: "Useful output bar", shape: "bar", target: { x: 0.5, y: 0.59 } },
+          { label: "Wasted (heat) bar", shape: "bar", target: { x: 0.77, y: 0.67 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><rect x="50" y="20" width="40" height="100" fill="#D9A441"/><text x="45" y="132" fill="#fff" font-family="monospace" font-size="8">Input</text><rect x="130" y="56" width="40" height="64" fill="#3FA37A"/><text x="118" y="132" fill="#fff" font-family="monospace" font-size="8">Useful</text><rect x="210" y="80" width="40" height="40" fill="#C1503A"/><text x="200" y="132" fill="#fff" font-family="monospace" font-size="8">Wasted</text></svg>' },
+      variables: { options: ["Input energy", "Useful energy", "Wasted energy", "Boiler's paint color"], correct: ["Input energy", "Useful energy", "Wasted energy"] },
+      table: { columns: ["Energy type", "Units"], rows: [["Input (fuel)", "1000"], ["Useful (steam)", "600"], ["Wasted (heat)", { blank: true, answer: "400" }]] },
+      graph: { xLabel: "Bar (1=Input, 2=Useful, 3=Wasted)", yLabel: "Energy (units)", xMax: 4, yMax: 1200, points: [[1, 1000], [2, 600], [3, 400]] },
+      pattern: { question: "What can you say about input vs. (useful + wasted)?", options: ["They're equal — energy is conserved", "Input is bigger than the total output", "Useful energy just disappears"], correct: 0 },
+      predict: { question: "If the boiler got more efficient and wasted only 300 units (same fuel input), how much useful energy would it produce?", keywords: ["700"] },
+      explain: { prompt: "Explain what 'efficiency' means using this bar model." }
+    },
+    {
+      id: "sankey", moduleId: "boiler", name: "Sankey Diagram — Steam Engine Losses", level: "Cambridge", emoji: "🚂",
+      observe: { text: "A steam engine takes in 500 units of energy from burning coal: 200 units become useful motion, 180 units are lost as heat out the funnel, and 120 units are lost to friction in the moving parts." },
+      sketch: { prompt: "Sketch the input splitting into its three output paths.", nodes: [
+          { label: "Input flow (from coal)", shape: "arrow-right", target: { x: 0.15, y: 0.5 } },
+          { label: "Useful motion branch", shape: "line-diag", target: { x: 0.5, y: 0.3 } },
+          { label: "Heat loss branch", shape: "line-h", target: { x: 0.5, y: 0.5 } },
+          { label: "Friction loss branch", shape: "line-diag", target: { x: 0.5, y: 0.75 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><line x1="20" y1="75" x2="110" y2="75" stroke="#D9A441" stroke-width="8"/><line x1="110" y1="75" x2="270" y2="35" stroke="#3FA37A" stroke-width="5"/><text x="200" y="30" fill="#3FA37A" font-family="monospace" font-size="8">Motion 200</text><line x1="110" y1="75" x2="270" y2="75" stroke="#fff" stroke-width="4"/><text x="200" y="70" fill="#fff" font-family="monospace" font-size="8">Heat 180</text><line x1="110" y1="75" x2="270" y2="115" stroke="#C1503A" stroke-width="3"/><text x="195" y="128" fill="#C1503A" font-family="monospace" font-size="8">Friction 120</text></svg>' },
+      variables: { options: ["Input energy (500)", "Useful motion (200)", "Heat loss (180)", "Friction loss (120)", "Coal's color"], correct: ["Input energy (500)", "Useful motion (200)", "Heat loss (180)", "Friction loss (120)"] },
+      table: { columns: ["Energy path", "Units"], rows: [["Input", "500"], ["Useful motion", "200"], ["Heat loss", "180"], ["Friction loss", { blank: true, answer: "120" }]] },
+      graph: { xLabel: "Path (1=Useful, 2=Heat, 3=Friction)", yLabel: "Units", xMax: 4, yMax: 600, points: [[1, 200], [2, 180], [3, 120]] },
+      pattern: { question: "What should the three output branches add up to?", options: ["The same as the input (500) — energy is conserved", "More than the input", "Half the input"], correct: 0 },
+      predict: { question: "If a better lubricant cut friction loss to 60 units (same input, same heat loss), how much useful motion would result?", keywords: ["260"] },
+      explain: { prompt: "Explain why a Sankey diagram's branch widths are drawn proportional to the amount of energy in each path." }
+    },
+    {
+      id: "food-chain", moduleId: "garden", name: "Food Chain — Ship's Garden Plot", level: "Foundation", emoji: "🥬",
+      observe: { text: "In the ship's hydroponic garden: sunlight feeds the lettuce, lettuce is eaten by snails, and snails are eaten by ducks kept on deck." },
+      sketch: { prompt: "Sketch the chain and label each link.", nodes: [
+          { label: "Sunlight →", shape: "ray", target: { x: 0.08, y: 0.5 } },
+          { label: "Lettuce (producer)", shape: "box", target: { x: 0.29, y: 0.5 } },
+          { label: "Snail (consumer 1)", shape: "circle", target: { x: 0.55, y: 0.5 } },
+          { label: "Duck (consumer 2)", shape: "circle", target: { x: 0.82, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><circle cx="25" cy="75" r="8" fill="#D9A441"/><rect x="70" y="63" width="34" height="24" fill="none" stroke="#3FA37A" stroke-width="2"/><text x="66" y="100" fill="#3FA37A" font-family="monospace" font-size="8">Lettuce</text><circle cx="165" cy="75" r="14" fill="none" stroke="#fff" stroke-width="2"/><text x="148" y="100" fill="#fff" font-family="monospace" font-size="8">Snail</text><circle cx="245" cy="75" r="16" fill="none" stroke="#D9A441" stroke-width="2"/><text x="230" y="100" fill="#D9A441" font-family="monospace" font-size="8">Duck</text><line x1="35" y1="75" x2="68" y2="75" stroke="#fff" stroke-width="1.5"/><line x1="106" y1="75" x2="149" y2="75" stroke="#fff" stroke-width="1.5"/><line x1="181" y1="75" x2="227" y2="75" stroke="#fff" stroke-width="1.5"/></svg>' },
+      variables: { options: ["Sunlight", "Lettuce", "Snail", "Duck", "Ship's paint color"], correct: ["Sunlight", "Lettuce", "Snail", "Duck"] },
+      table: { columns: ["Step", "Organism", "Role"], rows: [["1", "Sunlight", "Energy source"], ["2", "Lettuce", "Producer"], ["3", { blank: true, answer: "Snail" }, "Primary consumer"], ["4", "Duck", "Secondary consumer"]] },
+      graph: { xLabel: "Trophic level", yLabel: "Energy available (relative)", xMax: 5, yMax: 1200, points: [[1, 1000], [2, 100], [3, 10], [4, 1]] },
+      pattern: { question: "What happens to the energy available at each step up the chain?", options: ["It decreases at each step", "It stays the same", "It increases at each step"], correct: 0 },
+      predict: { question: "If a hawk visiting the deck ate the ducks (a 5th level), roughly how much energy would be available to it?", keywords: ["0.1", "less than 1", "tiny", "very little"] },
+      explain: { prompt: "Explain why food chains rarely have more than 4-5 levels." }
+    },
+    {
+      id: "water-cycle", moduleId: "garden", name: "Water Cycle — Ship's Rain Catcher", level: "Foundation", emoji: "💧",
+      observe: { text: "On a long voyage, the crew collects fresh water: seawater evaporates into the air, forms clouds, falls as rain, and is collected in tanks on deck." },
+      sketch: { prompt: "Sketch the cycle from sea to cloud to tank.", nodes: [
+          { label: "Evaporation (sea → vapor)", shape: "arrow-up", target: { x: 0.2, y: 0.55 } },
+          { label: "Cloud (condensation)", shape: "circle", target: { x: 0.5, y: 0.25 } },
+          { label: "Precipitation (rain)", shape: "arrow-down", target: { x: 0.5, y: 0.6 } },
+          { label: "Collection tank", shape: "box", target: { x: 0.8, y: 0.8 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><rect x="0" y="120" width="300" height="30" fill="#3FA37A" opacity="0.3"/><text x="10" y="140" fill="#3FA37A" font-family="monospace" font-size="8">Sea</text><line x1="60" y1="118" x2="60" y2="60" stroke="#fff" stroke-width="2"/><polygon points="60,55 54,65 66,65" fill="#fff"/><circle cx="150" cy="35" r="20" fill="#fff" opacity="0.85"/><text x="130" y="20" fill="#fff" font-family="monospace" font-size="8">Cloud</text><line x1="150" y1="55" x2="150" y2="95" stroke="#D9A441" stroke-width="2"/><polygon points="150,100 144,90 156,90" fill="#D9A441"/><rect x="235" y="105" width="40" height="30" fill="none" stroke="#D9A441" stroke-width="2"/><text x="230" y="145" fill="#D9A441" font-family="monospace" font-size="8">Tank</text></svg>' },
+      variables: { options: ["Sea temperature (drives evaporation)", "Cloud formation", "Rainfall amount", "Ship's hull color"], correct: ["Sea temperature (drives evaporation)", "Cloud formation", "Rainfall amount"] },
+      table: { columns: ["Stage", "Process"], rows: [["1", "Evaporation"], ["2", { blank: true, answer: "Condensation" }], ["3", "Precipitation"], ["4", "Collection"]] },
+      graph: { xLabel: "Hour", yLabel: "Water collected (L, total)", xMax: 6, yMax: 50, points: [[1, 5], [2, 12], [3, 22], [4, 35], [5, 50]] },
+      pattern: { question: "What does the rising graph tell you about the collection rate while it keeps raining?", options: ["Water keeps building up as rain continues", "Water stops collecting after hour 1", "Water decreases over time"], correct: 0 },
+      predict: { question: "If it stopped raining after hour 5, what would happen to the total collected water shown on the graph?", keywords: ["stays", "flat", "level", "same", "constant"] },
+      explain: { prompt: "Explain how the water cycle lets the crew collect fresh water from salty seawater without a distiller." }
+    },
+    {
+      id: "particle-model", moduleId: "lab", name: "Particle Model — States of Matter", level: "Foundation", emoji: "🧊",
+      observe: { text: "J.J. is heating a beaker of ice on the Lab Deck, recording temperature every 2 minutes: -10°C, 0°C, then flat while melting, then rising to 100°C while boiling." },
+      sketch: { prompt: "Sketch particles in each state and label them.", nodes: [
+          { label: "Solid — vibrate in place", shape: "dots", target: { x: 0.12, y: 0.37 } },
+          { label: "Liquid — slide past each other", shape: "dots", target: { x: 0.43, y: 0.37 } },
+          { label: "Gas — move freely & fast", shape: "dots", target: { x: 0.82, y: 0.37 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><text x="20" y="18" fill="#fff" font-family="monospace" font-size="8">Solid</text><text x="120" y="18" fill="#fff" font-family="monospace" font-size="8">Liquid</text><text x="225" y="18" fill="#fff" font-family="monospace" font-size="8">Gas</text><g fill="#D9A441">' + "<circle cx='20' cy='40' r='3'/><circle cx='35' cy='40' r='3'/><circle cx='50' cy='40' r='3'/><circle cx='20' cy='55' r='3'/><circle cx='35' cy='55' r='3'/><circle cx='50' cy='55' r='3'/><circle cx='20' cy='70' r='3'/><circle cx='35' cy='70' r='3'/><circle cx='50' cy='70' r='3'/>" + '</g><g fill="#3FA37A">' + "<circle cx='110' cy='45' r='3'/><circle cx='128' cy='50' r='3'/><circle cx='118' cy='62' r='3'/><circle cx='140' cy='40' r='3'/><circle cx='150' cy='58' r='3'/><circle cx='125' cy='72' r='3'/>" + '</g><g fill="#fff">' + "<circle cx='210' cy='30' r='3'/><circle cx='260' cy='55' r='3'/><circle cx='230' cy='80' r='3'/><circle cx='280' cy='35' r='3'/><circle cx='245' cy='60' r='3'/><circle cx='200' cy='70' r='3'/>" + '</g></svg>' },
+      variables: { options: ["Time", "Temperature", "State of matter", "Beaker material"], correct: ["Time", "Temperature", "State of matter"] },
+      table: { columns: ["Time (min)", "Temp (°C)", "State"], rows: [["0", "-10", "Solid"], ["2", "0", "Melting"], ["4", { blank: true, answer: "20" }, "Liquid"], ["6", "100", "Boiling"]] },
+      graph: { xLabel: "Time (min)", yLabel: "Temperature (°C)", xMax: 8, yMax: 120, points: [[0, -10], [2, 0], [4, 20], [6, 100]] },
+      pattern: { question: "What happens to the graph while the ice is melting (the flat section)?", options: ["Temperature stays flat even though heating continues", "Temperature rises quickly", "Temperature drops"], correct: 0 },
+      predict: { question: "Why doesn't temperature rise during melting, even though heat is still being added?", keywords: ["breaking bonds", "energy goes into", "changing state", "latent"] },
+      explain: { prompt: "Explain what's happening to the particles during the flat (melting) section of the graph." }
+    },
+    {
+      id: "rust-reaction", moduleId: "lab", name: "Reaction Model — Rusting Anchor Chain", level: "Cambridge", emoji: "⚗️",
+      observe: { text: "An iron anchor chain left in salty air slowly rusts: iron + oxygen + water → iron oxide (rust). The chain was weighed every week to track how much rust had formed." },
+      sketch: { prompt: "Sketch the reactants turning into the product.", nodes: [
+          { label: "Iron (reactant)", shape: "box", target: { x: 0.2, y: 0.5 } },
+          { label: "Oxygen + water (reactant)", shape: "circle", target: { x: 0.45, y: 0.5 } },
+          { label: "Reaction arrow →", shape: "arrow-right", target: { x: 0.65, y: 0.5 } },
+          { label: "Rust / iron oxide (product)", shape: "dots", target: { x: 0.85, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><rect x="20" y="60" width="34" height="30" fill="none" stroke="#fff" stroke-width="2"/><text x="15" y="105" fill="#fff" font-family="monospace" font-size="8">Iron</text><circle cx="105" cy="75" r="16" fill="none" stroke="#3FA37A" stroke-width="2"/><text x="78" y="105" fill="#3FA37A" font-family="monospace" font-size="8">O2 + H2O</text><line x1="140" y1="75" x2="190" y2="75" stroke="#D9A441" stroke-width="2"/><polygon points="195,75 187,69 187,81" fill="#D9A441"/><g fill="#C1503A"><circle cx="230" cy="65" r="3"/><circle cx="245" cy="72" r="3"/><circle cx="235" cy="85" r="3"/><circle cx="255" cy="60" r="3"/></g><text x="215" y="105" fill="#C1503A" font-family="monospace" font-size="8">Rust</text></svg>' },
+      variables: { options: ["Time (weeks)", "Rust mass formed", "Chain's original color", "Ship's speed"], correct: ["Time (weeks)", "Rust mass formed"] },
+      table: { columns: ["Week", "Rust (g)"], rows: [["0", "0"], ["1", "4"], ["2", { blank: true, answer: "8" }], ["3", "12"]] },
+      graph: { xLabel: "Week", yLabel: "Rust (g)", xMax: 4, yMax: 16, points: [[0, 0], [1, 4], [2, 8], [3, 12]] },
+      pattern: { question: "What does the steady increase in rust mass tell you?", options: ["Rust forms at a roughly constant rate over time", "Rust forms faster and faster", "Rust stops forming after week 1"], correct: 0 },
+      predict: { question: "At this rate, how much rust would have formed by week 5?", keywords: ["20"] },
+      explain: { prompt: "Explain, using the reactants and product, what chemical change is happening when the chain rusts." }
+    },
+    {
+      id: "scatter-trend", moduleId: "chartroom", name: "Scatter Plot & Trend — Cargo Load", level: "Scholarship", emoji: "📊",
+      observe: { text: "The ship's log shows fuel used per day at different cargo loads: 100 t → 300 L, 200 t → 550 L, 300 t → ?, 400 t → 1050 L." },
+      sketch: { prompt: "Sketch the axes and a best-fit trend line through scattered points.", nodes: [
+          { label: "X-axis: Cargo (tons)", shape: "line-h", target: { x: 0.52, y: 0.8 } },
+          { label: "Y-axis: Fuel (L)", shape: "line-v", target: { x: 0.13, y: 0.47 } },
+          { label: "Best-fit trend line", shape: "line-diag", target: { x: 0.5, y: 0.45 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><line x1="40" y1="20" x2="40" y2="120" stroke="#fff" stroke-width="2"/><line x1="40" y1="120" x2="270" y2="120" stroke="#fff" stroke-width="2"/><line x1="45" y1="100" x2="255" y2="35" stroke="#D9A441" stroke-width="3"/><circle cx="70" cy="95" r="4" fill="#3FA37A"/><circle cx="120" cy="75" r="4" fill="#3FA37A"/><circle cx="170" cy="60" r="4" fill="#3FA37A"/><circle cx="220" cy="42" r="4" fill="#3FA37A"/><text x="120" y="140" fill="#fff" font-family="monospace" font-size="9">Cargo</text><text x="6" y="70" fill="#fff" font-family="monospace" font-size="9">Fuel</text></svg>' },
+      variables: { options: ["Cargo mass", "Fuel used", "Day of the week", "Captain's name"], correct: ["Cargo mass", "Fuel used"] },
+      table: { columns: ["Cargo (t)", "Fuel (L)"], rows: [["100", "300"], ["200", "550"], ["300", { blank: true, answer: "800" }], ["400", "1050"]] },
+      graph: { xLabel: "Cargo (tons)", yLabel: "Fuel used (L)", xMax: 500, yMax: 1200, points: [[100, 300], [200, 550], [300, 800], [400, 1050]] },
+      pattern: { question: "What kind of relationship does the scatter plot show?", options: ["A roughly straight-line (linear) increase", "No relationship at all", "A sudden jump then flat"], correct: 0 },
+      predict: { question: "Using the trend, estimate the fuel used at 500 tons of cargo.", keywords: ["1300", "1,300"] },
+      explain: { prompt: "Explain how a trend line lets you predict values you didn't directly measure." }
+    },
+    {
+      id: "scale-model", moduleId: "chartroom", name: "Scale — Model Ship Blueprint", level: "Foundation", emoji: "📏",
+      observe: { text: "J.J. is building a scale model of a real ship that is 300m long, using a scale of 1:1000 — every 1000mm (1m) of the real ship becomes 1mm on the model." },
+      sketch: { prompt: "Sketch the real ship, the scale ratio, and the model ship.", nodes: [
+          { label: "Real ship (full length)", shape: "line-h", target: { x: 0.5, y: 0.3 } },
+          { label: "Scale ratio label", shape: "box", target: { x: 0.5, y: 0.5 } },
+          { label: "Model ship (scaled)", shape: "line-h", target: { x: 0.5, y: 0.7 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><line x1="20" y1="30" x2="280" y2="30" stroke="#D9A441" stroke-width="3"/><text x="110" y="22" fill="#D9A441" font-family="monospace" font-size="8">Real ship — 300 m</text><rect x="110" y="60" width="80" height="26" fill="none" stroke="#fff" stroke-width="2"/><text x="120" y="77" fill="#fff" font-family="monospace" font-size="9">Scale 1:1000</text><line x1="130" y1="120" x2="170" y2="120" stroke="#3FA37A" stroke-width="3"/><text x="95" y="112" fill="#3FA37A" font-family="monospace" font-size="8">Model — 300 mm</text></svg>' },
+      variables: { options: ["Real length (300 m)", "Scale ratio (1:1000)", "Model length", "Paint color"], correct: ["Real length (300 m)", "Scale ratio (1:1000)", "Model length"] },
+      table: { columns: ["Real length (m)", "Model length (mm)"], rows: [["300", "300"], ["150", "150"], ["60", { blank: true, answer: "60" }], ["10", "10"]] },
+      graph: { xLabel: "Real length (m)", yLabel: "Model length (mm)", xMax: 350, yMax: 350, points: [[300, 300], [150, 150], [60, 60], [10, 10]] },
+      pattern: { question: "What kind of relationship is this between real length and model length?", options: ["Directly proportional — a straight line through the origin", "No relationship", "Inverse — model shrinks unevenly as real length grows"], correct: 0 },
+      predict: { question: "Using the 1:1000 scale, how long (in mm) would a model of a 500 m ship be?", keywords: ["500"] },
+      explain: { prompt: "Explain what 'scale' means and why every dimension needs the same ratio for a model to look realistic." }
+    }
+  ];
+
+  // ---- State ----
+  function loadState() {
+    var raw = null;
+    try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) { storageOk = false; }
+    if (!raw) return { totalXp: 0, models: {} };
+    try {
+      var parsed = JSON.parse(raw);
+      return { totalXp: parsed.totalXp || 0, models: parsed.models || {} };
+    } catch (e) { return { totalXp: 0, models: {} }; }
+  }
+  function saveState() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { storageOk = false; }
+  }
+  var state = loadState();
+
+  function levelInfo(xp) {
+    var current = LEVELS[0], next = null;
+    for (var i = 0; i < LEVELS.length; i++) {
+      if (xp >= LEVELS[i].min) current = LEVELS[i];
+      if (xp < LEVELS[i].min) { next = LEVELS[i]; break; }
+    }
+    var pct = next ? Math.round(((xp - current.min) / (next.min - current.min)) * 100) : 100;
+    return { name: current.name, next: next, pct: pct };
+  }
+
+  function modelProgress(id) {
+    var m = state.models[id];
+    if (!m) return { doneSteps: [], xp: 0, complete: false };
+    return m;
+  }
+  function moduleModels(moduleId) { return MODELS.filter(function (m) { return m.moduleId === moduleId; }); }
+  function moduleCompleteCount(moduleId) {
+    return moduleModels(moduleId).filter(function (m) { return modelProgress(m.id).complete; }).length;
+  }
+
+  // ---- Router ----
+  var route = { view: "home", moduleId: null, modelId: null, stepIdx: 0 };
+  var runtime = {}; // scratch data for the active run screen (canvas state, selections, attempts)
+
+  function go(view, opts) {
+    route = Object.assign({ view: view, moduleId: null, modelId: null, stepIdx: 0 }, opts || {});
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  var app = document.getElementById("app");
+  function render() {
+    if (route.view === "home") renderHome();
+    else if (route.view === "module") renderModuleView();
+    else if (route.view === "run") renderRun();
+  }
+
+  function xpStripHtml() {
+    var li = levelInfo(state.totalXp);
+    return '<div class="xp-strip"><div class="xp-row"><span class="lvl">' + li.name + '</span>' +
+      '<span>' + state.totalXp + ' XP' + (li.next ? " · next: " + li.next.name : " · max level") + '</span></div>' +
+      '<div class="xp-track"><div class="xp-fill" style="width:' + li.pct + '%"></div></div></div>';
+  }
+
+  function renderHome() {
+    var folders = MODULES.map(function (mod) {
+      var total = moduleModels(mod.id).length;
+      var done = moduleCompleteCount(mod.id);
+      var pct = total ? Math.round((done / total) * 100) : 0;
+      return '<button class="folder-card" data-mod="' + mod.id + '">' +
+        '<div class="folder-emoji">' + mod.emoji + '</div>' +
+        '<div class="folder-name">' + mod.name + '<br><span style="color:var(--ink-soft);font-weight:400;font-size:11px;">' + mod.sub + '</span></div>' +
+        '<div class="folder-count">' + done + ' / ' + total + ' models</div>' +
+        '<div class="folder-progress"><div class="folder-progress-fill" style="width:' + pct + '%"></div></div>' +
+        '</button>';
+    }).join("");
+
+    app.innerHTML =
+      '<div class="hdr"><a class="hdr-back" href="index.html" style="text-decoration:none;display:inline-block;">← Academy</a>' +
+      '<div class="hdr-eyebrow">RMS Design Files · Drafting Room</div>' +
+      '<div class="hdr-title">📐 The Drafting Room</div>' +
+      '<div class="hdr-sub">Every model starts with a blank page. Pick a folder and get sketching.</div></div>' +
+      '<div class="section">' + xpStripHtml() + '</div>' +
+      '<div class="section"><div class="section-label">🗂️ Blueprint Folders</div><div class="folder-grid">' + folders + '</div></div>' +
+      '<div class="foot-note">15 models across 6 folders — a growing library. Progress is saved on this device.<br>Part of J.J.\'s Engineering Academy.</div>';
+
+    Array.prototype.forEach.call(app.querySelectorAll("[data-mod]"), function (btn) {
+      btn.addEventListener("click", function () { go("module", { moduleId: btn.getAttribute("data-mod") }); });
+    });
+  }
+
+  function renderModuleView() {
+    var mod = MODULES.filter(function (m) { return m.id === route.moduleId; })[0];
+    var models = moduleModels(mod.id);
+    var cards = models.map(function (m) {
+      var prog = modelProgress(m.id);
+      return '<button class="model-card" data-model="' + m.id + '">' +
+        '<div class="model-emoji">' + m.emoji + '</div>' +
+        '<div class="model-info"><div class="model-name">' + m.name + '</div>' +
+        '<div class="model-level">' + m.level + (prog.doneSteps && prog.doneSteps.length && !prog.complete ? " · in progress" : "") + '</div></div>' +
+        '<div class="model-check">' + (prog.complete ? "✓" : "") + '</div></button>';
+    }).join("");
+
+    app.innerHTML =
+      '<div class="hdr"><button class="hdr-back" id="btn-home">← Folders</button>' +
+      '<div class="hdr-eyebrow">' + mod.sub + '</div>' +
+      '<div class="hdr-title">' + mod.emoji + ' ' + mod.name + '</div></div>' +
+      '<div class="section"><div class="section-label">📄 Models in this folder</div>' + cards + '</div>' +
+      '<div class="foot-note">More models are added to each folder over time — same app, no update needed.</div>';
+
+    document.getElementById("btn-home").addEventListener("click", function () { go("home"); });
+    Array.prototype.forEach.call(app.querySelectorAll("[data-model]"), function (btn) {
+      btn.addEventListener("click", function () {
+        go("run", { moduleId: mod.id, modelId: btn.getAttribute("data-model"), stepIdx: 0 });
+      });
+    });
+  }
+
+  // ---- Run screen ----
+  function renderRun() {
+    var model = MODELS.filter(function (m) { return m.id === route.modelId; })[0];
+    var stepKey = STEP_ORDER[route.stepIdx];
+    var prog = modelProgress(model.id);
+
+    if (route.stepIdx >= STEP_ORDER.length) { renderComplete(model); return; }
+
+    runtime.attempts = runtime.attempts || 0;
+    if (runtime.stepKeyLoaded !== stepKey || runtime.modelIdLoaded !== model.id) {
+      runtime = { attempts: 0, stepKeyLoaded: stepKey, modelIdLoaded: model.id };
+    }
+
+    var dots = STEP_ORDER.map(function (k, i) {
+      var cls = "dot" + (i < route.stepIdx ? " done" : i === route.stepIdx ? " active" : "");
+      return '<div class="' + cls + '"></div>';
+    }).join("");
+
+    app.innerHTML =
+      '<div class="hdr"><button class="hdr-back" id="btn-out">← Exit</button>' +
+      '<div class="hdr-eyebrow">' + model.level + '</div>' +
+      '<div class="hdr-title">' + model.emoji + ' ' + model.name + '</div></div>' +
+      '<div class="stepper">' + dots + '</div>' +
+      '<div class="run-card" id="run-card"></div>';
+
+    document.getElementById("btn-out").addEventListener("click", function () { go("module", { moduleId: model.moduleId }); });
+
+    var card = document.getElementById("run-card");
+    var stepFns = { observe: stepObserve, sketch: stepSketch, variables: stepVariables, table: stepTable, graph: stepGraph, pattern: stepPattern, predict: stepPredict, explain: stepExplain };
+    stepFns[stepKey](card, model);
+  }
+
+  function stepHeader(stepKey, extra) {
+    return '<div class="step-eyebrow">Step ' + (STEP_ORDER.indexOf(stepKey) + 1) + ' of ' + STEP_ORDER.length + '</div>' +
+      '<div class="step-title">' + STEP_LABEL[stepKey] + '</div>' + (extra || "");
+  }
+
+  function actionsHtml(checkLabel, checkId, nextEnabled) {
+    return '<div class="feedback" id="fb"></div><div class="stamp" id="stamp">✓ VERIFIED — LOGGED</div>' +
+      '<div class="run-actions">' +
+      '<button class="btn" id="' + checkId + '">' + checkLabel + '</button>' +
+      '<button class="btn primary" id="btn-next" ' + (nextEnabled ? "" : "disabled") + '>Next →</button>' +
+      '</div>';
+  }
+
+  function completeStep(model, stepKey, xpAward) {
+    var m = state.models[model.id] || { doneSteps: [], xp: 0, complete: false };
+    if (m.doneSteps.indexOf(stepKey) === -1) {
+      m.doneSteps.push(stepKey);
+      m.xp = (m.xp || 0) + xpAward;
+      state.totalXp += xpAward;
+    }
+    state.models[model.id] = m;
+    saveState();
+    var stamp = document.getElementById("stamp");
+    if (stamp) stamp.classList.add("show");
+    var nextBtn = document.getElementById("btn-next");
+    if (nextBtn) nextBtn.disabled = false;
+  }
+
+  function showFeedback(msg, kind) {
+    var fb = document.getElementById("fb");
+    fb.textContent = msg;
+    fb.className = "feedback show " + kind;
+  }
+
+  function wireNext(model) {
+    document.getElementById("btn-next").addEventListener("click", function () {
+      go("run", { moduleId: model.moduleId, modelId: model.id, stepIdx: route.stepIdx + 1 });
+    });
+  }
+
+  // -- Observe --
+  function stepObserve(card, model) {
+    card.innerHTML = stepHeader("observe") +
+      '<div class="step-body">' + model.observe.text + '</div>' +
+      '<div class="run-actions"><button class="btn primary" id="btn-next" style="flex:1">I\'ve read it — continue →</button></div>';
+    document.getElementById("btn-next").addEventListener("click", function () {
+      completeStepSilently(model, "observe", 5);
+      go("run", { moduleId: model.moduleId, modelId: model.id, stepIdx: route.stepIdx + 1 });
+    });
+  }
+  function completeStepSilently(model, stepKey, xp) {
+    var m = state.models[model.id] || { doneSteps: [], xp: 0, complete: false };
+    if (m.doneSteps.indexOf(stepKey) === -1) { m.doneSteps.push(stepKey); m.xp = (m.xp || 0) + xp; state.totalXp += xp; }
+    state.models[model.id] = m; saveState();
+  }
+
+  // -- Sketch & Label (Phase A: pre-made stamps · Phase B: Boss Level freehand) --
+  function nodeIconSvg(shape) {
+    var s = '<svg width="18" height="18" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="margin-right:6px;">';
+    var st = 'stroke="#0E2A45" stroke-width="2" fill="none"';
+    if (shape === "arrow-right") s += '<line x1="2" y1="10" x2="14" y2="10" ' + st + '/><polygon points="15,10 10,6 10,14" fill="#0E2A45"/>';
+    else if (shape === "arrow-left") s += '<line x1="18" y1="10" x2="6" y2="10" ' + st + '/><polygon points="5,10 10,6 10,14" fill="#0E2A45"/>';
+    else if (shape === "box") s += '<rect x="3" y="5" width="14" height="10" ' + st + '/>';
+    else if (shape === "circle") s += '<circle cx="10" cy="10" r="7" ' + st + '/>';
+    else if (shape === "bar") s += '<rect x="7" y="2" width="6" height="16" fill="#D9A441"/>';
+    else if (shape === "dots") s += '<circle cx="5" cy="6" r="1.5" fill="#0E2A45"/><circle cx="12" cy="9" r="1.5" fill="#0E2A45"/><circle cx="7" cy="14" r="1.5" fill="#0E2A45"/><circle cx="15" cy="14" r="1.5" fill="#0E2A45"/>';
+    else if (shape === "line-h") s += '<line x1="2" y1="10" x2="18" y2="10" ' + st + '/>';
+    else if (shape === "line-v") s += '<line x1="10" y1="2" x2="10" y2="18" ' + st + '/>';
+    else if (shape === "line-diag") s += '<line x1="2" y1="17" x2="18" y2="3" ' + st + '/>';
+    else if (shape === "arrow-up") s += '<line x1="10" y1="18" x2="10" y2="6" ' + st + '/><polygon points="10,2 6,8 14,8" fill="#0E2A45"/>';
+    else if (shape === "arrow-down") s += '<line x1="10" y1="2" x2="10" y2="14" ' + st + '/><polygon points="10,18 6,12 14,12" fill="#0E2A45"/>';
+    else if (shape === "ray") s += '<line x1="10" y1="2" x2="10" y2="7" ' + st + '/><line x1="4" y1="10" x2="9" y2="10" ' + st + '/><line x1="16" y1="10" x2="11" y2="10" ' + st + '/><circle cx="10" cy="10" r="2" fill="#D9A441"/>';
+    s += "</svg>";
+    return s;
+  }
+
+  function drawStamp(ctx, shape, x, y) {
+    ctx.save();
+    ctx.strokeStyle = "#0E2A45"; ctx.fillStyle = "#0E2A45"; ctx.lineWidth = 2.5;
+    if (shape === "arrow-right" || shape === "arrow-left") {
+      var dir = shape === "arrow-right" ? 1 : -1;
+      ctx.beginPath(); ctx.moveTo(x - 16 * dir, y); ctx.lineTo(x + 12 * dir, y); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x + 16 * dir, y); ctx.lineTo(x + 6 * dir, y - 6); ctx.lineTo(x + 6 * dir, y + 6); ctx.closePath(); ctx.fill();
+    } else if (shape === "box") {
+      ctx.strokeRect(x - 20, y - 14, 40, 28);
+    } else if (shape === "circle") {
+      ctx.beginPath(); ctx.arc(x, y, 15, 0, Math.PI * 2); ctx.stroke();
+    } else if (shape === "bar") {
+      ctx.fillStyle = "#D9A441"; ctx.fillRect(x - 8, y - 22, 16, 44);
+    } else if (shape === "dots") {
+      ctx.fillStyle = "#0E2A45";
+      [[-10, -8], [6, -4], [-4, 8], [10, 10], [0, 0]].forEach(function (d) { ctx.beginPath(); ctx.arc(x + d[0], y + d[1], 2.2, 0, Math.PI * 2); ctx.fill(); });
+    } else if (shape === "line-h") {
+      ctx.beginPath(); ctx.moveTo(x - 18, y); ctx.lineTo(x + 18, y); ctx.stroke();
+    } else if (shape === "line-v") {
+      ctx.beginPath(); ctx.moveTo(x, y - 18); ctx.lineTo(x, y + 18); ctx.stroke();
+    } else if (shape === "line-diag") {
+      ctx.beginPath(); ctx.moveTo(x - 16, y + 14); ctx.lineTo(x + 16, y - 14); ctx.stroke();
+    } else if (shape === "arrow-up" || shape === "arrow-down") {
+      var vdir = shape === "arrow-down" ? 1 : -1;
+      ctx.beginPath(); ctx.moveTo(x, y - 16 * vdir); ctx.lineTo(x, y + 12 * vdir); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x, y + 16 * vdir); ctx.lineTo(x - 6, y + 6 * vdir); ctx.lineTo(x + 6, y + 6 * vdir); ctx.closePath(); ctx.fill();
+    } else if (shape === "ray") {
+      ctx.fillStyle = "#D9A441"; ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill();
+      [0, 45, 90, 135, 180, 225, 270, 315].forEach(function (deg) {
+        var rad = deg * Math.PI / 180;
+        ctx.beginPath(); ctx.moveTo(x + Math.cos(rad) * 8, y + Math.sin(rad) * 8); ctx.lineTo(x + Math.cos(rad) * 14, y + Math.sin(rad) * 14); ctx.stroke();
+      });
+    }
+    ctx.restore();
+  }
+
+  function stepSketch(card, model) {
+    runtime.phase = runtime.phase || "guided";
+    if (runtime.phase === "boss") { stepSketchBoss(card, model); return; }
+
+    var nodes = model.sketch.nodes;
+    var mProg = state.models[model.id];
+    var alreadyPassed = !!(mProg && mProg.doneSteps && mProg.doneSteps.indexOf("sketch") !== -1);
+    runtime.placed = runtime.placed || [];
+    runtime.pendingNode = runtime.pendingNode || null;
+    runtime.hintVisible = runtime.hintVisible || false;
+
+    card.innerHTML = stepHeader("sketch") +
+      '<div class="step-body">' + model.sketch.prompt + ' Tap a stamp below, then tap the canvas to drop it in the right spot — position matters, so think about where each one really belongs. Draw freehand with your finger anywhere else.</div>' +
+      '<div class="run-actions" style="margin:10px 0 0;"><button class="btn" id="btn-hint" style="flex:none;padding:8px 12px;font-size:12px;">👁 Peek Hint</button></div>' +
+      '<div class="hint-box" id="hint-box"></div>' +
+      '<canvas class="pad" id="pad" height="220"></canvas>' +
+      '<div class="pad-tools"><button class="btn" id="btn-clear" style="flex:none;padding:8px 12px;font-size:12px;">Clear sketch</button></div>' +
+      '<div class="chip-row" id="labels"></div>' +
+      actionsHtml("Check placement", "btn-check", alreadyPassed) +
+      '<div id="boss-unlock"></div>';
+
+    document.getElementById("btn-hint").addEventListener("click", function () {
+      runtime.hintVisible = !runtime.hintVisible;
+      document.getElementById("hint-box").innerHTML = runtime.hintVisible ? ('<div class="hint-label">Hint — reference sketch</div>' + model.sketch.hint) : "";
+      document.getElementById("btn-hint").textContent = runtime.hintVisible ? "🙈 Hide Hint" : "👁 Peek Hint";
+    });
+    if (runtime.hintVisible) {
+      document.getElementById("hint-box").innerHTML = '<div class="hint-label">Hint — reference sketch</div>' + model.sketch.hint;
+      document.getElementById("btn-hint").textContent = "🙈 Hide Hint";
+    }
+
+    var canvas = document.getElementById("pad");
+    canvas.width = canvas.clientWidth || 500;
+    var ctx = canvas.getContext("2d");
+    var drawing = false, lastX = 0, lastY = 0;
+
+    function pos(e) {
+      var r = canvas.getBoundingClientRect();
+      var t = e.touches && e.touches[0] ? e.touches[0] : e;
+      return { x: t.clientX - r.left, y: t.clientY - r.top };
+    }
+    function redrawStamps() {
+      runtime.placed.forEach(function (p) {
+        drawStamp(ctx, p.shape, p.x, p.y);
+        ctx.font = "10px monospace"; ctx.fillStyle = "#5B6B78";
+        ctx.fillText(p.text, p.x + 12, p.y + 22);
+      });
+    }
+    function start(e) {
+      var p = pos(e);
+      if (runtime.pendingNode) {
+        runtime.placed.push({ x: p.x, y: p.y, text: runtime.pendingNode.label, shape: runtime.pendingNode.shape, target: runtime.pendingNode.target });
+        var chip = document.querySelector('[data-label="' + runtime.pendingNode.label + '"]');
+        if (chip) chip.disabled = true;
+        runtime.pendingNode = null;
+        renderChips();
+        redrawStamps();
+        return;
+      }
+      drawing = true; lastX = p.x; lastY = p.y;
+    }
+    function move(e) {
+      if (!drawing) return;
+      e.preventDefault();
+      var p = pos(e);
+      ctx.strokeStyle = "#16293A"; ctx.lineWidth = 2; ctx.lineCap = "round";
+      ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(p.x, p.y); ctx.stroke();
+      lastX = p.x; lastY = p.y;
+    }
+    function end() { drawing = false; }
+    canvas.addEventListener("mousedown", start); canvas.addEventListener("mousemove", move); window.addEventListener("mouseup", end);
+    canvas.addEventListener("touchstart", start); canvas.addEventListener("touchmove", move); canvas.addEventListener("touchend", end);
+
+    document.getElementById("btn-clear").addEventListener("click", function () {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      runtime.placed = [];
+      renderChips();
+    });
+
+    function renderChips() {
+      var used = runtime.placed.map(function (p) { return p.text; });
+      document.getElementById("labels").innerHTML = nodes.map(function (n) {
+        var isUsed = used.indexOf(n.label) !== -1;
+        var isPending = runtime.pendingNode && runtime.pendingNode.label === n.label;
+        return '<button class="chip' + (isPending ? " selected" : "") + '" data-label="' + n.label + '" ' + (isUsed ? "disabled" : "") + '>' + nodeIconSvg(n.shape) + n.label + '</button>';
+      }).join("");
+      Array.prototype.forEach.call(document.querySelectorAll("[data-label]"), function (btn) {
+        btn.addEventListener("click", function () {
+          var lbl = btn.getAttribute("data-label");
+          runtime.pendingNode = nodes.filter(function (n) { return n.label === lbl; })[0];
+          renderChips();
+        });
+      });
+    }
+    renderChips();
+    redrawStamps();
+
+    function renderBossUnlock() {
+      document.getElementById("boss-unlock").innerHTML =
+        '<div class="boss-panel"><div class="boss-title">⚔️ Boss Level Unlocked</div>' +
+        '<div class="boss-desc">Same model, no stamps this time — draw it completely freehand from memory. Peek the hint if you get stuck. Bonus XP for finishing.</div>' +
+        '<button class="btn amber" id="btn-boss" style="width:100%;">Enter Boss Level →</button></div>';
+      document.getElementById("btn-boss").addEventListener("click", function () {
+        runtime.phase = "boss";
+        renderRun();
+      });
+    }
+    if (alreadyPassed) renderBossUnlock();
+
+    document.getElementById("btn-check").addEventListener("click", function () {
+      if (runtime.placed.length < nodes.length) {
+        showFeedback("Place all " + nodes.length + " stamps on your sketch first (" + runtime.placed.length + "/" + nodes.length + " so far).", "warn");
+        return;
+      }
+      var wrong = [];
+      runtime.placed.forEach(function (p) {
+        if (!p.target) return;
+        var tx = p.target.x * canvas.width, ty = p.target.y * canvas.height;
+        var tolX = canvas.width * 0.20, tolY = canvas.height * 0.26;
+        if (Math.abs(p.x - tx) > tolX || Math.abs(p.y - ty) > tolY) wrong.push(p.text);
+      });
+      if (wrong.length === 0) {
+        showFeedback("Every stamp is placed and connected correctly. Nice work.", "ok");
+        completeStep(model, "sketch", 10);
+        renderBossUnlock();
+      } else {
+        showFeedback("Not quite connected yet — these aren't in the right spot: " + wrong.join(", ") + ". Tap Clear Sketch and try placing them again, thinking about how they relate to each other.", "warn");
+      }
+    });
+    wireNext(model);
+  }
+
+  function stepSketchBoss(card, model) {
+    var mProg = state.models[model.id];
+    var bossAlready = !!(mProg && mProg.doneSteps && mProg.doneSteps.indexOf("sketch-boss") !== -1);
+    runtime.bossDrawn = runtime.bossDrawn || bossAlready;
+    runtime.hintVisible = runtime.hintVisible || false;
+    runtime.inkCount = runtime.inkCount || 0;
+
+    card.innerHTML = stepHeader("sketch", ' <span style="font-family:var(--mono);font-size:11px;color:var(--coral);letter-spacing:.06em;">· BOSS LEVEL ⚔️</span>') +
+      '<div class="step-body">No stamps this time — sketch and label the whole thing freehand, from memory.</div>' +
+      '<div class="run-actions" style="margin:10px 0 0;">' +
+      '<button class="btn" id="btn-hint" style="flex:none;padding:8px 12px;font-size:12px;">👁 Peek Hint</button>' +
+      '<button class="btn" id="btn-back-guided" style="flex:none;padding:8px 12px;font-size:12px;">← Back to stamps</button>' +
+      '</div>' +
+      '<div class="hint-box" id="hint-box"></div>' +
+      '<canvas class="pad" id="bpad" height="220"></canvas>' +
+      '<div class="pad-tools"><button class="btn" id="btn-clear" style="flex:none;padding:8px 12px;font-size:12px;">Clear sketch</button></div>' +
+      actionsHtml("Mark boss sketch complete", "btn-check", bossAlready);
+
+    var canvas = document.getElementById("bpad");
+    canvas.width = canvas.clientWidth || 500;
+    var ctx = canvas.getContext("2d");
+    var drawing = false, lastX = 0, lastY = 0;
+
+    function pos(e) {
+      var r = canvas.getBoundingClientRect();
+      var t = e.touches && e.touches[0] ? e.touches[0] : e;
+      return { x: t.clientX - r.left, y: t.clientY - r.top };
+    }
+    function start(e) { drawing = true; var p = pos(e); lastX = p.x; lastY = p.y; }
+    function move(e) {
+      if (!drawing) return;
+      e.preventDefault();
+      var p = pos(e);
+      ctx.strokeStyle = "#16293A"; ctx.lineWidth = 2; ctx.lineCap = "round";
+      ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(p.x, p.y); ctx.stroke();
+      lastX = p.x; lastY = p.y;
+      runtime.inkCount++;
+      runtime.bossDrawn = runtime.inkCount > 15;
+    }
+    function end() { drawing = false; }
+    canvas.addEventListener("mousedown", start); canvas.addEventListener("mousemove", move); window.addEventListener("mouseup", end);
+    canvas.addEventListener("touchstart", start); canvas.addEventListener("touchmove", move); canvas.addEventListener("touchend", end);
+
+    document.getElementById("btn-clear").addEventListener("click", function () {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      runtime.inkCount = 0; runtime.bossDrawn = false;
+    });
+
+    document.getElementById("btn-hint").addEventListener("click", function () {
+      runtime.hintVisible = !runtime.hintVisible;
+      document.getElementById("hint-box").innerHTML = runtime.hintVisible ? ('<div class="hint-label">Hint — reference sketch</div>' + model.sketch.hint) : "";
+      document.getElementById("btn-hint").textContent = runtime.hintVisible ? "🙈 Hide Hint" : "👁 Peek Hint";
+    });
+
+    document.getElementById("btn-back-guided").addEventListener("click", function () {
+      runtime.phase = "guided";
+      renderRun();
+    });
+
+    document.getElementById("btn-check").addEventListener("click", function () {
+      if (!runtime.bossDrawn) { showFeedback("Draw a bit more before marking it complete — give the boss level a real attempt.", "warn"); return; }
+      showFeedback("Boss level cleared! Bonus XP logged.", "ok");
+      completeStep(model, "sketch-boss", 15);
+    });
+    wireNext(model);
+  }
+
+  // -- Variables --
+  function stepVariables(card, model) {
+    runtime.selected = runtime.selected || [];
+    card.innerHTML = stepHeader("variables") +
+      '<div class="step-body">Tap every variable from the observation that actually matters here.</div>' +
+      '<div class="chip-row" id="vchips"></div>' +
+      actionsHtml("Check my selection", "btn-check");
+
+    function renderChips() {
+      document.getElementById("vchips").innerHTML = model.variables.options.map(function (o) {
+        var sel = runtime.selected.indexOf(o) !== -1;
+        return '<button class="chip' + (sel ? " selected" : "") + '" data-opt="' + o + '">' + o + '</button>';
+      }).join("");
+      Array.prototype.forEach.call(document.querySelectorAll("[data-opt]"), function (btn) {
+        btn.addEventListener("click", function () {
+          var v = btn.getAttribute("data-opt");
+          var i = runtime.selected.indexOf(v);
+          if (i === -1) runtime.selected.push(v); else runtime.selected.splice(i, 1);
+          renderChips();
+        });
+      });
+    }
+    renderChips();
+
+    document.getElementById("btn-check").addEventListener("click", function () {
+      runtime.attempts++;
+      var correct = model.variables.correct;
+      var match = correct.length === runtime.selected.length && correct.every(function (c) { return runtime.selected.indexOf(c) !== -1; });
+      if (match) {
+        showFeedback("Exactly right — those are the variables that matter.", "ok");
+        completeStep(model, "variables", 10);
+      } else if (runtime.attempts >= 2) {
+        showFeedback("The variables that matter: " + correct.join(", ") + ".", "warn");
+        completeStep(model, "variables", 3);
+      } else {
+        showFeedback("Not quite — look again at what actually changes or affects the outcome.", "warn");
+      }
+    });
+    wireNext(model);
+  }
+
+  // -- Table --
+  function stepTable(card, model) {
+    var rowsHtml = model.table.rows.map(function (row, ri) {
+      return "<tr>" + row.map(function (cell, ci) {
+        if (cell && typeof cell === "object" && cell.blank) {
+          return '<td><input data-r="' + ri + '" data-c="' + ci + '" placeholder="?" /></td>';
+        }
+        return "<td>" + cell + "</td>";
+      }).join("") + "</tr>";
+    }).join("");
+
+    card.innerHTML = stepHeader("table") +
+      '<div class="step-body">Fill in the missing value(s) in the table below.</div>' +
+      '<table class="dtable"><thead><tr>' + model.table.columns.map(function (c) { return "<th>" + c + "</th>"; }).join("") + '</tr></thead><tbody>' + rowsHtml + '</tbody></table>' +
+      actionsHtml("Check table", "btn-check");
+
+    document.getElementById("btn-check").addEventListener("click", function () {
+      runtime.attempts++;
+      var ok = true;
+      Array.prototype.forEach.call(card.querySelectorAll("input"), function (inp) {
+        var ri = +inp.getAttribute("data-r"), ci = +inp.getAttribute("data-c");
+        var expected = model.table.rows[ri][ci].answer;
+        var given = inp.value.trim();
+        var same = given.toLowerCase() === String(expected).toLowerCase();
+        inp.style.borderColor = same ? "#3FA37A" : "#C0392B";
+        if (!same) ok = false;
+      });
+      if (ok) { showFeedback("Table complete and correct.", "ok"); completeStep(model, "table", 10); }
+      else if (runtime.attempts >= 2) {
+        Array.prototype.forEach.call(card.querySelectorAll("input"), function (inp) {
+          var ri = +inp.getAttribute("data-r"), ci = +inp.getAttribute("data-c");
+          inp.value = model.table.rows[ri][ci].answer;
+          inp.style.borderColor = "#3FA37A";
+        });
+        showFeedback("Here's the completed table — take a look before moving on.", "warn");
+        completeStep(model, "table", 3);
+      } else showFeedback("One or more values aren't right yet — check the pattern in the other rows.", "warn");
+    });
+    wireNext(model);
+  }
+
+  // -- Graph --
+  function stepGraph(card, model) {
+    var g = model.graph;
+    runtime.placedPoints = runtime.placedPoints || [];
+
+    card.innerHTML = stepHeader("graph") +
+      '<div class="step-body">Tap the grid to plot each point from the table (' + g.xLabel + ' vs. ' + g.yLabel + '). Plot ' + g.points.length + ' points.</div>' +
+      '<canvas class="pad" id="gpad" height="240"></canvas>' +
+      '<div class="pad-tools"><button class="btn" id="btn-clear" style="flex:none;padding:8px 12px;font-size:12px;">Clear points</button></div>' +
+      actionsHtml("Check graph", "btn-check");
+
+    var canvas = document.getElementById("gpad");
+    canvas.width = canvas.clientWidth || 500;
+    var ctx = canvas.getContext("2d");
+    var padL = 40, padB = 26, padT = 10, padR = 10;
+
+    function toPx(x, y) {
+      var w = canvas.width - padL - padR, h = canvas.height - padT - padB;
+      return { x: padL + (x / g.xMax) * w, y: canvas.height - padB - (y / g.yMax) * h };
+    }
+    function toData(px, py) {
+      var w = canvas.width - padL - padR, h = canvas.height - padT - padB;
+      return { x: ((px - padL) / w) * g.xMax, y: ((canvas.height - padB - py) / h) * g.yMax };
+    }
+    function drawAxes() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = "#16293A"; ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(padL, padT); ctx.lineTo(padL, canvas.height - padB); ctx.lineTo(canvas.width - padR, canvas.height - padB);
+      ctx.stroke();
+      ctx.fillStyle = "#5B6B78"; ctx.font = "10px monospace";
+      ctx.fillText(g.xLabel, padL, canvas.height - 6);
+      ctx.save(); ctx.translate(10, canvas.height / 2); ctx.rotate(-Math.PI / 2); ctx.fillText(g.yLabel, 0, 0); ctx.restore();
+    }
+    function drawPoints() {
+      if (runtime.placedPoints.length > 1) {
+        ctx.strokeStyle = "#D9A441"; ctx.lineWidth = 2; ctx.beginPath();
+        runtime.placedPoints.forEach(function (p, i) {
+          var px = toPx(p.x, p.y);
+          if (i === 0) ctx.moveTo(px.x, px.y); else ctx.lineTo(px.x, px.y);
+        });
+        ctx.stroke();
+      }
+      runtime.placedPoints.forEach(function (p) {
+        var px = toPx(p.x, p.y);
+        ctx.fillStyle = "#0E2A45"; ctx.beginPath(); ctx.arc(px.x, px.y, 4, 0, Math.PI * 2); ctx.fill();
+      });
+    }
+    function redraw() { drawAxes(); drawPoints(); }
+    redraw();
+
+    canvas.addEventListener("click", function (e) {
+      if (runtime.placedPoints.length >= g.points.length) return;
+      var r = canvas.getBoundingClientRect();
+      var d = toData(e.clientX - r.left, e.clientY - r.top);
+      if (d.x < 0 || d.y < 0) return;
+      runtime.placedPoints.push(d);
+      redraw();
+    });
+    document.getElementById("btn-clear").addEventListener("click", function () { runtime.placedPoints = []; redraw(); });
+
+    document.getElementById("btn-check").addEventListener("click", function () {
+      runtime.attempts++;
+      if (runtime.placedPoints.length < g.points.length) {
+        showFeedback("Plot all " + g.points.length + " points first (" + runtime.placedPoints.length + " so far).", "warn");
+        return;
+      }
+      var tolX = g.xMax * 0.06, tolY = g.yMax * 0.06;
+      var matchedCount = 0;
+      g.points.forEach(function (ep) {
+        var hit = runtime.placedPoints.some(function (pp) { return Math.abs(pp.x - ep[0]) <= tolX && Math.abs(pp.y - ep[1]) <= tolY; });
+        if (hit) matchedCount++;
+      });
+      if (matchedCount === g.points.length) {
+        showFeedback("Great plotting — every point lands in the right spot.", "ok");
+        completeStep(model, "graph", 10);
+      } else if (runtime.attempts >= 2) {
+        runtime.placedPoints = g.points.map(function (p) { return { x: p[0], y: p[1] }; });
+        redraw();
+        showFeedback("Here's the correct plot for reference.", "warn");
+        completeStep(model, "graph", 3);
+      } else {
+        showFeedback(matchedCount + "/" + g.points.length + " points are in the right place — adjust and check again.", "warn");
+      }
+    });
+    wireNext(model);
+  }
+
+  // -- Pattern --
+  function stepPattern(card, model) {
+    runtime.pick = runtime.pick == null ? -1 : runtime.pick;
+    card.innerHTML = stepHeader("pattern") +
+      '<div class="step-body">' + model.pattern.question + '</div>' +
+      '<div class="mc-row" id="mc"></div>' +
+      actionsHtml("Check answer", "btn-check");
+
+    function renderMc() {
+      document.getElementById("mc").innerHTML = model.pattern.options.map(function (o, i) {
+        return '<button class="mc-btn' + (runtime.pick === i ? " selected" : "") + '" data-i="' + i + '">' + o + '</button>';
+      }).join("");
+      Array.prototype.forEach.call(document.querySelectorAll(".mc-btn"), function (btn) {
+        btn.addEventListener("click", function () { runtime.pick = +btn.getAttribute("data-i"); renderMc(); });
+      });
+    }
+    renderMc();
+
+    document.getElementById("btn-check").addEventListener("click", function () {
+      runtime.attempts++;
+      if (runtime.pick === -1) { showFeedback("Pick an option first.", "warn"); return; }
+      if (runtime.pick === model.pattern.correct) {
+        showFeedback("Correct — that's the pattern.", "ok"); completeStep(model, "pattern", 10);
+      } else if (runtime.attempts >= 2) {
+        showFeedback("The correct pattern: \u201c" + model.pattern.options[model.pattern.correct] + "\u201d", "warn");
+        completeStep(model, "pattern", 3);
+      } else showFeedback("Not quite — look at the trend again.", "warn");
+    });
+    wireNext(model);
+  }
+
+  // -- Predict --
+  function stepPredict(card, model) {
+    card.innerHTML = stepHeader("predict") +
+      '<div class="step-body">' + model.predict.question + '</div>' +
+      '<input class="freetext" id="pinput" placeholder="Type your prediction…" />' +
+      actionsHtml("Check prediction", "btn-check");
+
+    document.getElementById("btn-check").addEventListener("click", function () {
+      runtime.attempts++;
+      var val = (document.getElementById("pinput").value || "").toLowerCase();
+      var hit = model.predict.keywords.some(function (k) { return val.indexOf(k.toLowerCase()) !== -1; });
+      if (hit) { showFeedback("That matches — nice prediction.", "ok"); completeStep(model, "predict", 10); }
+      else if (runtime.attempts >= 2) {
+        showFeedback("A prediction along these lines works: " + model.predict.keywords[0] + ".", "warn");
+        completeStep(model, "predict", 3);
+      } else showFeedback("Close, but check the trend once more and try again.", "warn");
+    });
+    wireNext(model);
+  }
+
+  // -- Explain --
+  function stepExplain(card, model) {
+    card.innerHTML = stepHeader("explain") +
+      '<div class="step-body">' + model.explain.prompt + '</div>' +
+      '<textarea class="freetext" id="einput" rows="4" placeholder="Write your explanation…"></textarea>' +
+      actionsHtml("Log entry", "btn-check");
+
+    document.getElementById("btn-check").addEventListener("click", function () {
+      var val = (document.getElementById("einput").value || "").trim();
+      if (val.length < 5) { showFeedback("Write a sentence or two before logging it.", "warn"); return; }
+      showFeedback("Logged in your ship's log.", "ok");
+      completeStep(model, "explain", 10);
+    });
+    wireNext(model);
+  }
+
+  function renderComplete(model) {
+    var m = state.models[model.id] || { doneSteps: [], xp: 0 };
+    m.complete = true;
+    state.models[model.id] = m;
+    saveState();
+    app.innerHTML =
+      '<div class="hdr"><button class="hdr-back" id="btn-out">← Exit</button>' +
+      '<div class="hdr-eyebrow">Model complete</div><div class="hdr-title">' + model.emoji + ' ' + model.name + '</div></div>' +
+      '<div class="run-card complete-wrap">' +
+      '<div class="complete-emoji">⚓</div>' +
+      '<div class="complete-title">Model logged in the Drafting Room</div>' +
+      '<div class="complete-xp">+' + m.xp + ' XP earned on this model</div>' +
+      '<div class="run-actions" style="margin-top:20px;">' +
+      '<button class="btn" id="btn-folder">Back to folder</button>' +
+      '<button class="btn primary" id="btn-again">Practice again</button>' +
+      '</div></div>';
+    document.getElementById("btn-out").addEventListener("click", function () { go("module", { moduleId: model.moduleId }); });
+    document.getElementById("btn-folder").addEventListener("click", function () { go("module", { moduleId: model.moduleId }); });
+    document.getElementById("btn-again").addEventListener("click", function () {
+      var mm = state.models[model.id]; mm.doneSteps = []; saveState();
+      go("run", { moduleId: model.moduleId, modelId: model.id, stepIdx: 0 });
+    });
+  }
+
+  go("home");
+  if (!storageOk) {
+    console.warn("localStorage unavailable — progress won't persist in this context.");
+  }
+})();
+</script>
+</body>
+</html>
