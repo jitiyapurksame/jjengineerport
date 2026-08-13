@@ -196,12 +196,11 @@ a { color: inherit; text-decoration: none; }
   </div>
 
   <div class="foot-note">
-    Combined progress reading and backup cover Math Decoder, Number Sense Sketchbook, and
-    The Drafting Room, which work when all local files are hosted together on the same site
-    (e.g. Netlify Drop, GitHub Pages, or Vercel). Opened directly from Files/AirDrop, each app
-    still saves its own progress normally — this hub just may not be able to read across apps
-    until it's online. Backup keys used: <code>step1-bridge-progress-v1</code>,
-    <code>number-sense-sketchbook-v1</code>, and <code>jj-drafting-room-v1</code>.
+    Combined progress reading and backup cover Math Decoder and Number Sense Sketchbook,
+    which work when all three local files are hosted together on the same site (e.g. Netlify Drop
+    or GitHub Pages). Opened directly from Files/AirDrop, each app still saves its own progress
+    normally — this hub just may not be able to read across apps until it's online. Backup keys
+    used: <code>step1-bridge-progress-v1</code> and <code>number-sense-sketchbook-v1</code>.
     <br /><br />
     The Number Theory Sketchbook is hosted separately at
     <code>numbertheorysketchbook.vercel.app</code>, so its progress isn't included in the Voyage
@@ -240,22 +239,6 @@ a { color: inherit; text-decoration: none; }
       },
       xp: function (data) { return data && typeof data.xp === "number" ? data.xp : 0; },
       unit: "entries"
-    },
-    {
-      key: "jj-drafting-room-v1",
-      href: "drafting-room.html",
-      emoji: "📐",
-      name: "The Drafting Room",
-      desc: "7 blueprint folders · sketch, table, graph & explain scientific models",
-      total: 22,
-      countDone: function (data) {
-        if (!data || !data.models) return 0;
-        var n = 0;
-        Object.keys(data.models).forEach(function (id) { if (data.models[id].complete) n++; });
-        return n;
-      },
-      xp: function (data) { return data && typeof data.totalXp === "number" ? data.totalXp : 0; },
-      unit: "models"
     }
   ];
 
@@ -265,6 +248,12 @@ a { color: inherit; text-decoration: none; }
       emoji: "⚓",
       name: "Number Theory Sketchbook",
       desc: "15 compartments · Chief Engineer training manual — primes, factors, multiples & more"
+    },
+    {
+      href: "https://combinatoricssketchbook.vercel.app/",
+      emoji: "🧮",
+      name: "Combinatorics Sketchbook",
+      desc: "12 chapters, 4 Boss Battles &amp; Master Map — the full Counting &amp; Combinatorics Wing"
     }
   ];
 
