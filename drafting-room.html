@@ -238,10 +238,10 @@ textarea.freetext, input.freetext {
     {
       id: "distance-time", moduleId: "propulsion", name: "Distance-Time Graph — Engine Trial", level: "Cambridge", emoji: "📈",
       observe: { text: "During an engine trial run, the ship's distance from the dock was logged every 2 minutes: 0 m, 100 m, 200 m, 300 m, 400 m." },
-      sketch: { prompt: "Sketch a distance-time graph and label its parts.", nodes: [
-          { label: "X-axis: Time", shape: "line-h", target: { x: 0.5, y: 0.82 } },
-          { label: "Y-axis: Distance", shape: "line-v", target: { x: 0.14, y: 0.47 } },
-          { label: "Straight line = constant speed", shape: "line-diag", target: { x: 0.5, y: 0.42 } }
+      sketch: { prompt: "Drag each label onto its axis, then stretch out the trend line.", axisTemplate: true, nodes: [
+          { label: "Time", shape: "text-label", target: { x: 0.5, y: 0.82 } },
+          { label: "Distance", shape: "text-label", target: { x: 0.14, y: 0.47 } },
+          { label: "Trend line", shape: "line-diag", stretchable: true, target: { x: 0.5, y: 0.42 } }
         ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><line x1="40" y1="20" x2="40" y2="120" stroke="#fff" stroke-width="2"/><line x1="40" y1="120" x2="270" y2="120" stroke="#fff" stroke-width="2"/><line x1="40" y1="120" x2="240" y2="30" stroke="#D9A441" stroke-width="3"/><text x="120" y="140" fill="#fff" font-family="monospace" font-size="10">Time</text><text x="8" y="70" fill="#fff" font-family="monospace" font-size="10">Dist.</text></svg>' },
       variables: { options: ["Time (min)", "Distance (m)", "Ship's color", "Engine sound level"], correct: ["Time (min)", "Distance (m)"] },
       table: { columns: ["Time (min)", "Distance (m)"], rows: [["0", "0"], ["2", "100"], ["4", "200"], ["6", { blank: true, answer: "300" }], ["8", "400"]] },
@@ -423,10 +423,10 @@ textarea.freetext, input.freetext {
     {
       id: "scatter-trend", moduleId: "chartroom", name: "Scatter Plot & Trend — Cargo Load", level: "Scholarship", emoji: "📊",
       observe: { text: "The ship's log shows fuel used per day at different cargo loads: 100 t → 300 L, 200 t → 550 L, 300 t → ?, 400 t → 1050 L." },
-      sketch: { prompt: "Sketch the axes and a best-fit trend line through scattered points.", nodes: [
-          { label: "X-axis: Cargo (tons)", shape: "line-h", target: { x: 0.52, y: 0.8 } },
-          { label: "Y-axis: Fuel (L)", shape: "line-v", target: { x: 0.13, y: 0.47 } },
-          { label: "Best-fit trend line", shape: "line-diag", target: { x: 0.5, y: 0.45 } }
+      sketch: { prompt: "Drag each label onto its axis, then stretch out the best-fit trend line through the scattered points.", axisTemplate: true, nodes: [
+          { label: "Cargo (tons)", shape: "text-label", target: { x: 0.52, y: 0.8 } },
+          { label: "Fuel (L)", shape: "text-label", target: { x: 0.13, y: 0.47 } },
+          { label: "Best-fit trend line", shape: "line-diag", stretchable: true, target: { x: 0.5, y: 0.45 } }
         ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><line x1="40" y1="20" x2="40" y2="120" stroke="#fff" stroke-width="2"/><line x1="40" y1="120" x2="270" y2="120" stroke="#fff" stroke-width="2"/><line x1="45" y1="100" x2="255" y2="35" stroke="#D9A441" stroke-width="3"/><circle cx="70" cy="95" r="4" fill="#3FA37A"/><circle cx="120" cy="75" r="4" fill="#3FA37A"/><circle cx="170" cy="60" r="4" fill="#3FA37A"/><circle cx="220" cy="42" r="4" fill="#3FA37A"/><text x="120" y="140" fill="#fff" font-family="monospace" font-size="9">Cargo</text><text x="6" y="70" fill="#fff" font-family="monospace" font-size="9">Fuel</text></svg>' },
       variables: { options: ["Cargo mass", "Fuel used", "Day of the week", "Captain's name"], correct: ["Cargo mass", "Fuel used"] },
       table: { columns: ["Cargo (t)", "Fuel (L)"], rows: [["100", "300"], ["200", "550"], ["300", { blank: true, answer: "800" }], ["400", "1050"]] },
@@ -554,6 +554,276 @@ textarea.freetext, input.freetext {
       pattern: { question: "For a fair die rolled 24 times, about how many times would you expect each number?", options: ["About 4 times each (24 ÷ 6)", "Always exactly 6 times", "Completely random, with no expected pattern"], correct: 0 },
       predict: { question: "If the die were rolled 240 times instead of 24, about how many times would you expect each number to come up?", keywords: ["40"] },
       explain: { prompt: "Explain the difference between the theoretical (expected) probability and what you actually get from real rolls." }
+    },
+    {
+      id: "buoyancy", moduleId: "propulsion", name: "Buoyancy — Why Great Liners Float", level: "Cambridge", emoji: "🛳️",
+      observe: { text: "RMS Titanic weighed about 52,000 tons but floated easily, while a single solid steel bolt sinks instantly — both made of the same steel." },
+      sketch: { prompt: "Sketch the hull with weight and buoyant force acting on it.", nodes: [
+          { label: "Weight ↓ (total ship)", shape: "arrow-down", target: { x: 0.5, y: 0.72 } },
+          { label: "Buoyant force ↑ (displaced water)", shape: "arrow-up", target: { x: 0.5, y: 0.28 } },
+          { label: "Hull (hollow, full of air)", shape: "box", target: { x: 0.5, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><rect x="90" y="60" width="120" height="35" fill="none" stroke="#D9A441" stroke-width="2"/><text x="95" y="82" fill="#D9A441" font-family="monospace" font-size="8">Hull (air inside)</text><line x1="150" y1="58" x2="150" y2="20" stroke="#3FA37A" stroke-width="3"/><polygon points="150,15 144,25 156,25" fill="#3FA37A"/><text x="158" y="28" fill="#3FA37A" font-family="monospace" font-size="8">Buoyant force</text><line x1="150" y1="97" x2="150" y2="130" stroke="#C1503A" stroke-width="3"/><polygon points="150,135 144,125 156,125" fill="#C1503A"/><text x="158" y="128" fill="#C1503A" font-family="monospace" font-size="8">Weight</text></svg>' },
+      variables: { options: ["Overall (average) density", "Weight of the ship", "Steel's own density", "Paint color"], correct: ["Overall (average) density", "Weight of the ship", "Steel's own density"] },
+      table: { columns: ["Material", "Density (g/cm³)"], rows: [["Water", "1.0"], ["Ship overall (steel + air inside)", { blank: true, answer: "0.6" }], ["Solid steel", "7.8"]] },
+      graph: { xLabel: "Material (1=Water, 2=Ship overall, 3=Solid steel)", yLabel: "Density (g/cm³)", xMax: 4, yMax: 9, points: [[1, 1.0], [2, 0.6], [3, 7.8]] },
+      pattern: { question: "Why does the hollow ship float even though steel itself is much denser than water?", options: ["Its overall density, including the air inside, is less than water's", "Steel always floats", "The ship has no weight"], correct: 0 },
+      predict: { question: "If the hull got a hole and filled with water (replacing the air), what would happen to its overall density?", keywords: ["increase", "denser", "sink"] },
+      explain: { prompt: "Explain, using density, why a steel ship floats but a solid steel bolt sinks." }
+    },
+    {
+      id: "steam-power", moduleId: "boiler", name: "Steam Power — A Great Liner's Boilers", level: "Cambridge", emoji: "🚢",
+      observe: { text: "A great ocean liner like Titanic burned coal in dozens of boilers to make steam, driving huge engines that turned its propellers. Crews shoveled roughly 600 tons of coal per day into the furnaces." },
+      sketch: { prompt: "Sketch the coal-to-steam-to-propeller energy path.", nodes: [
+          { label: "Coal in (fuel)", shape: "arrow-right", target: { x: 0.15, y: 0.5 } },
+          { label: "Boiler", shape: "box", target: { x: 0.45, y: 0.5 } },
+          { label: "Steam out (to engines)", shape: "arrow-right", target: { x: 0.8, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><line x1="20" y1="75" x2="90" y2="75" stroke="#D9A441" stroke-width="3"/><polygon points="95,75 85,69 85,81" fill="#D9A441"/><text x="15" y="95" fill="#D9A441" font-family="monospace" font-size="8">Coal</text><rect x="100" y="55" width="70" height="40" fill="none" stroke="#fff" stroke-width="2"/><text x="112" y="78" fill="#fff" font-family="monospace" font-size="9">Boiler</text><line x1="175" y1="75" x2="250" y2="75" stroke="#3FA37A" stroke-width="3"/><polygon points="255,75 245,69 245,81" fill="#3FA37A"/><text x="220" y="95" fill="#3FA37A" font-family="monospace" font-size="8">Steam</text></svg>' },
+      variables: { options: ["Days at sea", "Coal used per day", "Number of funnels", "Deck chair color"], correct: ["Days at sea", "Coal used per day"] },
+      table: { columns: ["Day", "Coal used (tons, total)"], rows: [["1", "600"], ["2", "1200"], ["3", { blank: true, answer: "1800" }], ["4", "2400"]] },
+      graph: { xLabel: "Day", yLabel: "Coal used (tons, total)", xMax: 5, yMax: 3000, points: [[1, 600], [2, 1200], [3, 1800], [4, 2400]] },
+      pattern: { question: "What's the pattern in total coal used each day?", options: ["Increases by a steady amount each day (linear)", "Stays flat", "Decreases each day"], correct: 0 },
+      predict: { question: "At this rate, how much coal would be used in total by Day 10?", keywords: ["6000"] },
+      explain: { prompt: "Explain why a graph of total coal used makes a straight line if the crew burns the same amount every day." }
+    },
+    {
+      id: "sinking-timeline", moduleId: "chartroom", name: "Sinking Timeline — Reading a Real Dataset", level: "Scholarship", emoji: "⏱️",
+      observe: { text: "After striking an iceberg, a great liner took on water and sank lower over time. Its height above the waterline was logged at intervals until it sank completely." },
+      sketch: { prompt: "Sketch the waterline rising up the hull over time.", nodes: [
+          { label: "Waterline", shape: "line-h", target: { x: 0.5, y: 0.5 } },
+          { label: "Hull below water (flooding)", shape: "box", target: { x: 0.5, y: 0.7 } },
+          { label: "Bow tilting down", shape: "line-diag", target: { x: 0.5, y: 0.3 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><line x1="20" y1="80" x2="280" y2="80" stroke="#3FA37A" stroke-width="2" stroke-dasharray="4,4"/><text x="230" y="72" fill="#3FA37A" font-family="monospace" font-size="8">Waterline</text><line x1="60" y1="40" x2="220" y2="80" stroke="#D9A441" stroke-width="3"/><text x="60" y="30" fill="#D9A441" font-family="monospace" font-size="8">Bow tilting down</text><rect x="60" y="80" width="160" height="35" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="2,2"/><text x="70" y="128" fill="#fff" font-family="monospace" font-size="8">Flooded section</text></svg>' },
+      variables: { options: ["Time since impact", "Height above waterline", "Number of lifeboats", "Water temperature"], correct: ["Time since impact", "Height above waterline"] },
+      table: { columns: ["Time after impact (min)", "Height above water (m)"], rows: [["0", "18"], ["60", "14"], ["120", { blank: true, answer: "8" }], ["160", "0"]] },
+      graph: { xLabel: "Time after impact (min)", yLabel: "Height above water (m)", xMax: 180, yMax: 20, points: [[0, 18], [60, 14], [120, 8], [160, 0]] },
+      pattern: { question: "What's the pattern in height above water over time?", options: ["Steadily decreasing until it reaches zero", "Increasing", "Staying constant"], correct: 0 },
+      predict: { question: "Based on the trend, was the ship sinking faster near the start or faster near the end?", keywords: ["end", "faster later", "accelerat"] },
+      explain: { prompt: "Explain what the steepening slope near the end of the graph tells you about the flooding rate." }
+    },
+    {
+      id: "pipe-network", moduleId: "boiler", name: "Pipe Network — A Plumber's Water Pressure", level: "Cambridge", emoji: "🔧",
+      observe: { text: "A ship's plumber checks water pressure through a network of pipes. Narrower pipes make the same amount of water squeeze through faster; wider pipes let it flow slower." },
+      sketch: { prompt: "Sketch a wide pipe, a narrow pipe, and the flow direction.", nodes: [
+          { label: "Wide pipe (slower flow)", shape: "box", target: { x: 0.25, y: 0.5 } },
+          { label: "Narrow pipe (faster flow)", shape: "line-h", target: { x: 0.6, y: 0.5 } },
+          { label: "Water flow direction →", shape: "arrow-right", target: { x: 0.85, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><rect x="20" y="50" width="100" height="40" fill="none" stroke="#3FA37A" stroke-width="2"/><text x="30" y="105" fill="#3FA37A" font-family="monospace" font-size="8">Wide — slow</text><line x1="120" y1="60" x2="200" y2="60" stroke="#D9A441" stroke-width="2"/><line x1="120" y1="80" x2="200" y2="80" stroke="#D9A441" stroke-width="2"/><text x="130" y="105" fill="#D9A441" font-family="monospace" font-size="8">Narrow — fast</text><polygon points="260,70 240,60 240,80" fill="#fff"/></svg>' },
+      variables: { options: ["Pipe width", "Flow speed", "Water color", "Pipe material"], correct: ["Pipe width", "Flow speed"] },
+      table: { columns: ["Pipe width (cm)", "Flow speed (m/s)"], rows: [["10", "1"], ["5", "2"], ["2.5", { blank: true, answer: "4" }]] },
+      graph: { xLabel: "Pipe width (cm)", yLabel: "Flow speed (m/s)", xMax: 12, yMax: 6, points: [[10, 1], [5, 2], [2.5, 4]] },
+      pattern: { question: "What's the relationship between pipe width and flow speed?", options: ["Narrower pipes mean faster flow (an inverse relationship)", "Wider pipes mean faster flow", "No relationship at all"], correct: 0 },
+      predict: { question: "If the pipe width were halved again to 1.25 cm, roughly how fast would the flow be?", keywords: ["8"] },
+      explain: { prompt: "Explain why squeezing the same amount of water through a narrower pipe makes it flow faster." }
+    },
+    {
+      id: "rescue-run", moduleId: "propulsion", name: "Rescue Run — Speed Against the Clock", level: "Foundation", emoji: "🏃",
+      observe: { text: "A rescue mission has a strict time limit: cover 400m of obstacles to reach the goal before time runs out. Position was tracked every 10 seconds." },
+      sketch: { prompt: "Drag each label onto its axis, then stretch out the trend line for the run.", axisTemplate: true, nodes: [
+          { label: "Time", shape: "text-label", target: { x: 0.5, y: 0.82 } },
+          { label: "Distance", shape: "text-label", target: { x: 0.14, y: 0.47 } },
+          { label: "Trend line", shape: "line-diag", stretchable: true, target: { x: 0.5, y: 0.42 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><line x1="40" y1="20" x2="40" y2="120" stroke="#fff" stroke-width="2"/><line x1="40" y1="120" x2="270" y2="120" stroke="#fff" stroke-width="2"/><line x1="40" y1="120" x2="240" y2="30" stroke="#D9A441" stroke-width="3"/><text x="120" y="140" fill="#fff" font-family="monospace" font-size="10">Time</text><text x="8" y="70" fill="#fff" font-family="monospace" font-size="10">Dist.</text></svg>' },
+      variables: { options: ["Time (s)", "Distance covered (m)", "Obstacle color", "Time limit"], correct: ["Time (s)", "Distance covered (m)"] },
+      table: { columns: ["Time (s)", "Distance (m)"], rows: [["0", "0"], ["10", "100"], ["20", { blank: true, answer: "200" }], ["30", "300"], ["40", "400"]] },
+      graph: { xLabel: "Time (s)", yLabel: "Distance (m)", xMax: 50, yMax: 500, points: [[0, 0], [10, 100], [20, 200], [30, 300], [40, 400]] },
+      pattern: { question: "What does the straight line tell you about the speed during the run?", options: ["Constant speed the whole way", "Speeding up throughout", "Slowing down throughout"], correct: 0 },
+      predict: { question: "At this speed (10 m/s), how long would it take to cover 550m?", keywords: ["55"] },
+      explain: { prompt: "Explain how you used the graph's slope (the rate) to work out the time for a longer distance." }
+    },
+    {
+      id: "emotion-chemistry", moduleId: "lab", name: "The Chemistry of Feelings", level: "Cambridge", emoji: "🧠",
+      observe: { text: "Emotions aren't just feelings — they're chemical signals. Something exciting triggers dopamine (reward). Danger triggers adrenaline (fast reaction). Rest and contentment relate to serotonin." },
+      sketch: { prompt: "Sketch the brain sending a chemical signal to the body.", nodes: [
+          { label: "Brain (signal source)", shape: "circle", target: { x: 0.2, y: 0.5 } },
+          { label: "Chemical messenger →", shape: "arrow-right", target: { x: 0.5, y: 0.5 } },
+          { label: "Body response", shape: "box", target: { x: 0.8, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><circle cx="55" cy="75" r="24" fill="none" stroke="#D9A441" stroke-width="2"/><text x="30" y="112" fill="#D9A441" font-family="monospace" font-size="8">Brain</text><line x1="82" y1="75" x2="180" y2="75" stroke="#3FA37A" stroke-width="2"/><polygon points="185,75 175,69 175,81" fill="#3FA37A"/><text x="90" y="68" fill="#3FA37A" font-family="monospace" font-size="7">Adrenaline</text><rect x="195" y="55" width="70" height="40" fill="none" stroke="#fff" stroke-width="2"/><text x="205" y="78" fill="#fff" font-family="monospace" font-size="8">Body reacts</text></svg>' },
+      variables: { options: ["Type of chemical released", "What triggered it", "The effect on the body", "Time of day"], correct: ["Type of chemical released", "What triggered it", "The effect on the body"] },
+      table: { columns: ["Chemical", "Triggered by", "Effect"], rows: [["Dopamine", "Reward, achievement", "Feeling of pleasure"], ["Adrenaline", "Danger, excitement", { blank: true, answer: "Faster heartbeat, alertness" }], ["Serotonin", "Rest, contentment", "Calm, stable mood"]] },
+      graph: { xLabel: "Time (s) after a sudden scare", yLabel: "Adrenaline (relative level)", xMax: 70, yMax: 100, points: [[0, 10], [5, 80], [15, 60], [30, 30], [60, 10]] },
+      pattern: { question: "What's the pattern in adrenaline level after a sudden scare?", options: ["Spikes quickly, then gradually decreases back to normal", "Stays flat the whole time", "Keeps increasing forever"], correct: 0 },
+      predict: { question: "If a scary event kept repeating, would you expect adrenaline to reset to normal quickly, or stay elevated longer?", keywords: ["stay", "elevated", "longer", "higher"] },
+      explain: { prompt: "Explain how a chemical like adrenaline changes what your body can do in an emergency." }
+    },
+    {
+      id: "baking-soda-vinegar", moduleId: "lab", name: "Kitchen Chemistry — Baking Soda & Vinegar", level: "Foundation", emoji: "🥄",
+      observe: { text: "Mixing baking soda (a base) with vinegar (an acid) causes fizzing — carbon dioxide gas is released. Bakers use this reaction to help batter rise." },
+      sketch: { prompt: "Sketch the two ingredients reacting to form gas bubbles.", nodes: [
+          { label: "Baking soda (base)", shape: "box", target: { x: 0.2, y: 0.5 } },
+          { label: "Vinegar (acid)", shape: "circle", target: { x: 0.45, y: 0.5 } },
+          { label: "CO₂ bubbles (product)", shape: "dots", target: { x: 0.8, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><rect x="20" y="60" width="34" height="30" fill="none" stroke="#fff" stroke-width="2"/><text x="10" y="105" fill="#fff" font-family="monospace" font-size="8">Baking soda</text><circle cx="105" cy="75" r="16" fill="none" stroke="#3FA37A" stroke-width="2"/><text x="80" y="105" fill="#3FA37A" font-family="monospace" font-size="8">Vinegar</text><line x1="140" y1="75" x2="190" y2="75" stroke="#D9A441" stroke-width="2"/><polygon points="195,75 187,69 187,81" fill="#D9A441"/><g fill="#fff"><circle cx="230" cy="60" r="4"/><circle cx="250" cy="75" r="3"/><circle cx="235" cy="90" r="4"/><circle cx="260" cy="55" r="3"/></g><text x="215" y="110" fill="#fff" font-family="monospace" font-size="8">CO₂ bubbles</text></svg>' },
+      variables: { options: ["Amount of vinegar added", "Bubbles produced", "Bowl's color", "Baking soda's brand"], correct: ["Amount of vinegar added", "Bubbles produced"] },
+      table: { columns: ["Vinegar added (mL)", "Bubbles (relative)"], rows: [["5", "2"], ["10", "4"], ["15", { blank: true, answer: "6" }], ["20", "8"]] },
+      graph: { xLabel: "Vinegar added (mL)", yLabel: "Bubbles (relative)", xMax: 25, yMax: 10, points: [[5, 2], [10, 4], [15, 6], [20, 8]] },
+      pattern: { question: "What's the relationship between vinegar added and bubbles produced?", options: ["Directly proportional — more vinegar makes more bubbles", "No relationship", "Inversely proportional"], correct: 0 },
+      predict: { question: "Using the pattern, how many bubbles (relative) would 30 mL of vinegar produce?", keywords: ["12"] },
+      explain: { prompt: "Explain, using acid and base, why mixing baking soda and vinegar produces gas bubbles." }
+    },
+    {
+      id: "sugar-dissolve", moduleId: "lab", name: "Kitchen Chemistry — Dissolving Sugar", level: "Foundation", emoji: "🍵",
+      observe: { text: "Making sweet tea, J.J. tests how much sugar dissolves in a fixed amount of water at different temperatures — hot water dissolves more sugar than cold water." },
+      sketch: { prompt: "Sketch the water, sugar, and heat source.", nodes: [
+          { label: "Water (solvent)", shape: "box", target: { x: 0.25, y: 0.5 } },
+          { label: "Sugar (solute)", shape: "dots", target: { x: 0.55, y: 0.5 } },
+          { label: "Heat source ↑", shape: "arrow-up", target: { x: 0.8, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><rect x="30" y="50" width="80" height="55" fill="none" stroke="#3FA37A" stroke-width="2"/><text x="35" y="120" fill="#3FA37A" font-family="monospace" font-size="8">Water</text><g fill="#D9A441"><circle cx="55" cy="65" r="3"/><circle cx="75" cy="80" r="3"/><circle cx="60" cy="90" r="3"/><circle cx="90" cy="65" r="3"/></g><text x="45" y="35" fill="#D9A441" font-family="monospace" font-size="8">Sugar dissolving</text><line x1="200" y1="120" x2="200" y2="50" stroke="#C1503A" stroke-width="2"/><polygon points="200,45 194,55 206,55" fill="#C1503A"/><text x="170" y="135" fill="#C1503A" font-family="monospace" font-size="8">Heat</text></svg>' },
+      variables: { options: ["Water temperature", "Sugar dissolved", "Cup shape", "Spoon material"], correct: ["Water temperature", "Sugar dissolved"] },
+      table: { columns: ["Water temp (°C)", "Sugar dissolved (g)"], rows: [["20", "200"], ["40", "240"], ["60", { blank: true, answer: "280" }], ["80", "320"]] },
+      graph: { xLabel: "Water temp (°C)", yLabel: "Sugar dissolved (g)", xMax: 100, yMax: 400, points: [[20, 200], [40, 240], [60, 280], [80, 320]] },
+      pattern: { question: "What's the pattern between water temperature and how much sugar dissolves?", options: ["Higher temperature dissolves more sugar", "Temperature has no effect", "Higher temperature dissolves less sugar"], correct: 0 },
+      predict: { question: "Using the trend, about how much sugar would dissolve at 100°C (boiling)?", keywords: ["360"] },
+      explain: { prompt: "Explain why heating water usually lets you dissolve more sugar in it." }
+    },
+    {
+      id: "ice-density", moduleId: "lab", name: "Ice Kingdom — Why Ice Floats", level: "Foundation", emoji: "❄️",
+      observe: { text: "In the Ice Kingdom, sheets of ice float on the lake instead of sinking. Water is unusual — most substances get denser when they freeze, but ice is actually less dense than liquid water." },
+      sketch: { prompt: "Sketch the floating ice and the liquid water below it.", nodes: [
+          { label: "Ice block (floating)", shape: "box", target: { x: 0.5, y: 0.3 } },
+          { label: "Water surface", shape: "line-h", target: { x: 0.5, y: 0.5 } },
+          { label: "Liquid water below", shape: "dots", target: { x: 0.5, y: 0.75 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><rect x="90" y="30" width="120" height="35" fill="none" stroke="#fff" stroke-width="2"/><text x="95" y="52" fill="#fff" font-family="monospace" font-size="9">Ice (floating)</text><line x1="20" y1="65" x2="280" y2="65" stroke="#3FA37A" stroke-width="2" stroke-dasharray="4,4"/><text x="230" y="58" fill="#3FA37A" font-family="monospace" font-size="8">Water surface</text><g fill="#3FA37A"><circle cx="60" cy="100" r="3"/><circle cx="100" cy="115" r="3"/><circle cx="150" cy="95" r="3"/><circle cx="200" cy="110" r="3"/><circle cx="240" cy="100" r="3"/></g></svg>' },
+      variables: { options: ["Density of ice", "Density of liquid water", "Lake temperature", "Ice's shape"], correct: ["Density of ice", "Density of liquid water"] },
+      table: { columns: ["Material", "Density (g/cm³)"], rows: [["Liquid water", "1.00"], ["Ice (solid)", { blank: true, answer: "0.92" }]] },
+      graph: { xLabel: "Material (1=Ice, 2=Liquid water)", yLabel: "Density (g/cm³)", xMax: 3, yMax: 1.5, points: [[1, 0.92], [2, 1.00]] },
+      pattern: { question: "What does it mean that ice has a lower density than liquid water?", options: ["Ice floats instead of sinking", "Ice is heavier than water", "Ice and water have the same density"], correct: 0 },
+      predict: { question: "If ice behaved like most solids (denser than its liquid), what would happen to lakes in winter?", keywords: ["sink", "freeze from the bottom", "fill with ice", "bottom up"] },
+      explain: { prompt: "Explain why water expands and becomes less dense when it freezes, unlike most other substances." }
+    },
+    {
+      id: "snowflake-symmetry", moduleId: "chartroom", name: "Ice Kingdom — Snowflake Symmetry", level: "Cambridge", emoji: "🔷",
+      observe: { text: "Every snowflake in the Ice Kingdom has six-fold symmetry — six identical arms arranged evenly around a center, each separated by the same angle." },
+      sketch: { prompt: "Sketch the center, one arm, and the angle between arms.", nodes: [
+          { label: "Center point", shape: "circle", target: { x: 0.5, y: 0.5 } },
+          { label: "One arm (repeated 6×)", shape: "line-diag", target: { x: 0.7, y: 0.3 } },
+          { label: "Angle between arms", shape: "ray", target: { x: 0.5, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><g stroke="#fff" stroke-width="2"><line x1="150" y1="75" x2="150" y2="15"/><line x1="150" y1="75" x2="202" y2="45"/><line x1="150" y1="75" x2="202" y2="105"/><line x1="150" y1="75" x2="150" y2="135"/><line x1="150" y1="75" x2="98" y2="105"/><line x1="150" y1="75" x2="98" y2="45"/></g><circle cx="150" cy="75" r="4" fill="#D9A441"/><text x="158" y="55" fill="#D9A441" font-family="monospace" font-size="8">60°</text></svg>' },
+      variables: { options: ["Number of arms", "Angle between arms", "Snowflake's size", "Air temperature"], correct: ["Number of arms", "Angle between arms"] },
+      table: { columns: ["Arm number", "Angle from Arm 1 (°)"], rows: [["1", "0"], ["2", "60"], ["3", { blank: true, answer: "120" }], ["4", "180"], ["5", "240"], ["6", "300"]] },
+      graph: { xLabel: "Arm number", yLabel: "Angle from Arm 1 (°)", xMax: 7, yMax: 360, points: [[1, 0], [2, 60], [3, 120], [4, 180], [5, 240], [6, 300]] },
+      pattern: { question: "What's the pattern in the angle between each arm?", options: ["Each arm is 60° further around than the last (constant steps)", "The angles are random", "The angles decrease each time"], correct: 0 },
+      predict: { question: "If there were a 7th arm continuing the same pattern, what angle would it be at?", keywords: ["360", "0"] },
+      explain: { prompt: "Explain why 6 evenly-spaced arms means each step must be 60° (360° ÷ 6)." }
+    },
+    {
+      id: "snow-insulation", moduleId: "boiler", name: "Ice Kingdom — Insulated Snow Shelter", level: "Foundation", emoji: "🏠",
+      observe: { text: "In the Ice Kingdom, a shelter built from packed snow can stay far warmer inside than the freezing air outside (roughly -30°C outside, close to 0°C inside) — trapped air pockets in the snow slow down heat loss." },
+      sketch: { prompt: "Sketch the outside air, the snow wall, and the warmer inside.", nodes: [
+          { label: "Cold outside air", shape: "dots", target: { x: 0.15, y: 0.5 } },
+          { label: "Snow wall (trapped air)", shape: "box", target: { x: 0.5, y: 0.5 } },
+          { label: "Warmer inside air", shape: "circle", target: { x: 0.82, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><g fill="#3FA37A"><circle cx="25" cy="60" r="3"/><circle cx="40" cy="85" r="3"/><circle cx="20" cy="100" r="3"/></g><text x="8" y="120" fill="#3FA37A" font-family="monospace" font-size="7">Cold outside</text><rect x="90" y="40" width="60" height="75" fill="none" stroke="#fff" stroke-width="2"/><text x="85" y="128" fill="#fff" font-family="monospace" font-size="7">Snow wall</text><circle cx="230" cy="75" r="20" fill="none" stroke="#D9A441" stroke-width="2"/><text x="200" y="108" fill="#D9A441" font-family="monospace" font-size="7">Warm inside</text></svg>' },
+      variables: { options: ["Location (outside/wall/inside)", "Temperature", "Snow color", "Wind speed"], correct: ["Location (outside/wall/inside)", "Temperature"] },
+      table: { columns: ["Location", "Warmer than outside (°C)"], rows: [["Outside air", "0"], ["Inside snow wall (mid)", { blank: true, answer: "20" }], ["Inside shelter", "30"]] },
+      graph: { xLabel: "Location (1=Outside, 2=Wall, 3=Inside)", yLabel: "Warmer than outside (°C)", xMax: 4, yMax: 40, points: [[1, 0], [2, 20], [3, 30]] },
+      pattern: { question: "What's the pattern in warmth from outside to inside?", options: ["It rises steadily from outside to inside", "It stays the same everywhere", "It drops going inside"], correct: 0 },
+      predict: { question: "If the walls were built twice as thick, would you expect the inside to be warmer or colder than before?", keywords: ["warmer"] },
+      explain: { prompt: "Explain why trapped air pockets in snow make it a good insulator, even though the snow itself is freezing cold." }
+    },
+    {
+      id: "freezing-point", moduleId: "lab", name: "Ice Kingdom — Melting Ice with Salt", level: "Scholarship", emoji: "🧂",
+      observe: { text: "Sprinkling salt on an icy path makes the ice melt even when it's below the normal freezing point. Adding salt lowers the temperature at which water freezes." },
+      sketch: { prompt: "Sketch the ice, the salt being added, and the melted water.", nodes: [
+          { label: "Ice (solid)", shape: "box", target: { x: 0.2, y: 0.5 } },
+          { label: "Salt added →", shape: "arrow-right", target: { x: 0.5, y: 0.5 } },
+          { label: "Liquid water (melted)", shape: "dots", target: { x: 0.8, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><rect x="20" y="55" width="60" height="40" fill="none" stroke="#fff" stroke-width="2"/><text x="18" y="110" fill="#fff" font-family="monospace" font-size="8">Ice</text><line x1="90" y1="75" x2="160" y2="75" stroke="#D9A441" stroke-width="2"/><polygon points="165,75 155,69 155,81" fill="#D9A441"/><text x="90" y="60" fill="#D9A441" font-family="monospace" font-size="8">+ Salt</text><g fill="#3FA37A"><circle cx="220" cy="65" r="3"/><circle cx="245" cy="80" r="3"/><circle cx="200" cy="90" r="3"/><circle cx="260" cy="60" r="3"/></g><text x="195" y="112" fill="#3FA37A" font-family="monospace" font-size="8">Melted water</text></svg>' },
+      variables: { options: ["Amount of salt added", "Freezing point drop", "Ice's shape", "Time of day"], correct: ["Amount of salt added", "Freezing point drop"] },
+      table: { columns: ["Salt added (g per L)", "Freezing point drop (°C)"], rows: [["0", "0"], ["10", "6"], ["20", { blank: true, answer: "12" }], ["30", "18"]] },
+      graph: { xLabel: "Salt added (g/L)", yLabel: "Freezing point drop (°C)", xMax: 35, yMax: 25, points: [[0, 0], [10, 6], [20, 12], [30, 18]] },
+      pattern: { question: "What's the pattern between salt added and how much the freezing point drops?", options: ["More salt causes a bigger drop (roughly proportional)", "Salt has no effect on freezing point", "More salt raises the freezing point"], correct: 0 },
+      predict: { question: "Using the pattern, how much would the freezing point drop with 40g of salt per liter?", keywords: ["24"] },
+      explain: { prompt: "Explain why salting an icy path helps the ice melt even when it's below the normal freezing point." }
+    },
+    {
+      id: "iceberg-collision", moduleId: "propulsion", name: "Iceberg Collision — Impact & Momentum", level: "Scholarship", emoji: "🧊",
+      observe: { text: "A great liner travelling at speed struck an iceberg. Even though the iceberg barely moved, the ship's huge moving mass carried enormous momentum — which is why the impact tore open the hull below the waterline." },
+      sketch: { prompt: "Sketch the moving ship, the impact, and the iceberg.", nodes: [
+          { label: "Ship (moving mass)", shape: "box", target: { x: 0.22, y: 0.5 } },
+          { label: "Impact →", shape: "arrow-right", target: { x: 0.5, y: 0.5 } },
+          { label: "Iceberg", shape: "circle", target: { x: 0.8, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><rect x="20" y="55" width="70" height="35" fill="none" stroke="#D9A441" stroke-width="2"/><text x="18" y="105" fill="#D9A441" font-family="monospace" font-size="8">Ship (mass)</text><line x1="95" y1="72" x2="160" y2="72" stroke="#fff" stroke-width="3"/><polygon points="165,72 155,66 155,78" fill="#fff"/><circle cx="220" cy="72" r="30" fill="none" stroke="#3FA37A" stroke-width="2"/><text x="195" y="115" fill="#3FA37A" font-family="monospace" font-size="8">Iceberg</text></svg>' },
+      variables: { options: ["Ship's mass", "Ship's speed", "Iceberg's exact shape", "Impact momentum"], correct: ["Ship's mass", "Ship's speed", "Impact momentum"] },
+      table: { columns: ["Ship speed (knots)", "Momentum (relative)"], rows: [["10", "100"], ["20", "200"], ["30", { blank: true, answer: "300" }]] },
+      graph: { xLabel: "Ship speed (knots)", yLabel: "Momentum (relative)", xMax: 35, yMax: 400, points: [[10, 100], [20, 200], [30, 300]] },
+      pattern: { question: "What's the relationship between speed and momentum (at constant mass)?", options: ["Directly proportional — double the speed, double the momentum", "No relationship", "Inversely proportional"], correct: 0 },
+      predict: { question: "If the ship had been travelling at half its actual speed, would the impact momentum have been bigger or smaller?", keywords: ["smaller", "less", "half", "reduced"] },
+      explain: { prompt: "Explain why a huge ship moving even at a moderate speed can cause massive damage on impact." }
+    },
+    {
+      id: "lifeboat-ratio", moduleId: "chartroom", name: "Lifeboat Capacity — Ratio & Percentage", level: "Cambridge", emoji: "🛟",
+      observe: { text: "A great liner carried around 2,224 people but had lifeboats built for only about 1,178 of them — a real lesson in why capacity planning and safety ratios matter." },
+      sketch: { prompt: "Sketch the two totals and the ratio between them.", nodes: [
+          { label: "Total people aboard", shape: "box", target: { x: 0.25, y: 0.5 } },
+          { label: "Lifeboat capacity", shape: "box", target: { x: 0.65, y: 0.5 } },
+          { label: "Ratio bar", shape: "bar", target: { x: 0.5, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><rect x="40" y="20" width="40" height="100" fill="#D9A441"/><text x="15" y="132" fill="#D9A441" font-family="monospace" font-size="7">Aboard 2224</text><rect x="180" y="65" width="40" height="55" fill="#3FA37A"/><text x="155" y="132" fill="#3FA37A" font-family="monospace" font-size="7">Boats 1178</text></svg>' },
+      variables: { options: ["Total people aboard", "Lifeboat capacity", "Ship's length", "Number of funnels"], correct: ["Total people aboard", "Lifeboat capacity"] },
+      table: { columns: ["Category", "Number"], rows: [["People aboard", "2224"], ["Lifeboat capacity", { blank: true, answer: "1178" }], ["Percentage covered", "53%"]] },
+      graph: { xLabel: "Category (1=Capacity, 2=Aboard)", yLabel: "Number of people", xMax: 3, yMax: 2500, points: [[1, 1178], [2, 2224]] },
+      pattern: { question: "What does comparing 1,178 lifeboat spaces to 2,224 people aboard tell you?", options: ["There wasn't enough capacity for everyone — under half were covered by boats alone", "There was more than enough capacity for everyone", "The numbers are unrelated"], correct: 0 },
+      predict: { question: "If a similar ship added enough lifeboats for all 2,224 people, roughly what percentage capacity would that be?", keywords: ["100"] },
+      explain: { prompt: "Explain, using this ratio, why safety regulations afterward required lifeboat space for every person aboard." }
+    },
+    {
+      id: "power-up-energy", moduleId: "boiler", name: "Energy Boost — Kinetic Energy of a Jump", level: "Cambridge", emoji: "⭐",
+      observe: { text: "In a platformer game, picking up an energy capsule gives the hero extra stored energy, letting them jump higher than normal — more stored energy converts into more kinetic energy at takeoff, meaning greater jump height." },
+      sketch: { prompt: "Sketch the energy capsule, the transfer, and the resulting jump.", nodes: [
+          { label: "Energy capsule (stored energy)", shape: "circle", target: { x: 0.2, y: 0.5 } },
+          { label: "Energy transfer →", shape: "arrow-right", target: { x: 0.5, y: 0.5 } },
+          { label: "Jump height ↑", shape: "arrow-up", target: { x: 0.8, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><circle cx="45" cy="75" r="20" fill="none" stroke="#D9A441" stroke-width="2"/><text x="15" y="112" fill="#D9A441" font-family="monospace" font-size="8">Energy</text><line x1="70" y1="75" x2="150" y2="75" stroke="#fff" stroke-width="2"/><polygon points="155,75 145,69 145,81" fill="#fff"/><line x1="230" y1="120" x2="230" y2="40" stroke="#3FA37A" stroke-width="3"/><polygon points="230,35 224,45 236,45" fill="#3FA37A"/><text x="195" y="132" fill="#3FA37A" font-family="monospace" font-size="8">Jump height</text></svg>' },
+      variables: { options: ["Energy collected", "Jump height reached", "Character's color", "Number of coins nearby"], correct: ["Energy collected", "Jump height reached"] },
+      table: { columns: ["Energy collected (units)", "Jump height (m)"], rows: [["10", "2"], ["20", "4"], ["30", { blank: true, answer: "6" }], ["40", "8"]] },
+      graph: { xLabel: "Energy collected (units)", yLabel: "Jump height (m)", xMax: 50, yMax: 10, points: [[10, 2], [20, 4], [30, 6], [40, 8]] },
+      pattern: { question: "What's the relationship between energy collected and jump height?", options: ["Directly proportional — more energy means proportionally higher jumps", "No relationship", "Inversely proportional"], correct: 0 },
+      predict: { question: "Using the pattern, how high would a jump be with 50 units of energy?", keywords: ["10"] },
+      explain: { prompt: "Explain, using energy transfer, why collecting more stored energy lets the hero jump higher." }
+    },
+    {
+      id: "fight-or-flight", moduleId: "garden", name: "Fight-or-Flight — Heart Rate Response", level: "Cambridge", emoji: "❤️",
+      observe: { text: "When a sudden scare triggers the body's fight-or-flight response, heart rate jumps quickly to pump more blood to the muscles, then gradually returns to normal once the danger passes." },
+      sketch: { prompt: "Sketch the heart rate spiking and then settling back down.", nodes: [
+          { label: "Resting heart rate (baseline)", shape: "line-h", target: { x: 0.5, y: 0.75 } },
+          { label: "Spike (fight-or-flight)", shape: "line-diag", target: { x: 0.32, y: 0.32 } },
+          { label: "Return to normal", shape: "line-diag", target: { x: 0.72, y: 0.55 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><line x1="20" y1="110" x2="280" y2="110" stroke="#fff" stroke-width="1" stroke-dasharray="3,3"/><text x="230" y="105" fill="#fff" font-family="monospace" font-size="7">Resting</text><path d="M20,105 L70,25 L140,70 Q200,95 280,108" fill="none" stroke="#C1503A" stroke-width="2"/><text x="55" y="18" fill="#C1503A" font-family="monospace" font-size="7">Spike</text></svg>' },
+      variables: { options: ["Heart rate", "Time since the trigger", "Room temperature", "Person's height"], correct: ["Heart rate", "Time since the trigger"] },
+      table: { columns: ["Time (s) after trigger", "Heart rate (bpm)"], rows: [["0", "70"], ["5", "140"], ["15", { blank: true, answer: "110" }], ["60", "75"]] },
+      graph: { xLabel: "Time (s) after trigger", yLabel: "Heart rate (bpm)", xMax: 70, yMax: 160, points: [[0, 70], [5, 140], [15, 110], [60, 75]] },
+      pattern: { question: "What's the pattern in heart rate after a sudden scare?", options: ["Spikes quickly, then gradually returns toward resting rate", "Stays flat the whole time", "Keeps rising forever"], correct: 0 },
+      predict: { question: "If the person stayed calm and the danger never returned, what would you expect the heart rate to do after several more minutes?", keywords: ["return", "normal", "rest", "70"] },
+      explain: { prompt: "Explain why the body temporarily raises heart rate during a fight-or-flight response." }
+    },
+    {
+      id: "maillard-reaction", moduleId: "lab", name: "Kitchen Chemistry — Browning & the Maillard Reaction", level: "Cambridge", emoji: "🍞",
+      observe: { text: "When bread is toasted or a steak is seared, its surface turns brown and develops rich new flavors — a reaction between proteins and sugars that only kicks in at high heat, above about 140°C." },
+      sketch: { prompt: "Sketch the raw surface, the heat, and the browned result.", nodes: [
+          { label: "Raw surface (proteins + sugars)", shape: "box", target: { x: 0.2, y: 0.5 } },
+          { label: "Heat ↑", shape: "arrow-up", target: { x: 0.5, y: 0.5 } },
+          { label: "Browned surface (new flavors)", shape: "dots", target: { x: 0.8, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><rect x="20" y="55" width="60" height="40" fill="none" stroke="#fff" stroke-width="2"/><text x="15" y="110" fill="#fff" font-family="monospace" font-size="8">Raw surface</text><line x1="150" y1="120" x2="150" y2="45" stroke="#C1503A" stroke-width="2"/><polygon points="150,40 144,50 156,50" fill="#C1503A"/><text x="125" y="132" fill="#C1503A" font-family="monospace" font-size="8">Heat</text><g fill="#D9A441"><circle cx="230" cy="65" r="3"/><circle cx="250" cy="78" r="3"/><circle cx="220" cy="88" r="3"/><circle cx="260" cy="58" r="3"/></g><text x="205" y="110" fill="#D9A441" font-family="monospace" font-size="8">Browned</text></svg>' },
+      variables: { options: ["Surface temperature", "Browning amount", "Pan's color", "Cooking time"], correct: ["Surface temperature", "Browning amount", "Cooking time"] },
+      table: { columns: ["Temp (°C)", "Browning (relative)"], rows: [["100", "0"], ["140", "2"], ["180", { blank: true, answer: "6" }], ["220", "9"]] },
+      graph: { xLabel: "Temp (°C)", yLabel: "Browning (relative)", xMax: 250, yMax: 12, points: [[100, 0], [140, 2], [180, 6], [220, 9]] },
+      pattern: { question: "What's the pattern in browning as temperature rises past 140°C?", options: ["Browning increases sharply once past a threshold temperature", "Browning is constant at all temperatures", "Browning decreases as temperature rises"], correct: 0 },
+      predict: { question: "Why doesn't food brown much when it's just boiled in water (100°C), no matter how long you cook it?", keywords: ["not hot enough", "below threshold", "boils at 100", "too low"] },
+      explain: { prompt: "Explain why the Maillard reaction needs both high heat and time to happen." }
+    },
+    {
+      id: "emulsification", moduleId: "lab", name: "Kitchen Chemistry — Mixing Oil & Water", level: "Cambridge", emoji: "🥣",
+      observe: { text: "Oil and water normally separate, but whisking in egg yolk (which contains an emulsifier) lets J.J. make a stable, creamy mayonnaise where tiny oil droplets stay suspended in the water instead of separating out." },
+      sketch: { prompt: "Sketch the oil droplets, the emulsifier, and the stable mixture.", nodes: [
+          { label: "Oil droplets", shape: "dots", target: { x: 0.22, y: 0.5 } },
+          { label: "Emulsifier molecule", shape: "circle", target: { x: 0.55, y: 0.5 } },
+          { label: "Stable mixture", shape: "box", target: { x: 0.82, y: 0.5 } }
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><g fill="#D9A441"><circle cx="40" cy="65" r="4"/><circle cx="60" cy="85" r="4"/><circle cx="30" cy="95" r="4"/></g><text x="10" y="115" fill="#D9A441" font-family="monospace" font-size="7">Oil droplets</text><circle cx="150" cy="75" r="12" fill="none" stroke="#3FA37A" stroke-width="2"/><text x="118" y="105" fill="#3FA37A" font-family="monospace" font-size="7">Emulsifier</text><rect x="215" y="55" width="65" height="40" fill="none" stroke="#fff" stroke-width="2"/><text x="205" y="110" fill="#fff" font-family="monospace" font-size="7">Stable mix</text></svg>' },
+      variables: { options: ["Amount of emulsifier", "Mixture stability", "Bowl material", "Whisking sound"], correct: ["Amount of emulsifier", "Mixture stability"] },
+      table: { columns: ["Emulsifier added (drops)", "Minutes before separating"], rows: [["0", "1"], ["5", "10"], ["10", { blank: true, answer: "20" }], ["15", "30"]] },
+      graph: { xLabel: "Emulsifier added (drops)", yLabel: "Minutes before separating", xMax: 20, yMax: 35, points: [[0, 1], [5, 10], [10, 20], [15, 30]] },
+      pattern: { question: "What's the pattern between emulsifier added and how long the mixture stays mixed?", options: ["More emulsifier keeps it stable for longer", "Emulsifier makes no difference", "More emulsifier makes it separate faster"], correct: 0 },
+      predict: { question: "Using the trend, about how many minutes would 20 drops of emulsifier keep the mixture stable?", keywords: ["40"] },
+      explain: { prompt: "Explain how an emulsifier lets oil and water stay mixed together instead of separating." }
     }
   ];
 
@@ -636,7 +906,7 @@ textarea.freetext, input.freetext {
       '<div class="hdr-sub">Every model starts with a blank page. Pick a folder and get sketching.</div></div>' +
       '<div class="section">' + xpStripHtml() + '</div>' +
       '<div class="section"><div class="section-label">🗂️ Blueprint Folders</div><div class="folder-grid">' + folders + '</div></div>' +
-      '<div class="foot-note">22 models across 7 folders — a growing library. Progress is saved on this device.<br>Part of J.J.\'s Engineering Academy.</div>';
+      '<div class="foot-note">40 models across 7 folders — a growing library. Progress is saved on this device.<br>Part of J.J.\'s Engineering Academy.</div>';
 
     Array.prototype.forEach.call(app.querySelectorAll("[data-mod]"), function (btn) {
       btn.addEventListener("click", function () { go("module", { moduleId: btn.getAttribute("data-mod") }); });
@@ -774,6 +1044,7 @@ textarea.freetext, input.freetext {
     else if (shape === "arrow-up") s += '<line x1="10" y1="18" x2="10" y2="6" ' + st + '/><polygon points="10,2 6,8 14,8" fill="#0E2A45"/>';
     else if (shape === "arrow-down") s += '<line x1="10" y1="2" x2="10" y2="14" ' + st + '/><polygon points="10,18 6,12 14,12" fill="#0E2A45"/>';
     else if (shape === "ray") s += '<line x1="10" y1="2" x2="10" y2="7" ' + st + '/><line x1="4" y1="10" x2="9" y2="10" ' + st + '/><line x1="16" y1="10" x2="11" y2="10" ' + st + '/><circle cx="10" cy="10" r="2" fill="#D9A441"/>';
+    else if (shape === "text-label") s += '<text x="0" y="15" font-family="monospace" font-size="12" font-weight="bold" fill="#0E2A45">Aa</text>';
     s += "</svg>";
     return s;
   }
@@ -814,6 +1085,14 @@ textarea.freetext, input.freetext {
     ctx.restore();
   }
 
+  function drawStretchLine(ctx, x1, y1, x2, y2, dashed) {
+    ctx.save();
+    ctx.strokeStyle = "#D9A441"; ctx.lineWidth = 3; ctx.lineCap = "round";
+    if (dashed) ctx.setLineDash([5, 5]);
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+    ctx.restore();
+  }
+
   function stepSketch(card, model) {
     runtime.phase = runtime.phase || "guided";
     if (runtime.phase === "boss") { stepSketchBoss(card, model); return; }
@@ -821,16 +1100,16 @@ textarea.freetext, input.freetext {
     var nodes = model.sketch.nodes;
     var mProg = state.models[model.id];
     var alreadyPassed = !!(mProg && mProg.doneSteps && mProg.doneSteps.indexOf("sketch") !== -1);
-    runtime.placed = runtime.placed || [];
+    runtime.items = runtime.items || []; // { kind:"stroke", points:[...] } or { kind:"stamp", x,y,text,shape,target }
     runtime.pendingNode = runtime.pendingNode || null;
     runtime.hintVisible = runtime.hintVisible || false;
 
     card.innerHTML = stepHeader("sketch") +
-      '<div class="step-body">' + model.sketch.prompt + ' Tap a stamp below, then tap the canvas to drop it in the right spot — position matters, so think about where each one really belongs. Draw freehand with your finger anywhere else.</div>' +
+      '<div class="step-body">' + model.sketch.prompt + (model.sketch.axisTemplate ? ' The axes are already drawn — drag each label into place, and tap-drag on the canvas to stretch out the line.' : ' Tap a stamp below, then tap the canvas to drop it in the right spot — position matters, so think about where each one really belongs. Tap a placed stamp to pick it up and move it. Draw freehand with your finger anywhere else.') + '</div>' +
       '<div class="run-actions" style="margin:10px 0 0;"><button class="btn" id="btn-hint" style="flex:none;padding:8px 12px;font-size:12px;">👁 Peek Hint</button></div>' +
       '<div class="hint-box" id="hint-box"></div>' +
       '<canvas class="pad" id="pad" height="220"></canvas>' +
-      '<div class="pad-tools"><button class="btn" id="btn-clear" style="flex:none;padding:8px 12px;font-size:12px;">Clear sketch</button></div>' +
+      '<div class="pad-tools"><button class="btn" id="btn-undo" style="flex:none;padding:8px 12px;font-size:12px;">↩ Undo</button><button class="btn" id="btn-clear" style="flex:none;padding:8px 12px;font-size:12px;">Clear sketch</button></div>' +
       '<div class="chip-row" id="labels"></div>' +
       actionsHtml("Check placement", "btn-check", alreadyPassed) +
       '<div id="boss-unlock"></div>';
@@ -848,53 +1127,141 @@ textarea.freetext, input.freetext {
     var canvas = document.getElementById("pad");
     canvas.width = canvas.clientWidth || 500;
     var ctx = canvas.getContext("2d");
-    var drawing = false, lastX = 0, lastY = 0;
+    var drawing = false, lastX = 0, lastY = 0, currentStroke = null;
+    var drawingLine = false, lineStart = null, lineCurrent = null;
+    var PICKUP_RADIUS = 26;
 
     function pos(e) {
       var r = canvas.getBoundingClientRect();
       var t = e.touches && e.touches[0] ? e.touches[0] : e;
       return { x: t.clientX - r.left, y: t.clientY - r.top };
     }
-    function redrawStamps() {
-      runtime.placed.forEach(function (p) {
-        drawStamp(ctx, p.shape, p.x, p.y);
-        ctx.font = "10px monospace"; ctx.fillStyle = "#5B6B78";
-        ctx.fillText(p.text, p.x + 12, p.y + 22);
+    function drawAxisTemplate() {
+      if (!model.sketch.axisTemplate) return;
+      var ax = canvas.width * 0.14, ayTop = canvas.height * 0.15, ayBottom = canvas.height * 0.85, axRight = canvas.width * 0.9;
+      ctx.save();
+      ctx.strokeStyle = "#16293A"; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(ax, ayTop); ctx.lineTo(ax, ayBottom); ctx.lineTo(axRight, ayBottom); ctx.stroke();
+      ctx.restore();
+    }
+    function redrawAll() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawAxisTemplate();
+      runtime.items.forEach(function (it) {
+        if (it.kind === "stroke") {
+          ctx.strokeStyle = "#16293A"; ctx.lineWidth = 2; ctx.lineCap = "round";
+          ctx.beginPath();
+          it.points.forEach(function (pt, idx) { if (idx === 0) ctx.moveTo(pt.x, pt.y); else ctx.lineTo(pt.x, pt.y); });
+          ctx.stroke();
+        } else if (it.shape === "text-label") {
+          ctx.font = "bold 13px monospace"; ctx.fillStyle = "#0E2A45"; ctx.textAlign = "center";
+          ctx.fillText(it.text, it.x, it.y);
+          ctx.textAlign = "left";
+        } else if (it.x1 !== undefined) {
+          drawStretchLine(ctx, it.x1, it.y1, it.x2, it.y2, false);
+        } else {
+          drawStamp(ctx, it.shape, it.x, it.y);
+          ctx.font = "10px monospace"; ctx.fillStyle = "#5B6B78";
+          ctx.fillText(it.text, it.x + 12, it.y + 22);
+        }
       });
+    }
+    function findStampNear(p) {
+      for (var i = runtime.items.length - 1; i >= 0; i--) {
+        var it = runtime.items[i];
+        if (it.kind === "stamp") {
+          var d = Math.hypot(p.x - it.x, p.y - it.y);
+          if (d < PICKUP_RADIUS) return i;
+        }
+      }
+      return -1;
     }
     function start(e) {
       var p = pos(e);
       if (runtime.pendingNode) {
-        runtime.placed.push({ x: p.x, y: p.y, text: runtime.pendingNode.label, shape: runtime.pendingNode.shape, target: runtime.pendingNode.target });
+        if (runtime.pendingNode.stretchable) {
+          drawingLine = true; lineStart = p; lineCurrent = p;
+          return;
+        }
+        runtime.items.push({ kind: "stamp", x: p.x, y: p.y, text: runtime.pendingNode.label, shape: runtime.pendingNode.shape, target: runtime.pendingNode.target });
         var chip = document.querySelector('[data-label="' + runtime.pendingNode.label + '"]');
         if (chip) chip.disabled = true;
         runtime.pendingNode = null;
         renderChips();
-        redrawStamps();
+        redrawAll();
         return;
       }
+      var hitIdx = findStampNear(p);
+      if (hitIdx !== -1) {
+        var picked = runtime.items.splice(hitIdx, 1)[0];
+        runtime.pendingNode = nodes.filter(function (n) { return n.label === picked.text; })[0];
+        renderChips();
+        redrawAll();
+        showFeedback("Picked up \u201c" + picked.text + "\u201d — tap" + (runtime.pendingNode.stretchable ? "-drag" : "") + " the canvas to drop it in a new spot.", "warn");
+        return;
+      }
+      currentStroke = { kind: "stroke", points: [p] };
+      runtime.items.push(currentStroke);
       drawing = true; lastX = p.x; lastY = p.y;
     }
     function move(e) {
+      if (drawingLine) {
+        e.preventDefault();
+        lineCurrent = pos(e);
+        redrawAll();
+        drawStretchLine(ctx, lineStart.x, lineStart.y, lineCurrent.x, lineCurrent.y, true);
+        return;
+      }
       if (!drawing) return;
       e.preventDefault();
       var p = pos(e);
       ctx.strokeStyle = "#16293A"; ctx.lineWidth = 2; ctx.lineCap = "round";
       ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(p.x, p.y); ctx.stroke();
+      if (currentStroke) currentStroke.points.push(p);
       lastX = p.x; lastY = p.y;
     }
-    function end() { drawing = false; }
+    function end() {
+      if (drawingLine) {
+        drawingLine = false;
+        var dx = lineCurrent.x - lineStart.x, dy = lineCurrent.y - lineStart.y;
+        if (Math.hypot(dx, dy) < 20) {
+          redrawAll();
+          showFeedback("Drag further to stretch out the line — tap and drag from one point to another.", "warn");
+          return;
+        }
+        var midX = (lineStart.x + lineCurrent.x) / 2, midY = (lineStart.y + lineCurrent.y) / 2;
+        runtime.items.push({ kind: "stamp", shape: runtime.pendingNode.shape, text: runtime.pendingNode.label, target: runtime.pendingNode.target, x: midX, y: midY, x1: lineStart.x, y1: lineStart.y, x2: lineCurrent.x, y2: lineCurrent.y });
+        var chip2 = document.querySelector('[data-label="' + runtime.pendingNode.label + '"]');
+        if (chip2) chip2.disabled = true;
+        runtime.pendingNode = null;
+        renderChips();
+        redrawAll();
+        return;
+      }
+      drawing = false; currentStroke = null;
+    }
     canvas.addEventListener("mousedown", start); canvas.addEventListener("mousemove", move); window.addEventListener("mouseup", end);
     canvas.addEventListener("touchstart", start); canvas.addEventListener("touchmove", move); canvas.addEventListener("touchend", end);
 
+    document.getElementById("btn-undo").addEventListener("click", function () {
+      if (runtime.items.length === 0) return;
+      var last = runtime.items.pop();
+      if (last.kind === "stamp") {
+        var chip = document.querySelector('[data-label="' + last.text + '"]');
+        if (chip) chip.disabled = false;
+        renderChips();
+      }
+      redrawAll();
+    });
+
     document.getElementById("btn-clear").addEventListener("click", function () {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      runtime.placed = [];
+      runtime.items = [];
+      redrawAll();
       renderChips();
     });
 
     function renderChips() {
-      var used = runtime.placed.map(function (p) { return p.text; });
+      var used = runtime.items.filter(function (it) { return it.kind === "stamp"; }).map(function (it) { return it.text; });
       document.getElementById("labels").innerHTML = nodes.map(function (n) {
         var isUsed = used.indexOf(n.label) !== -1;
         var isPending = runtime.pendingNode && runtime.pendingNode.label === n.label;
@@ -909,7 +1276,7 @@ textarea.freetext, input.freetext {
       });
     }
     renderChips();
-    redrawStamps();
+    redrawAll();
 
     function renderBossUnlock() {
       document.getElementById("boss-unlock").innerHTML =
@@ -924,12 +1291,13 @@ textarea.freetext, input.freetext {
     if (alreadyPassed) renderBossUnlock();
 
     document.getElementById("btn-check").addEventListener("click", function () {
-      if (runtime.placed.length < nodes.length) {
-        showFeedback("Place all " + nodes.length + " stamps on your sketch first (" + runtime.placed.length + "/" + nodes.length + " so far).", "warn");
+      var stamps = runtime.items.filter(function (it) { return it.kind === "stamp"; });
+      if (stamps.length < nodes.length) {
+        showFeedback("Place all " + nodes.length + " stamps on your sketch first (" + stamps.length + "/" + nodes.length + " so far).", "warn");
         return;
       }
       var wrong = [];
-      runtime.placed.forEach(function (p) {
+      stamps.forEach(function (p) {
         if (!p.target) return;
         var tx = p.target.x * canvas.width, ty = p.target.y * canvas.height;
         var tolX = canvas.width * 0.20, tolY = canvas.height * 0.26;
@@ -940,7 +1308,7 @@ textarea.freetext, input.freetext {
         completeStep(model, "sketch", 10);
         renderBossUnlock();
       } else {
-        showFeedback("Not quite connected yet — these aren't in the right spot: " + wrong.join(", ") + ". Tap Clear Sketch and try placing them again, thinking about how they relate to each other.", "warn");
+        showFeedback("Not quite connected yet — these aren't in the right spot: " + wrong.join(", ") + ". Tap the stamp on the canvas to pick it up and move it.", "warn");
       }
     });
     wireNext(model);
@@ -961,37 +1329,60 @@ textarea.freetext, input.freetext {
       '</div>' +
       '<div class="hint-box" id="hint-box"></div>' +
       '<canvas class="pad" id="bpad" height="220"></canvas>' +
-      '<div class="pad-tools"><button class="btn" id="btn-clear" style="flex:none;padding:8px 12px;font-size:12px;">Clear sketch</button></div>' +
+      '<div class="pad-tools"><button class="btn" id="btn-undo" style="flex:none;padding:8px 12px;font-size:12px;">↩ Undo</button><button class="btn" id="btn-clear" style="flex:none;padding:8px 12px;font-size:12px;">Clear sketch</button></div>' +
       actionsHtml("Mark boss sketch complete", "btn-check", bossAlready);
 
     var canvas = document.getElementById("bpad");
     canvas.width = canvas.clientWidth || 500;
     var ctx = canvas.getContext("2d");
-    var drawing = false, lastX = 0, lastY = 0;
+    var drawing = false, lastX = 0, lastY = 0, currentStroke = null;
+    runtime.bossStrokes = runtime.bossStrokes || [];
 
     function pos(e) {
       var r = canvas.getBoundingClientRect();
       var t = e.touches && e.touches[0] ? e.touches[0] : e;
       return { x: t.clientX - r.left, y: t.clientY - r.top };
     }
-    function start(e) { drawing = true; var p = pos(e); lastX = p.x; lastY = p.y; }
+    function redrawAll() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      runtime.bossStrokes.forEach(function (stroke) {
+        ctx.strokeStyle = "#16293A"; ctx.lineWidth = 2; ctx.lineCap = "round";
+        ctx.beginPath();
+        stroke.forEach(function (pt, idx) { if (idx === 0) ctx.moveTo(pt.x, pt.y); else ctx.lineTo(pt.x, pt.y); });
+        ctx.stroke();
+      });
+      var total = runtime.bossStrokes.reduce(function (n, s) { return n + s.length; }, 0);
+      runtime.bossDrawn = total > 15;
+    }
+    function start(e) {
+      var p = pos(e);
+      currentStroke = [p];
+      runtime.bossStrokes.push(currentStroke);
+      drawing = true; lastX = p.x; lastY = p.y;
+    }
     function move(e) {
       if (!drawing) return;
       e.preventDefault();
       var p = pos(e);
       ctx.strokeStyle = "#16293A"; ctx.lineWidth = 2; ctx.lineCap = "round";
       ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(p.x, p.y); ctx.stroke();
+      if (currentStroke) currentStroke.push(p);
       lastX = p.x; lastY = p.y;
-      runtime.inkCount++;
-      runtime.bossDrawn = runtime.inkCount > 15;
+      runtime.bossDrawn = runtime.bossStrokes.reduce(function (n, s) { return n + s.length; }, 0) > 15;
     }
-    function end() { drawing = false; }
+    function end() { drawing = false; currentStroke = null; }
     canvas.addEventListener("mousedown", start); canvas.addEventListener("mousemove", move); window.addEventListener("mouseup", end);
     canvas.addEventListener("touchstart", start); canvas.addEventListener("touchmove", move); canvas.addEventListener("touchend", end);
 
+    document.getElementById("btn-undo").addEventListener("click", function () {
+      if (runtime.bossStrokes.length === 0) return;
+      runtime.bossStrokes.pop();
+      redrawAll();
+    });
+
     document.getElementById("btn-clear").addEventListener("click", function () {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      runtime.inkCount = 0; runtime.bossDrawn = false;
+      runtime.bossStrokes = [];
+      redrawAll();
     });
 
     document.getElementById("btn-hint").addEventListener("click", function () {
