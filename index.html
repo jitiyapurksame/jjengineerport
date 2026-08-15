@@ -196,11 +196,13 @@ a { color: inherit; text-decoration: none; }
   </div>
 
   <div class="foot-note">
-    Combined progress reading and backup cover Math Decoder and Number Sense Sketchbook,
-    which work when all three local files are hosted together on the same site (e.g. Netlify Drop
-    or GitHub Pages). Opened directly from Files/AirDrop, each app still saves its own progress
-    normally — this hub just may not be able to read across apps until it's online. Backup keys
-    used: <code>step1-bridge-progress-v1</code> and <code>number-sense-sketchbook-v1</code>.
+    Combined progress reading and backup cover Math Decoder, Number Sense Sketchbook,
+    The Drafting Room, and Writing Academy, which work when all local files are hosted
+    together on the same site (e.g. Netlify Drop, GitHub Pages, or Vercel). Opened directly
+    from Files/AirDrop, each app still saves its own progress normally — this hub just may
+    not be able to read across apps until it's online. Backup keys used:
+    <code>step1-bridge-progress-v1</code>, <code>number-sense-sketchbook-v1</code>,
+    <code>jj-drafting-room-v1</code>, and <code>writing-academy-v1</code>.
     <br /><br />
     The Number Theory Sketchbook is hosted separately at
     <code>numbertheorysketchbook.vercel.app</code>, so its progress isn't included in the Voyage
@@ -212,6 +214,24 @@ a { color: inherit; text-decoration: none; }
 <script>
 (function () {
   "use strict";
+
+  function writingAcademyDone(data) {
+    if (!data || !data.worlds) return 0;
+    var missionIds = {
+      "math-writer": ["boiler-pressure", "engineering-error", "two-solutions"],
+      "science-explainer": ["ice-float", "cold-atlantic", "saltwater-mystery"]
+    };
+    var n = 0;
+    Object.keys(missionIds).forEach(function (wid) {
+      var world = data.worlds[wid];
+      if (!world) return;
+      missionIds[wid].forEach(function (mid) {
+        var m = world[mid];
+        if (m && typeof m.levelIndex === "number") n += Math.min(m.levelIndex, 7);
+      });
+    });
+    return n;
+  }
 
   var APPS = [
     {
@@ -239,6 +259,33 @@ a { color: inherit; text-decoration: none; }
       },
       xp: function (data) { return data && typeof data.xp === "number" ? data.xp : 0; },
       unit: "entries"
+    },
+    {
+      key: "jj-drafting-room-v1",
+      href: "drafting-room.html",
+      emoji: "📐",
+      name: "The Drafting Room",
+      desc: "7 blueprint folders · sketch, table, graph & explain scientific models",
+      total: 40,
+      countDone: function (data) {
+        if (!data || !data.models) return 0;
+        var n = 0;
+        Object.keys(data.models).forEach(function (id) { if (data.models[id].complete) n++; });
+        return n;
+      },
+      xp: function (data) { return data && typeof data.totalXp === "number" ? data.totalXp : 0; },
+      unit: "models"
+    },
+    {
+      key: "writing-academy-v1",
+      href: "writing-academy.html",
+      emoji: "📝",
+      name: "Writing Academy",
+      desc: "2 of 7 worlds open · climb the Writing Ladder, one sentence at a time",
+      total: 42,
+      countDone: writingAcademyDone,
+      xp: function (data) { return writingAcademyDone(data) * 10; },
+      unit: "rungs climbed"
     }
   ];
 
@@ -248,12 +295,6 @@ a { color: inherit; text-decoration: none; }
       emoji: "⚓",
       name: "Number Theory Sketchbook",
       desc: "15 compartments · Chief Engineer training manual — primes, factors, multiples & more"
-    },
-    {
-      href: "https://combinatoricssketchbook.vercel.app/",
-      emoji: "🧮",
-      name: "Combinatorics Sketchbook",
-      desc: "12 chapters, 4 Boss Battles &amp; Master Map — the full Counting &amp; Combinatorics Wing"
     }
   ];
 

@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Writing Academy — S.S. Wordcraft</title>
+<style>
+  :root{
+    --hull-dark:#101f27;
+    --hull-panel:#17313d;
+    --hull-panel-2:#1e3d4b;
+    --rivet:#2c4a58;
+    --brass:#c8963f;
+    --brass-bright:#e3b567;
+    --steam:#efe7d6;
+    --steam-dim:#b9c4c8;
+    --amber:#d9713c;
+    --emerald:#57a373;
+    --danger:#c1543c;
+    --font-plate: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-gauge: 'Courier New', Courier, monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 800px at 50% -200px, #1c3b49 0%, var(--hull-dark) 60%);
+    color:var(--steam);
+    font-family:var(--font-body);
+    min-height:100vh;
+    -webkit-tap-highlight-color:transparent;
+    padding-bottom:40px;
+  }
+  .rivets{
+    background-image:
+      radial-gradient(circle, rgba(200,150,63,0.35) 1.5px, transparent 1.6px);
+    background-size:18px 18px;
+  }
+  header.topbar{
+    position:sticky; top:0; z-index:20;
+    background:linear-gradient(180deg, var(--hull-panel) 0%, rgba(23,49,61,0.92) 100%);
+    border-bottom:2px solid var(--rivet);
+    padding:14px 16px 12px;
+    display:flex; align-items:center; gap:12px;
+  }
+  header.topbar .back{
+    background:none;border:1px solid var(--rivet); color:var(--steam-dim);
+    border-radius:8px; padding:8px 10px; font-size:15px; cursor:pointer;
+  }
+  header.topbar .back:disabled{opacity:0.35; cursor:default;}
+  header.topbar .titles{flex:1; min-width:0;}
+  header.topbar h1{
+    font-family:var(--font-plate); font-size:17px; letter-spacing:0.02em;
+    margin:0; color:var(--brass-bright);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  header.topbar .sub{font-size:12px; color:var(--steam-dim); margin-top:2px;}
+
+  /* Boiler gauge — signature element */
+  .gauge{
+    width:52px;height:52px;border-radius:50%;
+    background:conic-gradient(var(--brass) calc(var(--pct,0)*1%), var(--rivet) 0);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    box-shadow: inset 0 0 0 2px var(--hull-dark), 0 0 0 2px var(--rivet);
+  }
+  .gauge .inner{
+    width:38px;height:38px;border-radius:50%;
+    background:var(--hull-panel-2);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-gauge); font-size:11px; color:var(--brass-bright);
+  }
+
+  main{max-width:640px; margin:0 auto; padding:18px 16px 60px;}
+
+  .hero{ text-align:center; padding:18px 10px 8px; }
+  .hero .eyebrow{
+    font-family:var(--font-gauge); letter-spacing:0.18em; font-size:11px;
+    color:var(--brass); text-transform:uppercase;
+  }
+  .hero h2{ font-family:var(--font-plate); font-size:26px; margin:6px 0 4px; color:var(--steam); }
+  .hero p{color:var(--steam-dim); font-size:14px; margin:0 auto; max-width:460px; line-height:1.5;}
+
+  .big-gauge-wrap{display:flex;justify-content:center;margin:18px 0 8px;}
+  .big-gauge{
+    width:118px;height:118px;border-radius:50%;
+    background:conic-gradient(var(--brass) calc(var(--pct,0)*1%), var(--rivet) 0);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow: inset 0 0 0 4px var(--hull-dark), 0 0 0 3px var(--rivet), 0 8px 24px rgba(0,0,0,0.35);
+  }
+  .big-gauge .inner{
+    width:88px;height:88px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--hull-panel-2), var(--hull-panel));
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+  }
+  .big-gauge .num{font-family:var(--font-gauge); font-size:24px; color:var(--brass-bright); font-weight:bold;}
+  .big-gauge .lbl{font-size:9px; letter-spacing:0.1em; color:var(--steam-dim); text-transform:uppercase; margin-top:2px;}
+
+  .rank-line{text-align:center; font-size:13px; color:var(--steam-dim); margin-bottom:22px;}
+  .rank-line b{color:var(--brass-bright); font-family:var(--font-plate);}
+
+  .section-label{
+    font-family:var(--font-gauge); font-size:11px; letter-spacing:0.14em; color:var(--steam-dim);
+    text-transform:uppercase; margin:22px 2px 10px;
+  }
+
+  .mission-list{display:flex; flex-direction:column; gap:14px;}
+  .mission-card{
+    background:linear-gradient(180deg, var(--hull-panel-2), var(--hull-panel));
+    border:1px solid var(--rivet); border-radius:14px;
+    padding:16px; display:flex; align-items:center; gap:14px;
+    cursor:pointer; transition:transform .15s ease, border-color .15s ease;
+  }
+  .mission-card:active{transform:scale(0.98);}
+  .mission-card.locked{opacity:0.55; cursor:default;}
+  .mission-card.construction{opacity:0.6; cursor:default; border-style:dashed;}
+  .mission-card .icon{font-size:30px; width:46px; text-align:center;}
+  .mission-card .body{flex:1; min-width:0;}
+  .mission-card h3{font-family:var(--font-plate); font-size:16px; margin:0 0 3px; color:var(--steam);}
+  .mission-card .worldsub{font-family:var(--font-gauge); font-size:10.5px; letter-spacing:0.08em; color:var(--brass); text-transform:uppercase; margin-bottom:4px;}
+  .mission-card p.desc{font-size:12.5px; color:var(--steam-dim); margin:0 0 6px; line-height:1.4;}
+  .progress-track{height:7px; border-radius:4px; background:var(--rivet); overflow:hidden;}
+  .progress-fill{height:100%; background:linear-gradient(90deg, var(--brass), var(--brass-bright));}
+  .mission-card .status{font-size:11px; color:var(--brass); font-family:var(--font-gauge); margin-top:5px;}
+  .mission-card .status.construction-text{color:var(--steam-dim);}
+  .lock-badge{font-size:20px;}
+
+  /* LADDER PLAYER */
+  .rung-track{display:flex; gap:5px; justify-content:center; margin:6px 0 20px;}
+  .rung{
+    width:24px;height:24px;border-radius:6px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-gauge); font-size:11px;
+    background:var(--rivet); color:var(--steam-dim);
+    border:1px solid var(--rivet);
+  }
+  .rung.done{background:var(--emerald); color:#0d2318; border-color:var(--emerald);}
+  .rung.active{background:var(--brass); color:#2a1c04; border-color:var(--brass-bright); box-shadow:0 0 0 3px rgba(200,150,63,0.25);}
+
+  .level-card{
+    background:var(--hull-panel-2); border:1px solid var(--rivet); border-radius:16px;
+    padding:20px 18px; margin-bottom:16px;
+  }
+  .level-kicker{font-family:var(--font-gauge); font-size:11px; letter-spacing:0.12em; color:var(--brass); text-transform:uppercase; margin-bottom:6px;}
+  .level-title{font-family:var(--font-plate); font-size:19px; color:var(--steam); margin:0 0 12px; line-height:1.35;}
+  .scenario{
+    background:rgba(16,31,39,0.55); border-left:3px solid var(--brass);
+    padding:10px 12px; border-radius:0 8px 8px 0; font-size:14px; color:var(--steam-dim);
+    margin-bottom:14px; line-height:1.5;
+  }
+  .scenario code{font-family:var(--font-gauge); color:var(--brass-bright);}
+
+  .choice-btn{
+    display:block; width:100%; text-align:left;
+    background:var(--hull-panel); border:1px solid var(--rivet); color:var(--steam);
+    border-radius:10px; padding:12px 14px; margin-bottom:9px; font-size:15px;
+    cursor:pointer;
+  }
+  .choice-btn:active{transform:scale(0.99);}
+  .choice-btn.correct{border-color:var(--emerald); background:rgba(87,163,115,0.18);}
+  .choice-btn.wrong{border-color:var(--danger); background:rgba(193,84,60,0.18);}
+
+  .word-bank{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; min-height:38px;}
+  .word-chip{
+    background:var(--hull-panel); border:1px solid var(--brass); color:var(--brass-bright);
+    padding:8px 12px; border-radius:8px; font-size:14px; cursor:pointer;
+  }
+  .build-slot{
+    min-height:52px; background:rgba(16,31,39,0.5); border:1px dashed var(--rivet);
+    border-radius:10px; padding:8px; display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+    margin-bottom:12px;
+  }
+  .build-slot .word-chip{background:var(--brass); color:#2a1c04; border-color:var(--brass-bright);}
+  .build-slot .placeholder{color:var(--steam-dim); font-size:13px; padding:6px;}
+
+  input[type=text], textarea{
+    width:100%; background:rgba(16,31,39,0.55); border:1px solid var(--rivet); color:var(--steam);
+    border-radius:10px; padding:12px; font-size:15px; font-family:var(--font-body);
+    margin-bottom:10px; resize:vertical;
+  }
+  textarea{min-height:90px; line-height:1.5;}
+  input[type=text]:focus, textarea:focus{outline:2px solid var(--brass); border-color:var(--brass);}
+
+  .framework{margin-bottom:12px;}
+  .framework .step{margin-bottom:12px;}
+  .framework .step label{
+    display:block; font-family:var(--font-gauge); font-size:11px; letter-spacing:0.1em;
+    color:var(--brass); text-transform:uppercase; margin-bottom:5px;
+  }
+
+  .btn-row{display:flex; gap:10px; margin-top:8px;}
+  .btn{
+    flex:1; padding:13px 14px; border-radius:10px; border:none; font-size:15px; cursor:pointer;
+    font-family:var(--font-body); font-weight:600;
+  }
+  .btn.primary{background:linear-gradient(180deg, var(--brass-bright), var(--brass)); color:#241a05;}
+  .btn.ghost{background:transparent; border:1px solid var(--rivet); color:var(--steam-dim);}
+  .btn:disabled{opacity:0.4;}
+  .btn:active{transform:scale(0.98);}
+
+  .feedback{ margin-top:14px; padding:12px 14px; border-radius:10px; font-size:14px; line-height:1.5; }
+  .feedback.good{background:rgba(87,163,115,0.15); border:1px solid var(--emerald); color:#cdeedb;}
+  .feedback.info{background:rgba(200,150,63,0.13); border:1px solid var(--brass); color:var(--steam);}
+  .feedback .model{
+    margin-top:8px; padding-top:8px; border-top:1px dashed rgba(255,255,255,0.15);
+    font-style:italic; color:var(--steam-dim);
+  }
+
+  .complete-screen{text-align:center; padding:30px 14px;}
+  .complete-screen .badge{font-size:52px; margin-bottom:10px;}
+  .complete-screen h2{font-family:var(--font-plate); color:var(--brass-bright); margin:0 0 8px;}
+  .complete-screen p{color:var(--steam-dim); font-size:14px; margin-bottom:22px;}
+
+  .hint-zone{margin:2px 0 14px;}
+  .hint-label{font-family:var(--font-gauge); font-size:11px; letter-spacing:0.08em; color:var(--steam-dim); text-transform:uppercase; margin-bottom:7px;}
+  .hint-chips{display:flex; flex-wrap:wrap; gap:8px;}
+  .hint-chip{
+    background:rgba(200,150,63,0.14); border:1px solid var(--brass); color:var(--brass-bright);
+    padding:8px 12px; border-radius:20px; font-size:13px; cursor:pointer; line-height:1.3;
+  }
+  .hint-chip:active{transform:scale(0.97);}
+
+  .hidden{display:none !important;}
+</style>
+</head>
+<body class="rivets">
+
+<header class="topbar">
+  <button class="back" id="backBtn">← Map</button>
+  <div class="titles">
+    <h1 id="topTitle">Writing Academy</h1>
+    <div class="sub" id="topSub">S.S. Wordcraft</div>
+  </div>
+  <div class="gauge"><div class="inner" id="topGaugeNum">0%</div></div>
+</header>
+
+<main id="app"></main>
+
+<script>
+(function(){
+  const STORAGE_KEY = 'writing-academy-v1';
+
+  // ---------- CONTENT: WORLDS ----------
+  const WORLDS = [
+    {
+      id:'math-writer', icon:'⚙️', title:"Chief Engineer's Office", worldsub:'Math Writer',
+      desc:'Explain your calculations so the Chief can follow your working.',
+      status:'ready',
+      missions:[
+        {
+          id:'boiler-pressure', icon:'🧮', title:'Boiler Pressure Calculation',
+          desc:'Explain how you solved the equation, step by step.', equation:'3x + 5 = 20',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'To solve 3x + 5 = 20, what should you do first?',
+              scenario:'The pressure gauge reading gives the equation <code>3x + 5 = 20</code>. The Chief wants to know your first move.',
+              options:['Divide both sides by 3','Subtract 5 from both sides','Add 5 to both sides','Multiply both sides by 3'],
+              correct:1,
+              feedback:'Right — you undo the +5 first by subtracting 5 from both sides.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order to make a correct sentence.',
+              scenario:'Build the sentence that describes the first step.',
+              words:['Subtract','5','from','both','sides.'],
+              target:'Subtract 5 from both sides.',
+              feedback:'That\'s the sentence — clear and in the right order.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing number.',
+              scenario:'Subtracting 5 from both sides of <code>3x + 5 = 20</code> gives:',
+              prefix:'3x = ', accept:['15'],
+              feedback:'Correct — 20 − 5 = 15, so 3x = 15.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Describe your first step using the starter below.',
+              starter:'First, I ',
+              hints:['subtracted 5 from both sides','divided both sides by 3'],
+              minWords:3,
+              feedback:'Good — that\'s a clear first step, written as a full sentence.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Explain how you solved 3x + 5 = 20.',
+              scenario:'Write two sentences: one for your first step, one for your final answer.',
+              hints:['First, I subtracted 5 from both sides.','Then, I divided both sides by 3.','Therefore, x = 5.'],
+              minWords:10,
+              model:'First, I subtracted 5 from both sides to get 3x = 15. Then, I divided both sides by 3, so x = 5.',
+              feedback:'Nice work — you explained the method, not just the answer.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full explanation using the framework.',
+              scenario:'Use First → Then → Therefore to explain the whole method for 3x + 5 = 20.',
+              framework:[
+                {label:'First…', placeholder:'e.g. First, I subtracted 5 from both sides.'},
+                {label:'Then…', placeholder:'e.g. Then, I divided both sides by 3.'},
+                {label:'Therefore…', placeholder:'e.g. Therefore, x = 5.'}
+              ],
+              model:'First, I subtracted 5 from both sides, which gave 3x = 15. Then, I divided both sides by 3. Therefore, x = 5.',
+              feedback:'That\'s a complete, structured explanation — the Chief can follow every step.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Now explain a new one on your own: 4x − 7 = 21',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['First, I added 7 to both sides.','Then, I divided both sides by 4.','Therefore, x = ...'],
+              minWords:15,
+              model:'First, I added 7 to both sides, which gave 4x = 28. Then, I divided both sides by 4. Therefore, x = 7.',
+              feedback:'You explained a brand-new problem completely by yourself. That\'s independent engineering-report writing.' }
+          ]
+        },
+        {
+          id:'engineering-error', icon:'🔧', title:'Engineering Error',
+          desc:'Find the junior engineer\'s mistake and explain it clearly.', equation:'2(x + 3) = 16',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'A junior engineer solved 2(x + 3) = 16 like this: "2x + 3 = 16, so 2x = 13, x = 6.5." What went wrong?',
+              scenario:'Look closely at the first line of working: <code>2(x + 3) = 16 → 2x + 3 = 16</code>.',
+              options:['He forgot to distribute the 2 to the 3 as well','He added instead of subtracted','He divided incorrectly','There is no mistake'],
+              correct:0,
+              feedback:'Right — the 2 must multiply both x and 3, so it should be 2x + 6 = 16.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the sentence that names the mistake.',
+              words:['He','forgot','to','distribute','the','2','to','the','3.'],
+              target:'He forgot to distribute the 2 to the 3.',
+              feedback:'Exactly — naming the mistake precisely is the whole job here.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing number.',
+              scenario:'The correct first step distributes the 2, giving:',
+              prefix:'2x + ', suffix:' = 16', accept:['6'],
+              feedback:'Correct — 2 × 3 = 6, so it\'s 2x + 6 = 16.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Name the mistake using the starter below.',
+              starter:'The mistake is ',
+              hints:['forgetting to distribute the 2 to the 3','not multiplying the 3 by 2'],
+              minWords:3,
+              feedback:'Good — clear and specific about what went wrong.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Explain the mistake and the fix.',
+              scenario:'Write one sentence naming the mistake, and one sentence giving the correct first step.',
+              hints:['The mistake is that he did not distribute the 2.','The correct first step is 2x + 6 = 16.'],
+              minWords:10,
+              model:'The mistake is that he did not distribute the 2 to both terms inside the brackets. The correct first step is 2x + 6 = 16.',
+              feedback:'That\'s a full mistake report — what went wrong, and what\'s correct instead.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full explanation using the framework.',
+              scenario:'Use Mistake → Correct method → Therefore to write the full report.',
+              framework:[
+                {label:'The mistake is…', placeholder:'e.g. The mistake is that he did not distribute the 2 to the 3.'},
+                {label:'The correct method is…', placeholder:'e.g. The correct method is 2x + 6 = 16, then 2x = 10, so x = 5.'},
+                {label:'Therefore…', placeholder:'e.g. Therefore, the correct answer is x = 5, not x = 6.5.'}
+              ],
+              model:'The mistake is that he did not distribute the 2 to both terms inside the brackets. The correct method is 2x + 6 = 16, then 2x = 10, so x = 5. Therefore, the correct answer is x = 5, not x = 6.5.',
+              feedback:'A complete, professional error report — exactly what the Chief needs to sign off on a fix.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Find and explain a new error: 3(x − 2) = 18 was solved as "3x − 2 = 18, x = 6.67"',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['The mistake is that the 3 was not distributed to...','The correct method is...','Therefore, x = ...'],
+              minWords:15,
+              model:'The mistake is that the 3 was not distributed to both x and −2. The correct method is 3x − 6 = 18, then 3x = 24, so x = 8.',
+              feedback:'You caught and explained a brand-new mistake completely on your own.' }
+          ]
+        },
+        {
+          id:'two-solutions', icon:'⚙️', title:'Two Solutions',
+          desc:'Compare two valid methods and justify which is better.', equation:'2x + 6 = 14',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'For 2x + 6 = 14 — Method A subtracts 6 first, then divides by 2. Method B divides everything by 2 first, then subtracts. Which is less likely to cause a mistake?',
+              scenario:'Method B means dividing <code>2x</code>, <code>6</code>, and <code>14</code> all by 2 — every term, including the 6.',
+              options:['Method A','Method B','Both are equally safe','Neither works'],
+              correct:0,
+              feedback:'Right — Method A only needs one division at the very end, so there\'s less chance to forget a term.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the sentence that justifies Method A.',
+              words:['Method','A','is','more','efficient','because','it','avoids','extra','steps.'],
+              target:'Method A is more efficient because it avoids extra steps.',
+              feedback:'That\'s a proper justification sentence — a claim plus a reason.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'In Method B, every term must be divided by 2 — including the constant, ',
+              prefix:'including the ', suffix:'.', accept:['constant','6','number'],
+              feedback:'Correct — the constant (6) has to be divided too, which is easy to forget.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Justify your choice using the starter below.',
+              starter:'Method A is more efficient because ',
+              hints:['it needs fewer steps','it’s less likely to cause a mistake'],
+              minWords:3,
+              feedback:'Good — a reason follows your claim, which is what "because" needs.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Compare the two methods.',
+              scenario:'Write one sentence about Method A, and one sentence contrasting Method B.',
+              hints:['Method A is more efficient because...','In contrast, Method B...'],
+              minWords:10,
+              model:'Method A is more efficient because it only requires one division, at the end. In contrast, Method B requires dividing every term, which is easier to get wrong.',
+              feedback:'That\'s a real comparison — a claim about each method, linked with a contrast word.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full comparison using the framework.',
+              scenario:'Use Method A → In contrast, Method B → Overall to justify your choice.',
+              framework:[
+                {label:'Method A…', placeholder:'e.g. Method A subtracts 6 first, then divides by 2, which needs only one division.'},
+                {label:'In contrast, Method B…', placeholder:'e.g. In contrast, Method B divides every term by 2 first, which is more likely to cause an error.'},
+                {label:'Overall…', placeholder:'e.g. Overall, Method A is more efficient for this type of equation.'}
+              ],
+              model:'Method A subtracts 6 first, then divides by 2, which needs only one division. In contrast, Method B divides every term by 2 first, which is more likely to cause an error. Overall, Method A is more efficient for this type of equation.',
+              feedback:'A complete, well-justified comparison — this is exactly how engineers argue for one method over another.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Compare two methods for a new equation: 3x − 9 = 18',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['One method is to...','Another method is to...','I would choose... because...'],
+              minWords:15,
+              model:'One method is to add 9 to both sides first, giving 3x = 27, then divide by 3, so x = 9. Another method is to divide everything by 3 first, giving x − 3 = 6, then add 3. The first method is more efficient because it avoids dividing the 9 by 3.',
+              feedback:'You compared two full methods and justified a choice, entirely on your own.' }
+          ]
+        }
+      ]
+    },
+    {
+      id:'science-explainer', icon:'🔬', title:'Marine Science Lab', worldsub:'Science Explainer',
+      desc:'Explain ocean science clearly enough for the whole crew to understand.',
+      status:'ready',
+      missions:[
+        {
+          id:'ice-float', icon:'🧊', title:'Why Does Ice Float?',
+          desc:'Explain the science of density using the Cause → Process → Result framework.', equation:'Density of ice vs. water',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'Why does ice float on liquid water?',
+              scenario:'A cadet in the Ship\'s Garden lab asks you to explain what he\'s observing.',
+              options:['Ice weighs less than water','Ice is less dense than liquid water','Ice is colder than water so it rises','Ice contains no water'],
+              correct:1,
+              feedback:'Right — floating is about density, not weight or temperature.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the core science sentence.',
+              words:['Ice','is','less','dense','than','liquid','water.'],
+              target:'Ice is less dense than liquid water.',
+              feedback:'That\'s the key fact — precise and correctly worded.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'When water freezes, its molecules move apart and take up more ',
+              prefix:'', suffix:'.', accept:['space','volume','room'],
+              feedback:'Correct — the molecules spread out and take up more space, which is why ice is less dense.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Explain the cause using the starter below.',
+              starter:'Ice floats because ',
+              hints:['it is less dense than water','its molecules take up more space when frozen'],
+              minWords:3,
+              feedback:'Good — you\'ve linked the cause to the effect.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Explain why ice floats on water.',
+              scenario:'Write one sentence stating the fact, one sentence explaining why it\'s true.',
+              hints:['Ice is less dense than liquid water.','This is because its molecules take up more space when frozen.'],
+              minWords:10,
+              model:'Ice is less dense than liquid water. This is because its molecules move further apart and take up more space when frozen.',
+              feedback:'That\'s a clear scientific explanation — a claim, backed by a reason.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full explanation using the framework.',
+              scenario:'Use Because → This causes → As a result to explain the full science.',
+              framework:[
+                {label:'Because…', placeholder:'e.g. Because water molecules spread out and take up more space when they freeze,'},
+                {label:'This causes…', placeholder:'e.g. this causes ice to become less dense than liquid water.'},
+                {label:'As a result…', placeholder:'e.g. as a result, ice floats on top of liquid water.'}
+              ],
+              model:'Because water molecules spread out and take up more space when they freeze, this causes ice to become less dense than liquid water. As a result, ice floats on top of liquid water.',
+              feedback:'A complete cause-and-effect explanation — this is exactly how a marine scientist writes it up.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Explain why an iceberg mostly stays hidden underwater — only about 10% shows above the surface.',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['Ice is only slightly less dense than water, so...','Because the densities are so close,...'],
+              minWords:15,
+              model:'Ice is only slightly less dense than liquid water, so it floats but barely. Because the densities are so close, most of the iceberg\'s volume — about 90% — stays underwater, with only a small tip visible above the surface.',
+              feedback:'You explained a real navigational hazard using the same density science, entirely on your own.' }
+          ]
+        },
+        {
+          id:'cold-atlantic', icon:'🌡️', title:'Cold Atlantic Experiment',
+          desc:'Explain why the deep ocean stays cold, using cause and effect.', equation:'Sunlight vs. ocean depth',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'Why does ocean water get colder as you go deeper?',
+              scenario:'The Navigator asks you to explain a strange temperature reading from the deep-sea probe.',
+              options:['Sunlight cannot reach deep water to warm it','Deep water is closer to ice caps','Pressure makes water colder','There is no pattern'],
+              correct:0,
+              feedback:'Right — sunlight is the ocean\'s main heat source, and it can\'t reach very deep.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the core science sentence.',
+              words:['Sunlight','cannot','reach','deep','water','to','warm','it.'],
+              target:'Sunlight cannot reach deep water to warm it.',
+              feedback:'That\'s the key fact, clearly worded.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'Only the top layer of the ocean receives enough ',
+              prefix:'', suffix:' to stay warm.', accept:['sunlight','light'],
+              feedback:'Correct — only the surface layer gets enough sunlight to warm up.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Explain the cause using the starter below.',
+              starter:'The deep ocean is cold because ',
+              hints:['sunlight cannot reach that far down','there is no heat source at that depth'],
+              minWords:3,
+              feedback:'Good — cause linked clearly to effect.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Explain why deep ocean water is colder than surface water.',
+              scenario:'Write one sentence about sunlight, one sentence about the result.',
+              hints:['Sunlight only warms the top layer of the ocean.','Deeper water receives little to no sunlight, so it stays cold.'],
+              minWords:10,
+              model:'Sunlight only warms the top layer of the ocean, usually the first 200 metres. Deeper water receives little to no sunlight, so it stays cold all year round.',
+              feedback:'Clear cause and effect, backed by a real detail (the depth).' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full explanation using the framework.',
+              scenario:'Use Because → This causes → As a result.',
+              framework:[
+                {label:'Because…', placeholder:'e.g. Because sunlight cannot penetrate far below the surface,'},
+                {label:'This causes…', placeholder:'e.g. this causes the deep ocean to receive very little heat energy.'},
+                {label:'As a result…', placeholder:'e.g. as a result, deep water stays close to freezing even near the equator.'}
+              ],
+              model:'Because sunlight cannot penetrate far below the surface, this causes the deep ocean to receive very little heat energy. As a result, deep water stays close to freezing even near the equator.',
+              feedback:'A complete explanation the Navigator can log word for word.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Explain why the sea surface near the poles freezes but the deep ocean rarely does, even though both are very cold.',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['Surface water loses heat directly to the freezing air, so...','The deep ocean is insulated from...'],
+              minWords:15,
+              model:'Surface water is in direct contact with the freezing polar air, so it loses heat quickly and can drop to freezing point. The deep ocean is insulated by the layers of water above it, so although it is cold, it loses heat much more slowly and rarely freezes.',
+              feedback:'You compared two related ideas and explained the difference, entirely on your own.' }
+          ]
+        },
+        {
+          id:'saltwater-mystery', icon:'🧂', title:'Saltwater Mystery',
+          desc:'Explain why seawater behaves differently from fresh water.', equation:'Freezing point of seawater',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'Why does seawater freeze at a lower temperature than fresh water?',
+              scenario:'The deck is icing over, but the sea around the ship isn\'t frozen. A cadet asks why.',
+              options:['Salt particles get in the way of ice crystals forming','Salt makes the water warmer','Seawater contains less water','Salt evaporates the water'],
+              correct:0,
+              feedback:'Right — dissolved salt particles interfere with how water molecules bond into ice.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the core science sentence.',
+              words:['Salt','particles','get','in','the','way','of','ice','forming.'],
+              target:'Salt particles get in the way of ice forming.',
+              feedback:'That\'s the key fact, clearly worded.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'Salt lowers the ',
+              prefix:'', suffix:' point of water.', accept:['freezing'],
+              feedback:'Correct — salt lowers water\'s freezing point.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Explain the cause using the starter below.',
+              starter:'Seawater freezes at a lower temperature because ',
+              hints:['salt particles interfere with ice crystals forming','the salt gets in the way of water molecules bonding'],
+              minWords:3,
+              feedback:'Good — cause linked clearly to effect.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Explain why seawater freezes at a lower temperature than fresh water.',
+              scenario:'Write one sentence about the cause, one sentence about the effect.',
+              hints:['Salt particles get in the way of water molecules forming ice crystals.','This means seawater has to get colder than fresh water before it freezes.'],
+              minWords:10,
+              model:'Salt particles get in the way of water molecules bonding into ice crystals. This means seawater has to reach a lower temperature than fresh water before it freezes.',
+              feedback:'Clear, precise cause and effect.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full explanation using the framework.',
+              scenario:'Use Because → This causes → As a result.',
+              framework:[
+                {label:'Because…', placeholder:'e.g. Because salt particles interfere with water molecules forming ice crystals,'},
+                {label:'This causes…', placeholder:'e.g. this causes seawater to need a lower temperature to freeze.'},
+                {label:'As a result…', placeholder:'e.g. as a result, the Atlantic rarely freezes even in very cold weather.'}
+              ],
+              model:'Because salt particles interfere with water molecules forming ice crystals, this causes seawater to need a lower temperature to freeze. As a result, the Atlantic rarely freezes solid even in very cold weather.',
+              feedback:'A complete explanation ready for the ship\'s science log.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Explain why engineers sometimes spread salt on icy ship decks or roads.',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['Salt lowers the freezing point of water, so...','This means ice on the surface...'],
+              minWords:15,
+              model:'Salt lowers the freezing point of water. When it is spread on an icy surface, it makes the ice melt at a temperature where it would normally stay frozen, which helps keep the deck or road safer to walk on.',
+              feedback:'You applied the same science to a real, practical situation, entirely on your own.' }
+          ]
+        }
+      ]
+    },
+    { id:'data-detective', icon:'📊', title:'Navigation & Data Deck', worldsub:'Data Detective',
+      desc:'Describe and interpret charts and graphs.', status:'construction' },
+    { id:'lab-reporter', icon:'🧪', title:'Engineering Test Lab', worldsub:'Lab Reporter',
+      desc:'Write full aim-to-conclusion experiment reports.', status:'construction' },
+    { id:'opinion-arena', icon:'🗣️', title:"Captain's Council", worldsub:'Opinion Arena',
+      desc:'Give an opinion and back it up with reasons.', status:'construction' },
+    { id:'essay-builder', icon:'📝', title:'Atlantic Voyages', worldsub:'Essay Builder',
+      desc:'Plan and build full structured essays.', status:'construction' },
+    { id:'real-life-writer', icon:'✉️', title:'Crew Mail Room', worldsub:'Real-Life Writer',
+      desc:'Write emails, letters, and reports for real situations.', status:'construction' }
+  ];
+
+  // ---------- STATE ----------
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(raw) return JSON.parse(raw);
+    }catch(e){}
+    return { worlds:{} };
+  }
+  function saveState(){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+  let state = loadState();
+  WORLDS.forEach(w=>{
+    if(w.status!=='ready') return;
+    if(!state.worlds[w.id]) state.worlds[w.id] = {};
+    w.missions.forEach(m=>{
+      if(!state.worlds[w.id][m.id]) state.worlds[w.id][m.id] = { levelIndex:0, done:false };
+    });
+  });
+
+  function worldPct(world){
+    if(world.status!=='ready') return 0;
+    const totalLevels = world.missions.reduce((s,m)=>s+m.levels.length,0);
+    const doneLevels = world.missions.reduce((s,m)=>s+Math.min(state.worlds[world.id][m.id].levelIndex, m.levels.length),0);
+    return totalLevels ? Math.round((doneLevels/totalLevels)*100) : 0;
+  }
+  function overallPct(){
+    const readyWorlds = WORLDS.filter(w=>w.status==='ready');
+    if(!readyWorlds.length) return 0;
+    const sum = readyWorlds.reduce((s,w)=>s+worldPct(w),0);
+    return Math.round(sum/readyWorlds.length);
+  }
+  function rankLabel(pct){
+    if(pct>=100) return 'Junior Engineer';
+    if(pct>=50) return 'Engineering Cadet';
+    return 'Deck Cadet';
+  }
+
+  // ---------- VIEW STATE ----------
+  let view = { screen:'worldmap', worldId:null, missionId:null, levelIndex:0, buildOrder:[], buildBank:[] };
+
+  const app = document.getElementById('app');
+  const topTitle = document.getElementById('topTitle');
+  const topSub = document.getElementById('topSub');
+  const topGaugeNum = document.getElementById('topGaugeNum');
+  const backBtn = document.getElementById('backBtn');
+
+  function getWorld(id){ return WORLDS.find(w=>w.id===id); }
+  function getMission(worldId, missionId){ return getWorld(worldId).missions.find(m=>m.id===missionId); }
+
+  function updateTopbar(){
+    if(view.screen==='worldmap'){
+      document.querySelector('.gauge').style.setProperty('--pct', overallPct());
+      topGaugeNum.textContent = overallPct()+'%';
+      topTitle.textContent = 'Writing Academy';
+      topSub.textContent = 'S.S. Wordcraft';
+      backBtn.disabled = true; backBtn.textContent = '⚓';
+    } else if(view.screen==='missions'){
+      const w = getWorld(view.worldId);
+      const pct = worldPct(w);
+      document.querySelector('.gauge').style.setProperty('--pct', pct);
+      topGaugeNum.textContent = pct+'%';
+      topTitle.textContent = w.title;
+      topSub.textContent = 'S.S. Wordcraft · '+w.worldsub;
+      backBtn.disabled = false; backBtn.textContent = '← Map';
+    } else {
+      const w = getWorld(view.worldId);
+      const pct = worldPct(w);
+      document.querySelector('.gauge').style.setProperty('--pct', pct);
+      topGaugeNum.textContent = pct+'%';
+      const m = getMission(view.worldId, view.missionId);
+      topTitle.textContent = m.title;
+      topSub.textContent = 'Equation: '+m.equation;
+      backBtn.disabled = false; backBtn.textContent = '← Missions';
+    }
+  }
+
+  backBtn.addEventListener('click', ()=>{
+    if(view.screen==='worldmap') return;
+    if(view.screen==='missions'){ goWorldMap(); return; }
+    view = { screen:'missions', worldId:view.worldId, missionId:null, levelIndex:0, buildOrder:[], buildBank:[] };
+    render();
+  });
+
+  function goWorldMap(){ view = { screen:'worldmap', worldId:null, missionId:null, levelIndex:0, buildOrder:[], buildBank:[] }; render(); }
+  function openWorld(worldId){ view = { screen:'missions', worldId, missionId:null, levelIndex:0, buildOrder:[], buildBank:[] }; render(); }
+  function openMission(worldId, missionId){
+    const m = getMission(worldId, missionId);
+    const progress = state.worlds[worldId][missionId];
+    view = { screen:'level', worldId, missionId, levelIndex: Math.min(progress.levelIndex, m.levels.length-1), buildOrder:[], buildBank:[] };
+    render();
+  }
+
+  function nextLevel(){
+    const m = getMission(view.worldId, view.missionId);
+    const prog = state.worlds[view.worldId][view.missionId];
+    if(prog.levelIndex < view.levelIndex+1) prog.levelIndex = view.levelIndex+1;
+    saveState();
+    if(view.levelIndex+1 >= m.levels.length){
+      prog.done = true; prog.levelIndex = m.levels.length;
+      saveState();
+      view.screen = 'complete';
+      render();
+    } else {
+      view.levelIndex += 1;
+      view.buildOrder = []; view.buildBank = [];
+      render();
+    }
+  }
+
+  // ---------- RENDER: WORLD MAP ----------
+  function renderWorldMap(){
+    const pct = overallPct();
+    let html = '';
+    html += `<div class="hero">
+      <div class="eyebrow">S.S. Wordcraft</div>
+      <h2>Writing Academy</h2>
+      <p>Every world trains a different kind of writing you need aboard ship. Pick a world to start a mission.</p>
+    </div>`;
+    html += `<div class="big-gauge-wrap"><div class="big-gauge" style="--pct:${pct}"><div class="inner"><div class="num">${pct}%</div><div class="lbl">Overall Progress</div></div></div></div>`;
+    html += `<div class="rank-line">Current rank: <b>${rankLabel(pct)}</b></div>`;
+    html += `<div class="mission-list">`;
+    WORLDS.forEach(w=>{
+      if(w.status==='ready'){
+        const p = worldPct(w);
+        html += `<div class="mission-card" data-world="${w.id}">
+          <div class="icon">${w.icon}</div>
+          <div class="body">
+            <div class="worldsub">${w.worldsub}</div>
+            <h3>${w.title}</h3>
+            <p class="desc">${w.desc}</p>
+            <div class="progress-track"><div class="progress-fill" style="width:${p}%"></div></div>
+            <div class="status">${p}% COMPLETE</div>
+          </div>
+        </div>`;
+      } else {
+        html += `<div class="mission-card construction">
+          <div class="icon">${w.icon}</div>
+          <div class="body">
+            <div class="worldsub">${w.worldsub}</div>
+            <h3>${w.title}</h3>
+            <p class="desc">${w.desc}</p>
+            <div class="status construction-text">🔧 UNDER CONSTRUCTION</div>
+          </div>
+        </div>`;
+      }
+    });
+    html += `</div>`;
+    app.innerHTML = html;
+    document.querySelectorAll('.mission-card[data-world]').forEach(card=>{
+      card.addEventListener('click', ()=>openWorld(card.dataset.world));
+    });
+  }
+
+  // ---------- RENDER: MISSIONS (within a world) ----------
+  function renderMissions(){
+    const w = getWorld(view.worldId);
+    let html = '';
+    html += `<div class="hero">
+      <div class="eyebrow">${w.worldsub}</div>
+      <h2>${w.title}</h2>
+      <p>${w.desc}</p>
+    </div>`;
+    html += `<div class="mission-list">`;
+    w.missions.forEach((m,i)=>{
+      const prog = state.worlds[w.id][m.id];
+      const total = m.levels.length;
+      const done = Math.min(prog.levelIndex, total);
+      const missionPct = Math.round((done/total)*100);
+      const prevDone = i===0 || state.worlds[w.id][w.missions[i-1].id].done;
+      const locked = !prevDone && !prog.done && done===0;
+      html += `<div class="mission-card ${locked?'locked':''}" data-mission="${m.id}">
+        <div class="icon">${m.icon}</div>
+        <div class="body">
+          <h3>${m.title}</h3>
+          <p class="desc">${m.desc}</p>
+          <div class="progress-track"><div class="progress-fill" style="width:${missionPct}%"></div></div>
+          <div class="status">${prog.done?'✓ COMPLETE':(locked?'LOCKED':(done+'/'+total+' LEVELS'))}</div>
+        </div>
+        ${locked?'<div class="lock-badge">🔒</div>':''}
+      </div>`;
+    });
+    html += `</div>`;
+    app.innerHTML = html;
+    document.querySelectorAll('.mission-card[data-mission]').forEach(card=>{
+      card.addEventListener('click', ()=>{
+        if(card.classList.contains('locked')) return;
+        openMission(w.id, card.dataset.mission);
+      });
+    });
+  }
+
+  // ---------- RENDER: LEVEL ----------
+  function wordCount(str){ return (str.trim().match(/\S+/g)||[]).length; }
+
+  function renderHintChips(hints, label){
+    if(!hints || !hints.length) return '';
+    let html = `<div class="hint-zone"><div class="hint-label">💡 ${label}</div><div class="hint-chips">`;
+    hints.forEach((h,i)=>{ html += `<div class="hint-chip" data-hint="${i}">${h}</div>`; });
+    html += `</div></div>`;
+    return html;
+  }
+  function wireHintChips(hints){
+    if(!hints || !hints.length) return;
+    document.querySelectorAll('.hint-chip').forEach(chip=>{
+      chip.addEventListener('click', ()=>{
+        const input = document.getElementById('freeInput');
+        if(!input) return;
+        const text = hints[parseInt(chip.dataset.hint,10)];
+        const current = input.value;
+        const needsSpace = current.length>0 && !current.endsWith(' ') && !current.endsWith('\n');
+        input.value = current + (needsSpace?' ':'') + text + ' ';
+        input.focus();
+        input.selectionStart = input.selectionEnd = input.value.length;
+      });
+    });
+  }
+
+  function renderLevel(){
+    const m = getMission(view.worldId, view.missionId);
+    const lvl = m.levels[view.levelIndex];
+    let html = '';
+
+    html += `<div class="rung-track">`;
+    m.levels.forEach((l,i)=>{
+      let cls = 'rung';
+      if(i < view.levelIndex || state.worlds[view.worldId][view.missionId].done) cls += ' done';
+      else if(i===view.levelIndex) cls += ' active';
+      html += `<div class="${cls}">${i+1}</div>`;
+    });
+    html += `</div>`;
+
+    html += `<div class="level-card">`;
+    html += `<div class="level-kicker">${lvl.kicker}</div>`;
+    html += `<div class="level-title">${lvl.title}</div>`;
+    if(lvl.scenario) html += `<div class="scenario">${lvl.scenario}</div>`;
+
+    if(lvl.type==='choice'){
+      lvl.options.forEach((opt,i)=>{ html += `<button class="choice-btn" data-i="${i}">${opt}</button>`; });
+    } else if(lvl.type==='build'){
+      html += `<div class="build-slot" id="buildSlot"><span class="placeholder">Tap words below to build your sentence…</span></div>`;
+      html += `<div class="word-bank" id="wordBank"></div>`;
+      html += `<div class="btn-row"><button class="btn ghost" id="resetBuild">Reset</button></div>`;
+    } else if(lvl.type==='complete'){
+      html += `<div style="font-family:var(--font-gauge);font-size:16px;margin-bottom:10px;">${lvl.prefix||''}<span style="color:var(--brass-bright);">____</span>${lvl.suffix||''}</div>`;
+      html += `<input type="text" id="completeInput" placeholder="Type your answer">`;
+    } else if(lvl.type==='starter'){
+      html += `<div style="font-size:15px;color:var(--brass-bright);margin-bottom:8px;font-family:var(--font-plate);">"${lvl.starter}___________"</div>`;
+      html += `<textarea id="freeInput" placeholder="${lvl.starter}...">${lvl.starter}</textarea>`;
+      html += renderHintChips(lvl.hints, 'Need an idea? Tap one:');
+    } else if(lvl.type==='twoSentence' || lvl.type==='independent'){
+      html += `<textarea id="freeInput" placeholder="Write your answer here…"></textarea>`;
+      html += renderHintChips(lvl.hints, 'Need a starting point? Tap one to add it:');
+    } else if(lvl.type==='structured'){
+      html += `<div class="framework">`;
+      lvl.framework.forEach((f,i)=>{
+        html += `<div class="step"><label>${f.label}</label><textarea data-fi="${i}" placeholder="${f.placeholder}"></textarea></div>`;
+      });
+      html += `</div>`;
+    }
+
+    html += `<div id="feedbackZone"></div>`;
+    html += `<div class="btn-row" id="actionRow">`;
+    if(lvl.type==='choice' || lvl.type==='build'){
+      html += `<button class="btn primary" id="checkBtn" disabled>Check</button>`;
+    } else {
+      html += `<button class="btn primary" id="checkBtn">Check my answer</button>`;
+    }
+    html += `</div>`;
+    html += `</div>`;
+
+    app.innerHTML = html;
+    wireLevelInteractions(lvl);
+    wireHintChips(lvl.hints);
+  }
+
+  function wireLevelInteractions(lvl){
+    const feedbackZone = document.getElementById('feedbackZone');
+    const checkBtn = document.getElementById('checkBtn');
+
+    function showFeedback(msg, model){
+      let html = `<div class="feedback good">${msg}`;
+      if(model) html += `<div class="model">Example answer: "${model}"</div>`;
+      html += `</div>`;
+      feedbackZone.innerHTML = html;
+      document.getElementById('actionRow').innerHTML = `<button class="btn primary" id="nextBtn">Next →</button>`;
+      document.getElementById('nextBtn').addEventListener('click', nextLevel);
+    }
+
+    if(lvl.type==='choice'){
+      const btns = document.querySelectorAll('.choice-btn');
+      btns.forEach(b=>{
+        b.addEventListener('click', ()=>{
+          if(b.dataset.locked) return;
+          btns.forEach(x=>x.dataset.locked='1');
+          const i = parseInt(b.dataset.i,10);
+          if(i===lvl.correct){
+            b.classList.add('correct');
+            showFeedback(lvl.feedback);
+          } else {
+            b.classList.add('wrong');
+            btns[lvl.correct].classList.add('correct');
+            showFeedback(lvl.feedback);
+          }
+        });
+      });
+    }
+
+    if(lvl.type==='build'){
+      const bank = document.getElementById('wordBank');
+      const slot = document.getElementById('buildSlot');
+      let available = lvl.words.map((w,i)=>({w,i,used:false}));
+      function renderBank(){
+        bank.innerHTML='';
+        available.forEach(item=>{
+          if(item.used) return;
+          const chip = document.createElement('div');
+          chip.className='word-chip'; chip.textContent=item.w;
+          chip.addEventListener('click', ()=>{
+            item.used = true;
+            view.buildOrder.push(item.w);
+            renderSlot(); renderBank();
+            checkBuildReady();
+          });
+          bank.appendChild(chip);
+        });
+      }
+      function renderSlot(){
+        if(view.buildOrder.length===0){
+          slot.innerHTML = '<span class="placeholder">Tap words below to build your sentence…</span>';
+          return;
+        }
+        slot.innerHTML='';
+        view.buildOrder.forEach((w,idx)=>{
+          const chip = document.createElement('div');
+          chip.className='word-chip'; chip.textContent=w;
+          chip.addEventListener('click', ()=>{
+            view.buildOrder.splice(idx,1);
+            const found = available.find(a=>a.w===w && a.used);
+            if(found) found.used=false;
+            renderSlot(); renderBank();
+            checkBuildReady();
+          });
+          slot.appendChild(chip);
+        });
+      }
+      function checkBuildReady(){
+        checkBtn.disabled = view.buildOrder.length !== lvl.words.length;
+      }
+      document.getElementById('resetBuild').addEventListener('click', ()=>{
+        view.buildOrder = [];
+        available.forEach(a=>a.used=false);
+        renderSlot(); renderBank(); checkBuildReady();
+      });
+      renderBank(); renderSlot();
+
+      checkBtn.addEventListener('click', ()=>{
+        const built = view.buildOrder.join(' ').replace(/\s+([.,])/g,'$1');
+        if(built.trim().toLowerCase() === lvl.target.trim().toLowerCase()){
+          showFeedback(lvl.feedback);
+        } else {
+          feedbackZone.innerHTML = `<div class="feedback info">Not quite the right order yet. The correct sentence is: <br><b>"${lvl.target}"</b> — tap Reset and try building it again, or continue when ready.</div>`;
+          document.getElementById('actionRow').innerHTML = `<button class="btn ghost" id="retryBtn">Reset & try again</button><button class="btn primary" id="nextBtn">Continue →</button>`;
+          document.getElementById('retryBtn').addEventListener('click', ()=>{ document.getElementById('resetBuild').click(); feedbackZone.innerHTML=''; renderLevelActionRow(); });
+          document.getElementById('nextBtn').addEventListener('click', nextLevel);
+        }
+      });
+    }
+
+    if(lvl.type==='complete'){
+      checkBtn.addEventListener('click', ()=>{
+        const val = document.getElementById('completeInput').value.trim().toLowerCase();
+        if(lvl.accept.some(a=>a.toLowerCase()===val)){
+          showFeedback(lvl.feedback);
+        } else {
+          feedbackZone.innerHTML = `<div class="feedback info">Not quite — the answer is <b>${lvl.accept[0]}</b>. That's okay, you've got it now.</div>`;
+          document.getElementById('actionRow').innerHTML = `<button class="btn primary" id="nextBtn">Continue →</button>`;
+          document.getElementById('nextBtn').addEventListener('click', nextLevel);
+        }
+      });
+    }
+
+    if(lvl.type==='starter'){
+      checkBtn.addEventListener('click', ()=>{
+        const val = document.getElementById('freeInput').value;
+        const afterStarter = val.slice(lvl.starter.length);
+        if(wordCount(afterStarter) >= lvl.minWords){
+          showFeedback(lvl.feedback);
+        } else {
+          feedbackZone.innerHTML = `<div class="feedback info">Try adding a few more words after "${lvl.starter.trim()}" so it's a full sentence.</div>`;
+          document.getElementById('actionRow').innerHTML = `<button class="btn primary" id="checkAgain">Check again</button>`;
+          document.getElementById('checkAgain').addEventListener('click', ()=>wireLevelInteractions(lvl));
+        }
+      });
+    }
+
+    if(lvl.type==='twoSentence' || lvl.type==='independent'){
+      checkBtn.addEventListener('click', ()=>{
+        const val = document.getElementById('freeInput').value;
+        if(wordCount(val) >= lvl.minWords){
+          showFeedback(lvl.feedback, lvl.model);
+        } else {
+          feedbackZone.innerHTML = `<div class="feedback info">Add a bit more detail — try to explain both the step and the result.</div>`;
+          document.getElementById('actionRow').innerHTML = `<button class="btn primary" id="checkAgain">Check again</button>`;
+          document.getElementById('checkAgain').addEventListener('click', ()=>wireLevelInteractions(lvl));
+        }
+      });
+    }
+
+    if(lvl.type==='structured'){
+      checkBtn.addEventListener('click', ()=>{
+        const areas = document.querySelectorAll('[data-fi]');
+        let allFilled = true;
+        areas.forEach(a=>{ if(wordCount(a.value) < 2) allFilled = false; });
+        if(allFilled){
+          showFeedback(lvl.feedback, lvl.model);
+        } else {
+          feedbackZone.innerHTML = `<div class="feedback info">Fill in each part of the framework — even a short phrase is fine, just make sure every box has something.</div>`;
+          document.getElementById('actionRow').innerHTML = `<button class="btn primary" id="checkAgain">Check again</button>`;
+          document.getElementById('checkAgain').addEventListener('click', ()=>wireLevelInteractions(lvl));
+        }
+      });
+    }
+  }
+
+  function renderLevelActionRow(){
+    const lvl = getMission(view.worldId, view.missionId).levels[view.levelIndex];
+    document.getElementById('actionRow').innerHTML = (lvl.type==='choice'||lvl.type==='build')
+      ? `<button class="btn primary" id="checkBtn" disabled>Check</button>`
+      : `<button class="btn primary" id="checkBtn">Check my answer</button>`;
+    wireLevelInteractions(lvl);
+  }
+
+  // ---------- RENDER: COMPLETE ----------
+  function renderComplete(){
+    const w = getWorld(view.worldId);
+    const m = getMission(view.worldId, view.missionId);
+    app.innerHTML = `<div class="complete-screen">
+      <div class="badge">${m.icon}</div>
+      <h2>Mission Complete</h2>
+      <p>You explained your thinking from a multiple-choice hint all the way to a fully independent write-up. <b>${m.title}</b> is signed off.</p>
+      <button class="btn primary" id="doneBtn" style="max-width:220px;margin:0 auto;">Back to ${w.worldsub}</button>
+    </div>`;
+    document.getElementById('doneBtn').addEventListener('click', ()=>openWorld(w.id));
+  }
+
+  function render(){
+    updateTopbar();
+    if(view.screen==='worldmap') renderWorldMap();
+    else if(view.screen==='missions') renderMissions();
+    else if(view.screen==='level') renderLevel();
+    else if(view.screen==='complete') renderComplete();
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
