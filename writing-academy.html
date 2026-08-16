@@ -210,6 +210,23 @@
   .complete-screen h2{font-family:var(--font-plate); color:var(--brass-bright); margin:0 0 8px;}
   .complete-screen p{color:var(--steam-dim); font-size:14px; margin-bottom:22px;}
 
+  .diagram-box{
+    background:rgba(16,31,39,0.4); border:1px dashed var(--rivet); border-radius:12px;
+    padding:14px 10px 10px; margin-bottom:14px; text-align:center;
+  }
+  .diagram-caption{
+    font-size:12px; color:var(--steam-dim); margin-top:8px; line-height:1.4; font-style:italic;
+  }
+
+  .fill-pills{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:6px;}
+  .fill-pill{
+    background:var(--hull-panel); border:1px solid var(--brass); color:var(--brass-bright);
+    padding:10px 18px; border-radius:24px; font-size:15px; cursor:pointer;
+  }
+  .fill-pill:active{transform:scale(0.97);}
+  .fill-pill.correct{border-color:var(--emerald); background:rgba(87,163,115,0.18); color:#cdeedb;}
+  .fill-pill.wrong{border-color:var(--danger); background:rgba(193,84,60,0.18); color:#f3c9c0;}
+
   .hint-zone{margin:2px 0 14px;}
   .hint-label{font-family:var(--font-gauge); font-size:11px; letter-spacing:0.08em; color:var(--steam-dim); text-transform:uppercase; margin-bottom:7px;}
   .hint-chips{display:flex; flex-wrap:wrap; gap:8px;}
@@ -265,7 +282,7 @@
             { type:'complete', kicker:'Level 3 · Complete',
               title:'Fill in the missing number.',
               scenario:'Subtracting 5 from both sides of <code>3x + 5 = 20</code> gives:',
-              prefix:'3x = ', accept:['15'],
+              prefix:'3x = ', accept:['15'], options:['10','15','20','25'],
               feedback:'Correct — 20 − 5 = 15, so 3x = 15.' },
             { type:'starter', kicker:'Level 4 · Sentence Starter',
               title:'Finish the sentence.',
@@ -319,7 +336,7 @@
             { type:'complete', kicker:'Level 3 · Complete',
               title:'Fill in the missing number.',
               scenario:'The correct first step distributes the 2, giving:',
-              prefix:'2x + ', suffix:' = 16', accept:['6'],
+              prefix:'2x + ', suffix:' = 16', accept:['6'], options:['3','6','8','9'],
               feedback:'Correct — 2 × 3 = 6, so it\'s 2x + 6 = 16.' },
             { type:'starter', kicker:'Level 4 · Sentence Starter',
               title:'Finish the sentence.',
@@ -373,7 +390,7 @@
             { type:'complete', kicker:'Level 3 · Complete',
               title:'Fill in the missing word.',
               scenario:'In Method B, every term must be divided by 2 — including the constant, ',
-              prefix:'including the ', suffix:'.', accept:['constant','6','number'],
+              prefix:'including the ', suffix:'.', accept:['constant','6','number'], options:['constant','variable','coefficient','equation'],
               feedback:'Correct — the constant (6) has to be divided too, which is easy to forget.' },
             { type:'starter', kicker:'Level 4 · Sentence Starter',
               title:'Finish the sentence.',
@@ -416,7 +433,7 @@
       status:'ready',
       missions:[
         {
-          id:'ice-float', icon:'🧊', title:'Why Does Ice Float?',
+          id:'ice-float', icon:'🧊', title:'Why Does Ice Float?', diagram:'ice-float',
           desc:'Explain the science of density using the Cause → Process → Result framework.', equation:'Density of ice vs. water',
           levels:[
             { type:'choice', kicker:'Level 1 · Choose',
@@ -434,7 +451,7 @@
             { type:'complete', kicker:'Level 3 · Complete',
               title:'Fill in the missing word.',
               scenario:'When water freezes, its molecules move apart and take up more ',
-              prefix:'', suffix:'.', accept:['space','volume','room'],
+              prefix:'', suffix:'.', accept:['space','volume','room'], options:['space','energy','weight','mass'],
               feedback:'Correct — the molecules spread out and take up more space, which is why ice is less dense.' },
             { type:'starter', kicker:'Level 4 · Sentence Starter',
               title:'Finish the sentence.',
@@ -470,7 +487,7 @@
           ]
         },
         {
-          id:'cold-atlantic', icon:'🌡️', title:'Cold Atlantic Experiment',
+          id:'cold-atlantic', icon:'🌡️', title:'Cold Atlantic Experiment', diagram:'cold-atlantic',
           desc:'Explain why the deep ocean stays cold, using cause and effect.', equation:'Sunlight vs. ocean depth',
           levels:[
             { type:'choice', kicker:'Level 1 · Choose',
@@ -488,7 +505,7 @@
             { type:'complete', kicker:'Level 3 · Complete',
               title:'Fill in the missing word.',
               scenario:'Only the top layer of the ocean receives enough ',
-              prefix:'', suffix:' to stay warm.', accept:['sunlight','light'],
+              prefix:'', suffix:' to stay warm.', accept:['sunlight','light'], options:['sunlight','pressure','oxygen','salt'],
               feedback:'Correct — only the surface layer gets enough sunlight to warm up.' },
             { type:'starter', kicker:'Level 4 · Sentence Starter',
               title:'Finish the sentence.',
@@ -524,7 +541,7 @@
           ]
         },
         {
-          id:'saltwater-mystery', icon:'🧂', title:'Saltwater Mystery',
+          id:'saltwater-mystery', icon:'🧂', title:'Saltwater Mystery', diagram:'saltwater',
           desc:'Explain why seawater behaves differently from fresh water.', equation:'Freezing point of seawater',
           levels:[
             { type:'choice', kicker:'Level 1 · Choose',
@@ -542,7 +559,7 @@
             { type:'complete', kicker:'Level 3 · Complete',
               title:'Fill in the missing word.',
               scenario:'Salt lowers the ',
-              prefix:'', suffix:' point of water.', accept:['freezing'],
+              prefix:'', suffix:' point of water.', accept:['freezing'], options:['freezing','boiling','melting','evaporation'],
               feedback:'Correct — salt lowers water\'s freezing point.' },
             { type:'starter', kicker:'Level 4 · Sentence Starter',
               title:'Finish the sentence.',
@@ -581,15 +598,406 @@
     },
     { id:'data-detective', icon:'📊', title:'Navigation & Data Deck', worldsub:'Data Detective',
       desc:'Describe and interpret charts and graphs.', status:'construction' },
-    { id:'lab-reporter', icon:'🧪', title:'Engineering Test Lab', worldsub:'Lab Reporter',
-      desc:'Write full aim-to-conclusion experiment reports.', status:'construction' },
-    { id:'opinion-arena', icon:'🗣️', title:"Captain's Council", worldsub:'Opinion Arena',
-      desc:'Give an opinion and back it up with reasons.', status:'construction' },
+    {
+      id:'lab-reporter', icon:'🧪', title:'Engineering Test Lab', worldsub:'Lab Reporter',
+      desc:'Write the key parts of a real experiment report — prediction, observation, conclusion.',
+      status:'ready',
+      missions:[
+        {
+          id:'propeller-prediction', icon:'🌀', title:'Propeller Prediction',
+          desc:'Write a prediction — a claim plus a reason — before the test even runs.', equation:'Prediction: claim + because',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'You\'re about to test how blade angle affects propeller thrust. Which of these is a correctly written prediction?',
+              scenario:'Before any test, the Chief wants your prediction logged first.',
+              options:['"The propeller spun."','"I predict that a steeper blade angle will increase thrust, because it pushes more water backward."','"Thrust increased when the angle increased."','"Propellers are used on ships."'],
+              correct:1,
+              feedback:'Right — a prediction states what you think WILL happen, plus a reason, before you test it.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build a simple prediction sentence.',
+              words:['I','predict','that','thrust','will','increase.'],
+              target:'I predict that thrust will increase.',
+              feedback:'That\'s a proper prediction sentence — a claim about what will happen.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'A strong prediction never just guesses — it gives a reason using the word',
+              prefix:'', suffix:'.', accept:['because'], options:['because','however','therefore','although'],
+              feedback:'Correct — "because" is what turns a guess into a scientific prediction.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Write a reason for your prediction using the starter below.',
+              starter:'I predict that the propeller\'s thrust will increase because ',
+              hints:['a steeper blade angle pushes more water backward','more water is displaced with each turn'],
+              minWords:3,
+              feedback:'Good — that\'s a real prediction, with a reason attached.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Write a full prediction: will increasing the propeller\'s rotation speed increase the ship\'s speed?',
+              scenario:'Write one sentence stating your prediction, one sentence giving your reason.',
+              hints:['I predict that increasing the rotation speed will increase the ship\'s speed.','This is because a faster-spinning propeller pushes more water backward each second.'],
+              minWords:10,
+              model:'I predict that increasing the propeller\'s rotation speed will increase the ship\'s speed. This is because a faster-spinning propeller pushes more water backward every second.',
+              feedback:'That\'s a complete, testable prediction — exactly what the Chief needs before the test begins.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full prediction using the framework.',
+              scenario:'Use Claim → Reason → How you\'ll check it.',
+              framework:[
+                {label:'I predict that…', placeholder:'e.g. I predict that a wider propeller blade will produce more thrust.'},
+                {label:'This is because…', placeholder:'e.g. This is because a wider blade pushes against more water with each turn.'},
+                {label:'I will know if I\'m right if…', placeholder:'e.g. I will know if I\'m right if the wider blade produces a higher reading on the thrust gauge.'}
+              ],
+              model:'I predict that a wider propeller blade will produce more thrust. This is because a wider blade pushes against more water with each turn. I will know if I\'m right if the wider blade produces a higher reading on the thrust gauge.',
+              feedback:'A complete scientific prediction — claim, reason, and a way to check it. That\'s ready for the test log.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Write a prediction on your own: will a ship carrying a heavier cargo load travel slower through the water?',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['I predict that...','This is because...'],
+              minWords:15,
+              model:'I predict that a ship carrying a heavier cargo load will travel slower through the water. This is because a heavier ship sits lower and displaces more water, creating more drag for the engines to overcome.',
+              feedback:'You wrote a full scientific prediction on a brand-new question, entirely on your own.' }
+          ]
+        },
+        {
+          id:'buoyancy-observation', icon:'👀', title:'Buoyancy Observation',
+          desc:'Describe exactly what happened in the clay-boat experiment.', equation:'Observation: describe, don\'t explain',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'You shaped clay into a ball and it sank. You reshaped it into a boat and it floated. Which is a correctly written observation?',
+              scenario:'An observation describes exactly what you saw — not why, not your opinion, not what you predicted.',
+              options:['"Clay boats are better than clay balls."','"The clay ball sank, but the boat shape floated on the surface."','"I predict the boat shape will float."','"Boats float because of buoyancy."'],
+              correct:1,
+              feedback:'Right — an observation describes exactly what you saw happen, without explaining why yet.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the observation sentence.',
+              words:['The','clay','ball','sank,','but','the','boat','shape','floated.'],
+              target:'The clay ball sank, but the boat shape floated.',
+              feedback:'That\'s a precise observation — it describes the change, not the reason for it.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'The clay changed from a solid ball that sank, to a hollow boat shape that',
+              prefix:'', suffix:'.', accept:['floated','floats'], options:['floated','sank','dissolved','melted'],
+              feedback:'Correct — describing the before-and-after change is exactly what a good observation does.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Describe what you saw using the starter below.',
+              starter:'I observed that ',
+              hints:['the clay ball sank immediately','the boat-shaped clay floated on the surface'],
+              minWords:3,
+              feedback:'Good — that\'s a precise, factual observation.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Write your observation of the clay experiment.',
+              scenario:'Write one sentence about the ball shape, one sentence about the boat shape.',
+              hints:['I observed that the solid clay ball sank straight to the bottom.','When the same clay was reshaped into a boat, it floated on the surface.'],
+              minWords:10,
+              model:'I observed that the solid clay ball sank straight to the bottom of the tank. When the same amount of clay was reshaped into a hollow boat shape, it floated on the surface.',
+              feedback:'That\'s a full observation — you described exactly what changed and how.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full observation using the framework.',
+              scenario:'Use What happened first → What changed → The result.',
+              framework:[
+                {label:'I observed that…', placeholder:'e.g. I observed that the clay ball sank within two seconds.'},
+                {label:'This changed when…', placeholder:'e.g. This changed when the same clay was reshaped into a hollow boat.'},
+                {label:'The result was…', placeholder:'e.g. The result was that the boat shape floated and carried a small weight without sinking.'}
+              ],
+              model:'I observed that the clay ball sank within two seconds of being placed in the water. This changed when the same clay was reshaped into a hollow boat. The result was that the boat shape floated and even carried a small weight without sinking.',
+              feedback:'A complete, precise observation — exactly what goes in the ship\'s science log.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Write an observation on your own: you tested a flat paper boat and a boat with folded-up sides, adding coins one at a time.',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['I observed that...','The flat boat...','The folded-side boat...'],
+              minWords:15,
+              model:'I observed that the flat paper boat began to sink after only two coins were added, as water quickly came over its low sides. The boat with folded-up sides held six coins before it started taking on water, because the raised sides kept the water out for longer.',
+              feedback:'You wrote a full, detailed observation of a brand-new experiment, entirely on your own.' }
+          ]
+        },
+        {
+          id:'heat-transfer-conclusion', icon:'💡', title:'Heat Transfer Conclusion',
+          desc:'Write a conclusion that links your results back to the question.', equation:'Conclusion: results → meaning',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'A metal, wooden, and plastic spoon each held a blob of butter in hot water. Metal melted it in 40s, plastic in 3 min, wood never melted. Which is a correctly written conclusion?',
+              scenario:'A conclusion uses the actual results as evidence to answer the original question.',
+              options:['"The metal spoon felt hot."','"The results show that metal conducts heat fastest, because it had the shortest melting time."','"I predict the metal spoon will heat fastest."','"Metal spoons are good for cooking."'],
+              correct:1,
+              feedback:'Right — a conclusion uses the actual results as evidence to answer the original question.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the conclusion sentence.',
+              words:['Metal','conducts','heat','fastest,','because','it','had','the','shortest','melting','time.'],
+              target:'Metal conducts heat fastest, because it had the shortest melting time.',
+              feedback:'That\'s a proper conclusion — a claim backed by the data.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'A strong conclusion always refers back to the actual',
+              prefix:'', suffix:' from the experiment.', accept:['results','data','evidence'], options:['results','opinions','guesses','predictions'],
+              feedback:'Correct — a conclusion must be backed by the results, not just an opinion.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'State what the data shows using the starter below.',
+              starter:'The results show that ',
+              hints:['metal conducts heat fastest','wood is the poorest conductor of heat'],
+              minWords:3,
+              feedback:'Good — that links directly to the data you collected.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Write a conclusion for the spoon experiment.',
+              scenario:'Write one sentence stating the finding, one sentence saying what it suggests.',
+              hints:['The results show that metal conducts heat fastest, taking only 40 seconds to melt the butter.','This suggests that metal is the best conductor of heat out of the three materials.'],
+              minWords:10,
+              model:'The results show that metal conducts heat fastest, taking only 40 seconds to melt the butter. This suggests that metal is the best conductor of heat out of the three materials tested.',
+              feedback:'That\'s a complete conclusion — a claim backed directly by your numbers.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full conclusion using the framework.',
+              scenario:'Use Results → What it suggests → Why it matters.',
+              framework:[
+                {label:'The results show that…', placeholder:'e.g. The results show that the metal spoon melted the butter in 40 seconds.'},
+                {label:'This suggests that…', placeholder:'e.g. This suggests that metal conducts heat much faster than wood or plastic.'},
+                {label:'This matters because…', placeholder:'e.g. This matters because it explains why ship engineers use metal for parts that need to transfer heat.'}
+              ],
+              model:'The results show that the metal spoon melted the butter in just 40 seconds, while the wooden spoon had not melted at all after 5 minutes. This suggests that metal conducts heat much faster than wood or plastic. This matters because it explains why ship engineers use metal, not wood, for parts that need to transfer heat, like boiler pipes.',
+              feedback:'A complete engineering conclusion — data, meaning, and real-world relevance, all linked together.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Write a conclusion on your own: three hull shapes raced across a tub. Flat: 8s. Pointed: 5s. Rounded: 6.5s.',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['The results show that...','This suggests that...'],
+              minWords:15,
+              model:'The results show that the pointed hull crossed the tub fastest, in just 5 seconds, while the flat hull was slowest at 8 seconds. This suggests that a pointed hull shape moves through water with less resistance than a flat or rounded hull, which is likely why most fast ships use a pointed bow.',
+              feedback:'You wrote a full data-based conclusion on a brand-new experiment, entirely on your own.' }
+          ]
+        }
+      ]
+    },
+    {
+      id:'opinion-arena', icon:'🗣️', title:"Captain's Council", worldsub:'Opinion Arena',
+      desc:'Give your opinion on a ship decision and back it up with reasons — using OREL: Opinion, Reason, Evidence, Link.',
+      status:'ready',
+      missions:[
+        {
+          id:'speed-vs-safety', icon:'⚓', title:'Speed vs Safety',
+          desc:'Should the ship go faster to arrive early, even in rough seas?', equation:'OREL: Opinion + Reason',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'The Captain could speed up to arrive a day early, but a storm is forecast. Which is a well-formed opinion (not just a fact)?',
+              scenario:'An opinion states what you think should happen, plus a reason — a fact just states something true.',
+              options:['"The ship is currently traveling at 20 knots."','"I believe the ship should slow down, because safety matters more than arriving early."','"Rough seas are forecast for tomorrow."','"The engine produces 50,000 horsepower."'],
+              correct:1,
+              feedback:'Right — an opinion states what you think should happen, plus a reason.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the opinion sentence.',
+              words:['I','believe','the','ship','should','slow','down.'],
+              target:'I believe the ship should slow down.',
+              feedback:'That\'s a proper opinion sentence — a clear claim.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'A strong opinion always gives a',
+              prefix:'', suffix:' to support the claim.', accept:['reason','reasons'], options:['reason','fact','guess','rule'],
+              feedback:'Correct — an opinion without a reason is just a guess.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Give your reason using the starter below.',
+              starter:'I believe the ship should slow down because ',
+              hints:['safety matters more than arriving early','rough seas increase the risk of an accident'],
+              minWords:3,
+              feedback:'Good — a claim backed by a reason.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Give your opinion on whether the ship should speed up despite the storm forecast.',
+              scenario:'Write one sentence for your opinion, one sentence for your reason.',
+              hints:['I believe the ship should slow down.','This is because passenger safety is more important than arriving a day early.'],
+              minWords:10,
+              model:'I believe the ship should slow down rather than risk the storm. This is because passenger safety is more important than arriving a day early.',
+              feedback:'That\'s a real opinion — a claim, backed by a reason.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full opinion using the OREL framework.',
+              scenario:'Use Opinion → Reason → Evidence/Example → Link.',
+              framework:[
+                {label:'My opinion is…', placeholder:'e.g. My opinion is that the ship should slow down.'},
+                {label:'One reason is…', placeholder:'e.g. One reason is that rough seas make accidents more likely.'},
+                {label:'For example…', placeholder:'e.g. For example, the Titanic disaster happened partly because the ship kept a high speed near known ice.'},
+                {label:'Therefore…', placeholder:'e.g. Therefore, safety should come before speed.'}
+              ],
+              model:'My opinion is that the ship should slow down. One reason is that rough seas make accidents more likely. For example, the Titanic disaster happened partly because the ship kept a high speed near known ice. Therefore, safety should come before speed.',
+              feedback:'A complete, well-argued opinion — exactly how a good debater builds a case.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Give your opinion: should ships be allowed to sail faster than the recommended limit in fog to stay on schedule?',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['My opinion is...','One reason is...','For example...'],
+              minWords:15,
+              model:'My opinion is that ships should not sail faster than the recommended speed limit in fog. One reason is that fog makes it much harder to spot other ships or obstacles in time to react. For example, poor visibility was a major factor in several historic ship collisions. Therefore, staying on schedule should never come before safety.',
+              feedback:'You built a full, well-reasoned argument on a brand-new question, entirely on your own.' }
+          ]
+        },
+        {
+          id:'old-vs-new-engine', icon:'⚙️', title:'Old Engine vs New Engine',
+          desc:'Should the company install a new engine, or trust the old one?', equation:'OREL: Opinion + Reason',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'The company could keep the reliable old engine or install a more powerful, untested new one. Which is a well-formed opinion?',
+              scenario:'Compare a plain fact against a claim with a reason attached.',
+              options:['"The old engine has been running for 15 years."','"I think the company should install the new engine, because it uses less fuel."','"The new engine was built last year."','"Engines convert fuel into motion."'],
+              correct:1,
+              feedback:'Right — a claim plus a reason is an opinion; a plain statement is just a fact.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the opinion sentence.',
+              words:['I','think','the','company','should','install','the','new','engine.'],
+              target:'I think the company should install the new engine.',
+              feedback:'That\'s a clear opinion sentence.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'Before giving an opinion, it helps to compare the',
+              prefix:'', suffix:' of each option.', accept:['advantages','pros','benefits'], options:['advantages','prices','colors','names'],
+              feedback:'Correct — weighing the advantages of each choice makes for a stronger opinion.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Give your reason using the starter below.',
+              starter:'I think the company should keep the old engine because ',
+              hints:['it is proven and reliable','a new, untested engine could fail unexpectedly'],
+              minWords:3,
+              feedback:'Good — a claim backed by a reason.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Give your opinion: should the company install the new engine or keep the old one?',
+              scenario:'Write one sentence for your opinion, one sentence for your reason.',
+              hints:['I think the company should keep the old engine.','This is because it has a long track record of reliability.'],
+              minWords:10,
+              model:'I think the company should keep the old engine for now. This is because it has a long track record of reliability, while the new engine is still untested.',
+              feedback:'A clear opinion, backed by a solid reason.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full opinion using the OREL framework.',
+              scenario:'Use Opinion → Reason → Evidence/Example → Link.',
+              framework:[
+                {label:'My opinion is…', placeholder:'e.g. My opinion is that the company should install the new engine.'},
+                {label:'One reason is…', placeholder:'e.g. One reason is that it uses significantly less fuel.'},
+                {label:'For example…', placeholder:'e.g. For example, similar engines have cut fuel costs by 20% on other ships.'},
+                {label:'Therefore…', placeholder:'e.g. Therefore, the new engine is worth the risk.'}
+              ],
+              model:'My opinion is that the company should install the new engine. One reason is that it uses significantly less fuel than the old one. For example, similar engines have cut fuel costs by 20% on other ships. Therefore, the new engine is worth the initial risk.',
+              feedback:'A complete, well-argued opinion — this is how engineers make the case for a change.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Give your opinion: should older ships be forced to retire once they reach a certain age, even if they still work?',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['My opinion is...','One reason is...','For example...'],
+              minWords:15,
+              model:'My opinion is that older ships should not be forced to retire just because of their age, as long as they pass safety inspections. One reason is that a well-maintained older ship can be just as safe as a new one. For example, some of the safest ships in service are decades old but regularly upgraded. Therefore, condition should matter more than age.',
+              feedback:'You built a full, well-reasoned argument on a brand-new question, entirely on your own.' }
+          ]
+        },
+        {
+          id:'route-a-vs-b', icon:'🌊', title:'Route A vs Route B',
+          desc:'Which route should the Captain choose — shorter, or safer?', equation:'OREL: Opinion + Reason',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'Route A is shorter but passes through an iceberg zone. Route B adds a day but avoids it entirely. Which is a well-formed opinion?',
+              scenario:'Compare a plain fact against a claim with a reason attached.',
+              options:['"Route A is 200 miles shorter than Route B."','"I believe the captain should choose Route B, because avoiding icebergs is worth the extra day."','"Route B adds one extra day to the journey."','"Icebergs can damage a ship\'s hull."'],
+              correct:1,
+              feedback:'Right — a claim plus a reason is an opinion; the rest are just facts.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the opinion sentence.',
+              words:['I','believe','the','captain','should','choose','Route','B.'],
+              target:'I believe the captain should choose Route B.',
+              feedback:'That\'s a clear, well-formed opinion.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'A good opinion compares the',
+              prefix:'', suffix:' of each choice, not just the facts.', accept:['risks','trade-offs','tradeoffs','consequences'], options:['risks','colors','names','distances'],
+              feedback:'Correct — weighing the risks of each option is what makes an opinion convincing.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Give your reason using the starter below.',
+              starter:'I believe the captain should choose Route B because ',
+              hints:['avoiding icebergs is worth the extra day','safety is more important than saving time'],
+              minWords:3,
+              feedback:'Good — a claim backed by a reason.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Give your opinion: which route should the captain choose?',
+              scenario:'Write one sentence for your opinion, one sentence for your reason.',
+              hints:['I believe the captain should choose Route B.','This is because avoiding the iceberg zone is worth losing one extra day.'],
+              minWords:10,
+              model:'I believe the captain should choose Route B, even though it takes an extra day. This is because avoiding the iceberg zone is worth losing a little time.',
+              feedback:'A clear, well-reasoned opinion.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full opinion using the OREL framework.',
+              scenario:'Use Opinion → Reason → Evidence/Example → Link.',
+              framework:[
+                {label:'My opinion is…', placeholder:'e.g. My opinion is that the captain should choose Route B.'},
+                {label:'One reason is…', placeholder:'e.g. One reason is that Route A passes through a known iceberg zone.'},
+                {label:'For example…', placeholder:'e.g. For example, the Titanic sank after hitting an iceberg on a similar shortcut route.'},
+                {label:'Therefore…', placeholder:'e.g. Therefore, the extra day is a small price for greater safety.'}
+              ],
+              model:'My opinion is that the captain should choose Route B. One reason is that Route A passes through a known iceberg zone. For example, the Titanic sank after hitting an iceberg while taking a similar shortcut. Therefore, the extra day is a small price for greater safety.',
+              feedback:'A complete, well-argued opinion — exactly the kind of case a Captain needs to hear.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Give your opinion: should ships take risky shortcuts if the crew has advanced radar to detect danger early?',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['My opinion is...','One reason is...','For example...'],
+              minWords:15,
+              model:'My opinion is that ships should still avoid risky shortcuts even with advanced radar. One reason is that radar can fail or give a warning too late to change course safely. For example, modern ships with good equipment have still collided with icebergs in poor conditions. Therefore, avoiding the risk entirely is safer than relying on technology to catch every danger.',
+              feedback:'You built a full, well-reasoned argument on a brand-new question, entirely on your own.' }
+          ]
+        }
+      ]
+    },
     { id:'essay-builder', icon:'📝', title:'Atlantic Voyages', worldsub:'Essay Builder',
       desc:'Plan and build full structured essays.', status:'construction' },
     { id:'real-life-writer', icon:'✉️', title:'Crew Mail Room', worldsub:'Real-Life Writer',
       desc:'Write emails, letters, and reports for real situations.', status:'construction' }
   ];
+
+  // ---------- DIAGRAM LIBRARY ----------
+  const DIAGRAMS = {
+    'ice-float': `<div class="diagram-box"><svg viewBox="0 0 320 175" style="width:100%;max-width:280px;height:auto;display:block;margin:0 auto;">
+      <path d="M90 20 L100 150 L220 150 L230 20" fill="none" stroke="#c8963f" stroke-width="2"/>
+      <rect x="96" y="75" width="128" height="74" fill="rgba(120,180,210,0.18)"/>
+      <path d="M96 75 Q120 68 144 75 T192 75 T224 75" stroke="#b9c4c8" stroke-width="1.5" fill="none"/>
+      <rect x="130" y="55" width="56" height="42" rx="4" fill="rgba(227,181,103,0.28)" stroke="#e3b567" stroke-width="2"/>
+      <text x="160" y="45" text-anchor="middle" fill="#e3b567" font-size="11" font-family="Courier New, monospace">ICE</text>
+      <text x="160" y="163" text-anchor="middle" fill="#b9c4c8" font-size="11" font-family="Courier New, monospace">LIQUID WATER</text>
+      <g transform="translate(6,18)">
+        <circle cx="8" cy="8" r="3" fill="#efe7d6"/><circle cx="18" cy="8" r="3" fill="#efe7d6"/>
+        <circle cx="8" cy="18" r="3" fill="#efe7d6"/><circle cx="18" cy="18" r="3" fill="#efe7d6"/>
+        <text x="0" y="38" fill="#efe7d6" font-size="8.5" font-family="Courier New, monospace">WATER: packed</text>
+        <text x="0" y="49" fill="#efe7d6" font-size="8.5" font-family="Courier New, monospace">close together</text>
+      </g>
+      <g transform="translate(236,18)">
+        <circle cx="4" cy="4" r="3" fill="#e3b567"/><circle cx="24" cy="6" r="3" fill="#e3b567"/>
+        <circle cx="2" cy="24" r="3" fill="#e3b567"/><circle cx="26" cy="26" r="3" fill="#e3b567"/>
+        <text x="-6" y="42" fill="#e3b567" font-size="8.5" font-family="Courier New, monospace">ICE: spread</text>
+        <text x="-6" y="53" fill="#e3b567" font-size="8.5" font-family="Courier New, monospace">further apart</text>
+      </g>
+    </svg><div class="diagram-caption">Ice molecules spread apart → take up more space → less dense → floats.</div></div>`,
+
+    'cold-atlantic': `<div class="diagram-box"><svg viewBox="0 0 320 190" style="width:100%;max-width:280px;height:auto;display:block;margin:0 auto;">
+      <defs><linearGradient id="oceanGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#3a7a94"/><stop offset="45%" stop-color="#1e3d4b"/><stop offset="100%" stop-color="#0c1a21"/>
+      </linearGradient></defs>
+      <circle cx="40" cy="30" r="15" fill="#e3b567"/>
+      <line x1="58" y1="22" x2="130" y2="46" stroke="#e3b567" stroke-width="2"/>
+      <line x1="58" y1="32" x2="130" y2="58" stroke="#e3b567" stroke-width="2"/>
+      <line x1="58" y1="42" x2="120" y2="68" stroke="#e3b567" stroke-width="2"/>
+      <rect x="40" y="65" width="230" height="110" fill="url(#oceanGrad)"/>
+      <line x1="40" y1="105" x2="270" y2="105" stroke="#efe7d6" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="46" y="80" fill="#efe7d6" font-size="9" font-family="Courier New, monospace">0m · WARM</text>
+      <text x="46" y="115" fill="#efe7d6" font-size="9" font-family="Courier New, monospace">~200m: sunlight stops</text>
+      <text x="46" y="160" fill="#b9c4c8" font-size="9" font-family="Courier New, monospace">Deep ocean · COLD</text>
+    </svg><div class="diagram-caption">Sunlight only warms the top ~200m. No light reaches below that, so it stays cold.</div></div>`,
+
+    'saltwater': `<div class="diagram-box"><svg viewBox="0 0 320 190" style="width:100%;max-width:280px;height:auto;display:block;margin:0 auto;">
+      <rect x="60" y="30" width="18" height="120" rx="9" fill="none" stroke="#b9c4c8" stroke-width="2"/>
+      <rect x="64" y="100" width="10" height="46" rx="5" fill="#7fb3c9"/>
+      <circle cx="69" cy="152" r="12" fill="#7fb3c9"/>
+      <line x1="60" y1="100" x2="44" y2="100" stroke="#efe7d6" stroke-width="1"/>
+      <text x="14" y="104" fill="#efe7d6" font-size="9" font-family="Courier New, monospace">0°C</text>
+      <text x="30" y="178" fill="#b9c4c8" font-size="9" font-family="Courier New, monospace">FRESH WATER</text>
+      <rect x="220" y="30" width="18" height="120" rx="9" fill="none" stroke="#b9c4c8" stroke-width="2"/>
+      <rect x="224" y="112" width="10" height="34" rx="5" fill="#e3b567"/>
+      <circle cx="229" cy="152" r="12" fill="#e3b567"/>
+      <line x1="220" y1="112" x2="204" y2="112" stroke="#efe7d6" stroke-width="1"/>
+      <text x="172" y="116" fill="#efe7d6" font-size="9" font-family="Courier New, monospace">-2°C</text>
+      <text x="188" y="178" fill="#b9c4c8" font-size="9" font-family="Courier New, monospace">SEAWATER</text>
+    </svg><div class="diagram-caption">Salt particles block ice crystals from forming, so seawater must get colder before it freezes.</div></div>`
+  };
 
   // ---------- STATE ----------
   function loadState(){
@@ -826,6 +1234,7 @@
     html += `<div class="level-card">`;
     html += `<div class="level-kicker">${lvl.kicker}</div>`;
     html += `<div class="level-title">${lvl.title}</div>`;
+    if(m.diagram && DIAGRAMS[m.diagram]) html += DIAGRAMS[m.diagram];
     if(lvl.scenario) html += `<div class="scenario">${lvl.scenario}</div>`;
 
     if(lvl.type==='choice'){
@@ -835,8 +1244,10 @@
       html += `<div class="word-bank" id="wordBank"></div>`;
       html += `<div class="btn-row"><button class="btn ghost" id="resetBuild">Reset</button></div>`;
     } else if(lvl.type==='complete'){
-      html += `<div style="font-family:var(--font-gauge);font-size:16px;margin-bottom:10px;">${lvl.prefix||''}<span style="color:var(--brass-bright);">____</span>${lvl.suffix||''}</div>`;
-      html += `<input type="text" id="completeInput" placeholder="Type your answer">`;
+      html += `<div style="font-family:var(--font-gauge);font-size:16px;margin-bottom:14px;">${lvl.prefix||''}<span id="blankSpan" style="color:var(--brass-bright);border-bottom:2px dashed var(--brass);padding:0 6px;">____</span>${lvl.suffix||''}</div>`;
+      html += `<div class="fill-pills" id="fillPills">`;
+      lvl.options.forEach((opt,i)=>{ html += `<div class="fill-pill" data-i="${i}">${opt}</div>`; });
+      html += `</div>`;
     } else if(lvl.type==='starter'){
       html += `<div style="font-size:15px;color:var(--brass-bright);margin-bottom:8px;font-family:var(--font-plate);">"${lvl.starter}___________"</div>`;
       html += `<textarea id="freeInput" placeholder="${lvl.starter}...">${lvl.starter}</textarea>`;
@@ -854,7 +1265,7 @@
 
     html += `<div id="feedbackZone"></div>`;
     html += `<div class="btn-row" id="actionRow">`;
-    if(lvl.type==='choice' || lvl.type==='build'){
+    if(lvl.type==='choice' || lvl.type==='build' || lvl.type==='complete'){
       html += `<button class="btn primary" id="checkBtn" disabled>Check</button>`;
     } else {
       html += `<button class="btn primary" id="checkBtn">Check my answer</button>`;
@@ -961,15 +1372,26 @@
     }
 
     if(lvl.type==='complete'){
-      checkBtn.addEventListener('click', ()=>{
-        const val = document.getElementById('completeInput').value.trim().toLowerCase();
-        if(lvl.accept.some(a=>a.toLowerCase()===val)){
-          showFeedback(lvl.feedback);
-        } else {
-          feedbackZone.innerHTML = `<div class="feedback info">Not quite — the answer is <b>${lvl.accept[0]}</b>. That's okay, you've got it now.</div>`;
-          document.getElementById('actionRow').innerHTML = `<button class="btn primary" id="nextBtn">Continue →</button>`;
-          document.getElementById('nextBtn').addEventListener('click', nextLevel);
-        }
+      const pills = document.querySelectorAll('.fill-pill');
+      const blankSpan = document.getElementById('blankSpan');
+      pills.forEach(p=>{
+        p.addEventListener('click', ()=>{
+          if(p.dataset.locked) return;
+          pills.forEach(x=>x.dataset.locked='1');
+          const val = p.textContent.trim().toLowerCase();
+          const isRight = lvl.accept.some(a=>a.toLowerCase()===val);
+          const correctPill = Array.from(pills).find(x=>lvl.accept.some(a=>a.toLowerCase()===x.textContent.trim().toLowerCase()));
+          if(isRight){
+            p.classList.add('correct');
+            if(blankSpan) blankSpan.textContent = p.textContent.trim();
+            showFeedback(lvl.feedback);
+          } else {
+            p.classList.add('wrong');
+            if(correctPill) correctPill.classList.add('correct');
+            if(blankSpan) blankSpan.textContent = correctPill ? correctPill.textContent.trim() : lvl.accept[0];
+            showFeedback(lvl.feedback);
+          }
+        });
       });
     }
 
@@ -981,8 +1403,8 @@
           showFeedback(lvl.feedback);
         } else {
           feedbackZone.innerHTML = `<div class="feedback info">Try adding a few more words after "${lvl.starter.trim()}" so it's a full sentence.</div>`;
-          document.getElementById('actionRow').innerHTML = `<button class="btn primary" id="checkAgain">Check again</button>`;
-          document.getElementById('checkAgain').addEventListener('click', ()=>wireLevelInteractions(lvl));
+          document.getElementById('actionRow').innerHTML = `<button class="btn primary" id="checkBtn">Check again</button>`;
+          wireLevelInteractions(lvl);
         }
       });
     }
@@ -994,8 +1416,8 @@
           showFeedback(lvl.feedback, lvl.model);
         } else {
           feedbackZone.innerHTML = `<div class="feedback info">Add a bit more detail — try to explain both the step and the result.</div>`;
-          document.getElementById('actionRow').innerHTML = `<button class="btn primary" id="checkAgain">Check again</button>`;
-          document.getElementById('checkAgain').addEventListener('click', ()=>wireLevelInteractions(lvl));
+          document.getElementById('actionRow').innerHTML = `<button class="btn primary" id="checkBtn">Check again</button>`;
+          wireLevelInteractions(lvl);
         }
       });
     }
@@ -1009,8 +1431,8 @@
           showFeedback(lvl.feedback, lvl.model);
         } else {
           feedbackZone.innerHTML = `<div class="feedback info">Fill in each part of the framework — even a short phrase is fine, just make sure every box has something.</div>`;
-          document.getElementById('actionRow').innerHTML = `<button class="btn primary" id="checkAgain">Check again</button>`;
-          document.getElementById('checkAgain').addEventListener('click', ()=>wireLevelInteractions(lvl));
+          document.getElementById('actionRow').innerHTML = `<button class="btn primary" id="checkBtn">Check again</button>`;
+          wireLevelInteractions(lvl);
         }
       });
     }
