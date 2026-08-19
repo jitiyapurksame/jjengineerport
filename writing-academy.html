@@ -596,15 +596,185 @@
         }
       ]
     },
-    { id:'data-detective', icon:'📊', title:'Navigation & Data Deck', worldsub:'Data Detective',
-      desc:'Describe and interpret charts and graphs.', status:'construction' },
+    {
+      id:'data-detective', icon:'📊', title:'Navigation & Data Deck', worldsub:'Data Detective',
+      desc:'Read a chart and describe it using S-C-E-I: State, Compare, Evidence, Interpret.',
+      status:'ready',
+      missions:[
+        {
+          id:'atlantic-temperature', icon:'🌡️', title:'Atlantic Temperature Log', diagram:'temp-line',
+          desc:'Describe a line graph of temperature across the day.', equation:'S-C-E-I: State→Compare→Evidence→Interpret',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'Which sentence correctly STATES what the graph shows?',
+              scenario:'The first step in S-C-E-I is simply stating what the graph is about, in general terms.',
+              options:['"The graph shows the temperature during the day."','"The temperature is exactly 26°C."','"I think it will rain tomorrow."','"Temperature graphs are useful."'],
+              correct:0,
+              feedback:'Right — the first step is a general statement of what the graph shows, not a single value or an opinion.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the STATE sentence.',
+              words:['The','graph','shows','the','temperature','during','the','day.'],
+              target:'The graph shows the temperature during the day.',
+              feedback:'That\'s a clear, general opening statement.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'After stating what the graph shows, the next step is to',
+              prefix:'', suffix:' the highest and lowest points.', accept:['compare'], options:['compare','ignore','memorize','delete'],
+              feedback:'Correct — comparing the extremes is the "C" in S-C-E-I.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Look at the graph above and complete the comparison.',
+              starter:'The highest temperature was ',
+              hints:['29°C at 3pm','recorded in the afternoon'],
+              minWords:3,
+              feedback:'Good — that\'s a precise comparison backed by the graph.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Compare the highest and lowest temperatures on the graph.',
+              scenario:'Write one sentence for the highest point, one for the lowest.',
+              hints:['The highest temperature was 29°C at 3pm.','The lowest temperature was 18°C at 6am.'],
+              minWords:10,
+              model:'The highest temperature was 29°C, recorded at 3pm. The lowest temperature was 18°C, recorded at 6am.',
+              feedback:'That\'s a clear comparison, backed by exact numbers from the graph.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full description using the S-C-E-I framework.',
+              scenario:'Use State → Compare → Evidence → Interpret.',
+              framework:[
+                {label:'State…', placeholder:'e.g. The graph shows the temperature during the day.'},
+                {label:'Compare…', placeholder:'e.g. The temperature was highest at 3pm and lowest at 6am.'},
+                {label:'Evidence…', placeholder:'e.g. It rose from 18°C to 29°C, an increase of 11°C.'},
+                {label:'Interpret…', placeholder:'e.g. This suggests the temperature increased as the sun rose higher, then began to fall in the evening.'}
+              ],
+              model:'The graph shows the temperature during the day. The temperature was highest at 3pm and lowest at 6am. It rose from 18°C to 29°C, an increase of 11°C, before falling again by 6pm. This suggests the temperature increased as the sun rose higher in the sky, then began to fall in the evening.',
+              feedback:'A complete, evidence-based description — exactly how a navigator logs the weather data.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Describe a new graph on your own: wind speed was 10mph at 6am, rose to 35mph by 2pm during a storm, then dropped to 12mph by 8pm.',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['State...','Compare...','Evidence...','Interpret...'],
+              minWords:20,
+              model:'The graph shows the wind speed during the day. The wind speed was highest at 2pm and lowest at 6am. It rose from 10mph to 35mph, a huge increase during the storm, before dropping back to 12mph by evening. This suggests the storm reached its peak in the early afternoon before passing.',
+              feedback:'You described a brand-new graph completely using the full S-C-E-I structure, entirely on your own.' }
+          ]
+        },
+        {
+          id:'wave-height-watch', icon:'🌊', title:'Wave Height Watch', diagram:'wave-bar',
+          desc:'Describe a bar chart tracking wave height through a storm.', equation:'S-C-E-I: State→Compare→Evidence→Interpret',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'Which sentence correctly STATES what the graph shows?',
+              scenario:'Start general — save the numbers for later.',
+              options:['"The graph shows wave height over four days."','"Waves were 6 metres on Day 3."','"I don\'t like storms."','"Wave charts are boring."'],
+              correct:0,
+              feedback:'Right — a general statement of what\'s being measured, before any specific numbers.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the STATE sentence.',
+              words:['The','graph','shows','wave','height','over','four','days.'],
+              target:'The graph shows wave height over four days.',
+              feedback:'A clear, general opening statement.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'After comparing values, you should use numbers as',
+              prefix:'', suffix:' to support your description.', accept:['evidence'], options:['evidence','opinions','guesses','colors'],
+              feedback:'Correct — exact numbers are the evidence that backs up your comparison.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Look at the graph above and complete the comparison.',
+              starter:'The highest wave height was ',
+              hints:['6 metres on Day 3','recorded during the storm peak'],
+              minWords:3,
+              feedback:'Good — a precise comparison backed by the chart.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Compare the wave heights on Day 1 and Day 3.',
+              scenario:'Write one sentence for Day 1, one for Day 3.',
+              hints:['On Day 1, the wave height was only 1 metre.','By Day 3, it had risen to 6 metres, during the worst of the storm.'],
+              minWords:10,
+              model:'On Day 1, the wave height was only 1 metre. By Day 3, it had risen to 6 metres, during the worst of the storm.',
+              feedback:'That\'s a clear, numbers-backed comparison.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full description using the S-C-E-I framework.',
+              scenario:'Use State → Compare → Evidence → Interpret.',
+              framework:[
+                {label:'State…', placeholder:'e.g. The graph shows wave height over four days.'},
+                {label:'Compare…', placeholder:'e.g. The wave height was highest on Day 3 and lowest on Day 1.'},
+                {label:'Evidence…', placeholder:'e.g. It rose from 1 metre to 6 metres, a six-fold increase.'},
+                {label:'Interpret…', placeholder:'e.g. This suggests the storm peaked around Day 3 before calming down.'}
+              ],
+              model:'The graph shows wave height over four days. The wave height was highest on Day 3 and lowest on Day 1. It rose from 1 metre to 6 metres, a six-fold increase, before dropping back to 2 metres by Day 4. This suggests the storm peaked around Day 3 before beginning to calm down.',
+              feedback:'A complete, evidence-based description — exactly what goes in the ship\'s weather log.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Describe a new graph on your own: fuel usage was 40 tonnes/day in calm seas, rose to 70 tonnes/day fighting the storm, then fell to 45 tonnes/day after.',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['State...','Compare...','Evidence...','Interpret...'],
+              minWords:20,
+              model:'The graph shows fuel usage over three periods. Fuel usage was highest while fighting the storm and lowest in calm seas. It rose from 40 tonnes to 70 tonnes per day, before falling back to 45 tonnes once the storm passed. This suggests the engines had to work much harder to keep the ship steady during rough weather.',
+              feedback:'You described a brand-new graph completely on your own, using the full S-C-E-I structure.' }
+          ]
+        },
+        {
+          id:'course-speed-comparison', icon:'🧭', title:'Course Speed Comparison', diagram:'route-compare',
+          desc:'Compare two data sets — ship speed on two different routes.', equation:'S-C-E-I: comparing two data sets',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'Which sentence correctly STATES what this graph shows?',
+              scenario:'This graph compares two routes, not just one.',
+              options:['"The graph shows the ship\'s speed on Route A and Route B over four days."','"Route A was faster on Day 4."','"I prefer Route A."','"Ships need engines."'],
+              correct:0,
+              feedback:'Right — with two data sets, the STATE sentence should mention both.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the STATE sentence.',
+              words:['Route','A','was','generally','faster','than','Route','B.'],
+              target:'Route A was generally faster than Route B.',
+              feedback:'That\'s a clear comparison between the two data sets.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'When comparing two data sets, you should say which one is generally',
+              prefix:'', suffix:'.', accept:['higher','greater','faster'], options:['higher','identical','irrelevant','random'],
+              feedback:'Correct — naming which set is generally higher is the heart of a comparison.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Look at the graph above and complete the comparison.',
+              starter:'Route A\'s speed was generally ',
+              hints:['higher than Route B\'s','about 3-4 knots faster'],
+              minWords:3,
+              feedback:'Good — a clear, comparative claim.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Compare the average speeds of Route A and Route B.',
+              scenario:'Write one sentence for each route.',
+              hints:['Route A\'s speed was generally higher, averaging around 19.5 knots.','Route B\'s speed was lower and more consistent, averaging around 15.75 knots.'],
+              minWords:10,
+              model:'Route A\'s speed was generally higher, averaging around 19.5 knots. Route B\'s speed was lower and more consistent, averaging around 15.75 knots.',
+              feedback:'A clear comparison of both data sets, with real numbers.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full comparison using the S-C-E-I framework.',
+              scenario:'Use State → Compare → Evidence → Interpret.',
+              framework:[
+                {label:'State…', placeholder:'e.g. The graph shows the ship\'s speed on Route A and Route B over four days.'},
+                {label:'Compare…', placeholder:'e.g. Route A was consistently faster than Route B.'},
+                {label:'Evidence…', placeholder:'e.g. Route A averaged around 19.5 knots, while Route B averaged only 15.75 knots.'},
+                {label:'Interpret…', placeholder:'e.g. This suggests Route A prioritises speed, while Route B\'s steadier pace may be the safer choice.'}
+              ],
+              model:'The graph shows the ship\'s speed on Route A and Route B over four days. Route A was consistently faster than Route B. Route A averaged around 19.5 knots, while Route B averaged only 15.75 knots. This suggests Route A prioritises speed, while Route B\'s steadier, slower pace may be the safer choice.',
+              feedback:'A complete, evidence-based comparison — exactly the kind of analysis the Captain needs to choose a route.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Describe a new comparison on your own: Ship X used 200 tonnes of fuel per day on the fast route, while Ship Y used only 140 tonnes per day on the slow route.',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['State...','Compare...','Evidence...','Interpret...'],
+              minWords:20,
+              model:'The data shows fuel usage for Ship X and Ship Y. Ship X used significantly more fuel than Ship Y. Ship X used 200 tonnes per day, compared to only 140 tonnes per day for Ship Y. This suggests that Ship X\'s faster route comes at the cost of much higher fuel consumption.',
+              feedback:'You compared two full data sets and interpreted the result, entirely on your own.' }
+          ]
+        }
+      ]
+    },
     {
       id:'lab-reporter', icon:'🧪', title:'Engineering Test Lab', worldsub:'Lab Reporter',
       desc:'Write the key parts of a real experiment report — prediction, observation, conclusion.',
       status:'ready',
       missions:[
         {
-          id:'propeller-prediction', icon:'🌀', title:'Propeller Prediction',
+          id:'propeller-prediction', icon:'🌀', title:'Propeller Prediction', diagram:'propeller-thrust',
           desc:'Write a prediction — a claim plus a reason — before the test even runs.', equation:'Prediction: claim + because',
           levels:[
             { type:'choice', kicker:'Level 1 · Choose',
@@ -658,7 +828,7 @@
           ]
         },
         {
-          id:'buoyancy-observation', icon:'👀', title:'Buoyancy Observation',
+          id:'buoyancy-observation', icon:'👀', title:'Buoyancy Observation', diagram:'buoyancy-shapes',
           desc:'Describe exactly what happened in the clay-boat experiment.', equation:'Observation: describe, don\'t explain',
           levels:[
             { type:'choice', kicker:'Level 1 · Choose',
@@ -712,7 +882,7 @@
           ]
         },
         {
-          id:'heat-transfer-conclusion', icon:'💡', title:'Heat Transfer Conclusion',
+          id:'heat-transfer-conclusion', icon:'💡', title:'Heat Transfer Conclusion', diagram:'spoon-heat',
           desc:'Write a conclusion that links your results back to the question.', equation:'Conclusion: results → meaning',
           levels:[
             { type:'choice', kicker:'Level 1 · Choose',
@@ -939,10 +1109,351 @@
         }
       ]
     },
-    { id:'essay-builder', icon:'📝', title:'Atlantic Voyages', worldsub:'Essay Builder',
-      desc:'Plan and build full structured essays.', status:'construction' },
-    { id:'real-life-writer', icon:'✉️', title:'Crew Mail Room', worldsub:'Real-Life Writer',
-      desc:'Write emails, letters, and reports for real situations.', status:'construction' }
+    {
+      id:'essay-builder', icon:'📝', title:'Atlantic Voyages', worldsub:'Essay Builder',
+      desc:'Build the three pieces of a full essay: introduction, PEEL body paragraph, conclusion.',
+      status:'ready',
+      missions:[
+        {
+          id:'peel-paragraph', icon:'🧱', title:'Writing a PEEL Paragraph', diagram:'essay-body',
+          desc:'Build one strong body paragraph: Point → Explain → Example → Link.', equation:'Essay topic: Should ships rely more on automation?',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'You\'re arguing that automation improves safety. Which sentence is the correct POINT to open the paragraph?',
+              scenario:'The Point is a clear topic sentence — stated before you explain or give an example.',
+              options:['"One key benefit of automation is improved safety."','"Ships have sailed the seas for centuries."','"I really like boats."','"For example, radar systems can detect hazards automatically."'],
+              correct:0,
+              feedback:'Right — that\'s a clear topic sentence, stated before any explanation or example.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the Point sentence.',
+              words:['One','key','benefit','of','automation','is','improved','safety.'],
+              target:'One key benefit of automation is improved safety.',
+              feedback:'That\'s a clear, focused topic sentence.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'After the Point, you need to',
+              prefix:'', suffix:' what you mean.', accept:['explain'], options:['explain','forget','repeat','delete'],
+              feedback:'Correct — Explain unpacks the Point in more detail.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Explain your Point using the starter below.',
+              starter:'This means that ',
+              hints:['automated systems can react faster than a human crew','computers do not get tired or distracted'],
+              minWords:3,
+              feedback:'Good — that unpacks the claim with more detail.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Write the Point and Explain parts of this paragraph.',
+              scenario:'Write one sentence for the Point, one for the Explain.',
+              hints:['One key benefit of automation is improved safety.','This means that automated systems can react to danger faster than a human crew.'],
+              minWords:10,
+              model:'One key benefit of automation is improved safety. This means that automated systems can react to danger faster than a human crew, reducing the chance of an accident.',
+              feedback:'A clear Point, backed by an Explain sentence.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full paragraph using PEEL.',
+              scenario:'Use Point → Explain → Example → Link.',
+              framework:[
+                {label:'Point…', placeholder:'e.g. One key benefit of automation is improved safety.'},
+                {label:'Explain…', placeholder:'e.g. This means that automated systems can react to danger faster than a human crew.'},
+                {label:'Example…', placeholder:'e.g. For example, modern radar and collision-avoidance systems can detect hazards long before a lookout would.'},
+                {label:'Link…', placeholder:'e.g. This shows that automation can make ships safer, not just more efficient.'}
+              ],
+              model:'One key benefit of automation is improved safety. This means that automated systems can react to danger faster than a human crew. For example, modern radar and collision-avoidance systems can detect hazards long before a lookout would. This shows that automation can make ships safer, not just more efficient.',
+              feedback:'A complete PEEL paragraph — this is one full "brick" of a strong essay.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Write a full PEEL paragraph on your own, arguing that automation could put crew jobs at risk.',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['Point:...','Explain:...','Example:...','Link:...'],
+              minWords:25,
+              model:'One drawback of automation is that it could put crew jobs at risk. This means that fewer sailors may be needed to run the ship day to day. For example, some cargo ships now operate with much smaller crews than they did twenty years ago. This shows that automation brings real costs for the people who work at sea, not just benefits for the ship owners.',
+              feedback:'You built a full PEEL paragraph on a brand-new point, entirely on your own.' }
+          ]
+        },
+        {
+          id:'writing-introduction', icon:'🚪', title:'Writing an Introduction', diagram:'essay-intro',
+          desc:'Open the essay: Hook → Background → Thesis.', equation:'Essay topic: Should ships rely more on automation?',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'Which sentence works best as the HOOK that opens this essay?',
+              scenario:'A hook grabs attention and introduces the topic — it isn\'t a conclusion, a prediction, or an error report.',
+              options:['"Modern ships are increasingly controlled by computers instead of people."','"In conclusion, automation is useful."','"I predict that automation will increase."','"The mistake is that automation is expensive."'],
+              correct:0,
+              feedback:'Right — that opens the topic in an interesting way, without concluding or predicting anything yet.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the hook sentence.',
+              words:['Modern','ships','are','increasingly','controlled','by','computers','instead','of','people.'],
+              target:'Modern ships are increasingly controlled by computers instead of people.',
+              feedback:'That\'s an engaging opening statement.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'After the hook, you should give some',
+              prefix:'', suffix:' before stating your argument.', accept:['background','context'], options:['background','conclusion','evidence','opinion'],
+              feedback:'Correct — background helps the reader understand the topic before you state your thesis.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'State your thesis using the starter below.',
+              starter:'This essay will argue that ',
+              hints:['ships should rely more on automation','human crews are still essential, even with new technology'],
+              minWords:3,
+              feedback:'Good — that\'s a clear thesis statement.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Write a hook and a thesis statement for this essay.',
+              scenario:'Write one sentence for the hook, one for the thesis.',
+              hints:['Modern ships are increasingly controlled by computers instead of people.','This essay will argue that ships should rely more on automation.'],
+              minWords:10,
+              model:'Modern ships are increasingly controlled by computers instead of people. This essay will argue that ships should rely more on automation, because it improves safety and efficiency.',
+              feedback:'A strong opening — an engaging hook, followed by a clear thesis.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full introduction.',
+              scenario:'Use Hook → Background → Thesis.',
+              framework:[
+                {label:'Hook…', placeholder:'e.g. Modern ships are increasingly controlled by computers instead of people.'},
+                {label:'Background…', placeholder:'e.g. Over the last twenty years, automated systems have taken over many tasks once done by sailors.'},
+                {label:'Thesis…', placeholder:'e.g. This essay will argue that ships should rely more on automation, because it improves safety and efficiency.'}
+              ],
+              model:'Modern ships are increasingly controlled by computers instead of people. Over the last twenty years, automated systems have taken over many tasks once done by sailors. This essay will argue that ships should rely more on automation, because it improves safety and efficiency.',
+              feedback:'A complete introduction — hook, context, and a clear argument, ready to guide the whole essay.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Write a full introduction on your own for a new topic: should the age of ship captains be limited by law?',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['Hook:...','Background:...','Thesis:...'],
+              minWords:25,
+              model:'Ship captains carry enormous responsibility for the safety of everyone on board. As vessels have become larger and more complex, some have questioned whether age limits should apply to captains, just as they do for airline pilots. This essay will argue that a strict age limit is not necessary, as long as captains pass regular health and skill checks.',
+              feedback:'You wrote a complete introduction on a brand-new topic, entirely on your own.' }
+          ]
+        },
+        {
+          id:'writing-conclusion', icon:'🏁', title:'Writing a Conclusion', diagram:'essay-conclusion',
+          desc:'Close the essay: Restate → Summary → Final thought.', equation:'Essay topic: Should ships rely more on automation?',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'Which sentence works best as the FINAL closing statement of this essay?',
+              scenario:'A conclusion wraps up the argument — it doesn\'t introduce new evidence, examples, or predictions.',
+              options:['"Overall, automation offers real benefits, but human oversight will always be needed."','"Automation improves safety because computers react faster."','"I predict automation will increase next year."','"For example, radar systems can detect hazards."'],
+              correct:0,
+              feedback:'Right — that restates the overall argument, which is exactly what a conclusion should do.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the closing sentence.',
+              words:['Overall,','automation','offers','real','benefits,','but','human','oversight','will','always','be','needed.'],
+              target:'Overall, automation offers real benefits, but human oversight will always be needed.',
+              feedback:'That\'s a strong, balanced closing statement.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'A strong conclusion should',
+              prefix:'', suffix:' your main argument, not introduce new ideas.', accept:['restate','summarize'], options:['restate','ignore','contradict','forget'],
+              feedback:'Correct — a conclusion restates and summarizes, it doesn\'t bring in brand-new points.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Write your closing thought using the starter below.',
+              starter:'Overall, ',
+              hints:['automation offers real safety benefits','ships should combine automation with skilled human crews'],
+              minWords:3,
+              feedback:'Good — that restates the overall position clearly.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Write a closing statement that restates the argument and gives a final thought.',
+              scenario:'Write one sentence restating the argument, one sentence for a final thought.',
+              hints:['Overall, automation offers real safety benefits.','However, human judgement will always be needed for situations a computer cannot predict.'],
+              minWords:10,
+              model:'Overall, automation offers real safety benefits. However, human judgement will always be needed for the situations a computer cannot predict.',
+              feedback:'A clear, balanced closing — the argument is restated with a thoughtful final point.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full conclusion.',
+              scenario:'Use Restate → Summary → Final thought.',
+              framework:[
+                {label:'Restate…', placeholder:'e.g. Overall, automation offers real safety and efficiency benefits.'},
+                {label:'Summary…', placeholder:'e.g. As shown, automated systems can react faster and reduce human error.'},
+                {label:'Final thought…', placeholder:'e.g. However, human judgement will always be needed for situations a computer cannot predict.'}
+              ],
+              model:'Overall, automation offers real safety and efficiency benefits. As shown, automated systems can react faster and reduce human error. However, human judgement will always be needed for the situations a computer cannot predict.',
+              feedback:'A complete conclusion — the whole essay\'s argument, wrapped up in three clear sentences.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Write a full conclusion on your own for the captain\'s age-limit essay.',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['Overall,...','As shown,...','However,...'],
+              minWords:25,
+              model:'Overall, a strict age limit for ship captains is not the best solution. As shown, regular health and skill checks can identify problems without unfairly forcing experienced captains to retire. However, safety must always come first, so these checks need to be taken seriously and enforced consistently.',
+              feedback:'You wrote a complete conclusion on a brand-new topic, entirely on your own.' }
+          ]
+        }
+      ]
+    },
+    {
+      id:'real-life-writer', icon:'✉️', title:'Crew Mail Room', worldsub:'Real-Life Writer',
+      desc:'Write real formal messages: Greeting → Purpose → Details → Request → Closing.',
+      status:'ready',
+      missions:[
+        {
+          id:'ask-for-help', icon:'📨', title:'Asking for Help', diagram:'email-structure',
+          desc:'Ask the Chief Engineer for help understanding something.', equation:'Greeting→Purpose→Details→Request→Closing',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'You don\'t understand how to calculate propeller efficiency. Which is the correct GREETING for a formal message to the Chief Engineer?',
+              scenario:'A formal message greets the specific person by name or title, not a casual hello or an overly generic line.',
+              options:['"Dear Chief Engineer,"','"Hey chief!!"','"Yo,"','"To whom it may concern,"'],
+              correct:0,
+              feedback:'Right — "Dear [Name/Title]," is correct when you know who you\'re writing to.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the PURPOSE sentence.',
+              words:['I','am','writing','to','ask','for','help','with','my','report.'],
+              target:'I am writing to ask for help with my report.',
+              feedback:'That\'s a clear, direct purpose statement.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'The PURPOSE line should clearly state why you are',
+              prefix:'', suffix:'.', accept:['writing'], options:['writing','joking','shouting','complaining'],
+              feedback:'Correct — stating why you\'re writing, plainly, is the whole point of the Purpose line.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Give the details using the starter below.',
+              starter:'I am writing to ask for help with ',
+              hints:['calculating propeller efficiency','understanding the report instructions'],
+              minWords:3,
+              feedback:'Good — specific and clear about what you need help with.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Write the Purpose and Details for this message.',
+              scenario:'Write one sentence for the Purpose, one for the Details.',
+              hints:['I am writing to ask for help with calculating propeller efficiency.','I have tried the formula twice, but my answer does not match the example.'],
+              minWords:10,
+              model:'I am writing to ask for help with calculating propeller efficiency. I have tried the formula twice, but my answer does not match the example in the manual.',
+              feedback:'That\'s a clear, specific request for help.' },
+            { type:'structured', kicker:'Level 6 · Structured Message',
+              title:'Write the full message using the framework.',
+              scenario:'Use Greeting → Purpose → Details → Request → Closing.',
+              framework:[
+                {label:'Greeting…', placeholder:'e.g. Dear Chief Engineer,'},
+                {label:'Purpose…', placeholder:'e.g. I am writing to ask for help with calculating propeller efficiency.'},
+                {label:'Details…', placeholder:'e.g. I have tried the formula twice, but my answer does not match the example.'},
+                {label:'Request…', placeholder:'e.g. Could you please explain the formula, or point me to a clearer example?'},
+                {label:'Closing…', placeholder:'e.g. Thank you for your help. Kind regards, [Your name]'}
+              ],
+              model:'Dear Chief Engineer, I am writing to ask for help with calculating propeller efficiency. I have tried the formula twice, but my answer does not match the example in the manual. Could you please explain the formula, or point me to a clearer example? Thank you for your help. Kind regards, [Your name]',
+              feedback:'A complete, polite request for help — ready to send.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Write a full message on your own: you don\'t understand how to read the ship\'s weather chart for your report. Ask the Navigator for help.',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['Dear Navigator,...','I am writing to ask for help with...','Could you please...'],
+              minWords:25,
+              model:'Dear Navigator, I am writing to ask for help with reading the weather chart for my report. I understand the temperature readings, but I am not sure what the pressure symbols mean. Could you please explain them, or show me an example? Thank you for your help. Kind regards, [Your name]',
+              feedback:'You wrote a complete, polite request for help on a brand-new situation, entirely on your own.' }
+          ]
+        },
+        {
+          id:'explain-a-problem', icon:'🛠️', title:'Explaining a Problem', diagram:'email-structure',
+          desc:'Explain to the Captain why your report is incomplete.', equation:'Greeting→Purpose→Details→Request→Closing',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'You couldn\'t finish your inspection report because you were called away for an emergency repair. Which is the correct PURPOSE line?',
+              scenario:'A good explanation states the facts calmly — it doesn\'t blame anyone or brush off the problem.',
+              options:['"I am writing to explain why my inspection report is incomplete."','"It\'s not my fault the report isn\'t done."','"The report is late, whatever."','"I predict the report will be late."'],
+              correct:0,
+              feedback:'Right — that states the situation clearly and calmly, without blame or a wrong tense.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the PURPOSE sentence.',
+              words:['I','am','writing','to','explain','why','my','report','is','incomplete.'],
+              target:'I am writing to explain why my report is incomplete.',
+              feedback:'That\'s a clear, calm explanation of the situation.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'A good explanation message states the',
+              prefix:'', suffix:' clearly, without making excuses.', accept:['reason','facts'], options:['reason','blame','excuse','complaint'],
+              feedback:'Correct — stick to the actual reason, not blame or excuses.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Give the details using the starter below.',
+              starter:'The reason my report is incomplete is that ',
+              hints:['I was called away for an emergency repair','I ran out of time before my shift ended'],
+              minWords:3,
+              feedback:'Good — a clear, factual reason.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Write the Purpose and Details explaining the incomplete report.',
+              scenario:'Write one sentence for the Purpose, one for the Details.',
+              hints:['I am writing to explain why my inspection report is incomplete.','I was called away to help with an emergency repair before I could finish it.'],
+              minWords:10,
+              model:'I am writing to explain why my inspection report is incomplete. I was called away to help with an emergency repair before I could finish it.',
+              feedback:'A clear, calm explanation of what happened.' },
+            { type:'structured', kicker:'Level 6 · Structured Message',
+              title:'Write the full message using the framework.',
+              scenario:'Use Greeting → Purpose → Details → Request → Closing.',
+              framework:[
+                {label:'Greeting…', placeholder:'e.g. Dear Captain,'},
+                {label:'Purpose…', placeholder:'e.g. I am writing to explain why my inspection report is incomplete.'},
+                {label:'Details…', placeholder:'e.g. I was called away to help with an emergency repair before I could finish it.'},
+                {label:'Request…', placeholder:'e.g. Could I please have until tomorrow morning to complete the report?'},
+                {label:'Closing…', placeholder:'e.g. Thank you for understanding. Kind regards, [Your name]'}
+              ],
+              model:'Dear Captain, I am writing to explain why my inspection report is incomplete. I was called away to help with an emergency repair before I could finish it. Could I please have until tomorrow morning to complete the report? Thank you for understanding. Kind regards, [Your name]',
+              feedback:'A calm, clear explanation with a reasonable request — exactly how to handle it professionally.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Write a full message on your own: you missed submitting your weather log because your notebook was damaged by a wave. Explain this to the Navigator.',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['Dear Navigator,...','I am writing to explain...','Could I...'],
+              minWords:25,
+              model:'Dear Navigator, I am writing to explain why my weather log has not been submitted. My notebook was damaged by a wave on deck and several pages became unreadable. Could I please rewrite the log from my memory and the ship\'s instruments today? Thank you for understanding. Kind regards, [Your name]',
+              feedback:'You wrote a complete, calm explanation on a brand-new situation, entirely on your own.' }
+          ]
+        },
+        {
+          id:'request-more-time', icon:'🗓️', title:'Requesting More Time', diagram:'email-structure',
+          desc:'Politely ask the Captain for extra time on a report.', equation:'Greeting→Purpose→Details→Request→Closing',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'You need two more days to finish a complex engine redesign report. Which is the correct REQUEST line?',
+              scenario:'A polite request asks, it doesn\'t demand.',
+              options:['"Could you please give me two extra days to finish the report?"','"You need to give me more time."','"I want more time, obviously."','"Give me two more days now."'],
+              correct:0,
+              feedback:'Right — "Could you please…?" is a polite request, not a demand.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the REQUEST sentence.',
+              words:['Could','you','please','give','me','two','extra','days','to','finish','the','report?'],
+              target:'Could you please give me two extra days to finish the report?',
+              feedback:'That\'s a polite, clear request.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'A polite request usually starts with the word',
+              prefix:'', suffix:' to sound respectful.', accept:['could','would','please'], options:['could','must','now','demand'],
+              feedback:'Correct — "could" softens the request and keeps it respectful.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Give your reason using the starter below.',
+              starter:'I am requesting extra time because ',
+              hints:['the calculations are more complex than expected','I want to make sure the report is accurate'],
+              minWords:3,
+              feedback:'Good — a clear, honest reason for the request.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Write the Purpose and Request for more time.',
+              scenario:'Write one sentence for the Purpose, one for the Request.',
+              hints:['I am writing to request more time to finish my engine redesign report.','Could I please have two extra days, as the calculations are more complex than expected?'],
+              minWords:10,
+              model:'I am writing to request more time to finish my engine redesign report. Could I please have two extra days, as the calculations are more complex than I expected?',
+              feedback:'A polite, well-justified request.' },
+            { type:'structured', kicker:'Level 6 · Structured Message',
+              title:'Write the full message using the framework.',
+              scenario:'Use Greeting → Purpose → Details → Request → Closing.',
+              framework:[
+                {label:'Greeting…', placeholder:'e.g. Dear Captain,'},
+                {label:'Purpose…', placeholder:'e.g. I am writing to request more time to finish my engine redesign report.'},
+                {label:'Details…', placeholder:'e.g. The calculations have turned out to be more complex than I expected.'},
+                {label:'Request…', placeholder:'e.g. Could I please have two extra days to make sure the report is accurate?'},
+                {label:'Closing…', placeholder:'e.g. Thank you for considering my request. Kind regards, [Your name]'}
+              ],
+              model:'Dear Captain, I am writing to request more time to finish my engine redesign report. The calculations have turned out to be more complex than I expected. Could I please have two extra days to make sure the report is accurate? Thank you for considering my request. Kind regards, [Your name]',
+              feedback:'A polite, well-reasoned request — exactly how to ask professionally.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Write a full message on your own: you need one extra day to finish your science lab write-up because your first experiment failed and you had to repeat it.',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['Dear...,','I am writing to request...','Could I...'],
+              minWords:25,
+              model:'Dear Teacher, I am writing to request one extra day to finish my science lab write-up. My first experiment did not work, so I had to repeat it, which took longer than planned. Could I please submit the report tomorrow instead? Thank you for considering my request. Kind regards, [Your name]',
+              feedback:'You wrote a complete, polite request on a brand-new situation, entirely on your own.' }
+          ]
+        }
+      ]
+    }
   ];
 
   // ---------- DIAGRAM LIBRARY ----------
@@ -962,6 +1473,45 @@
       <text x="235" y="88" text-anchor="middle" fill="#efe7d6" font-size="10.5" font-family="Courier New, monospace" font-weight="bold">${bTitle}</text>
       ${rowsB}
     </svg><div class="diagram-caption">Think about both paths before you argue for one.</div></div>`;
+  }
+  function essayStructureSVG(highlight){
+    const boxes = ['INTRODUCTION','BODY PARAGRAPH (PEEL)','CONCLUSION'];
+    const subs = ['Hook \u2192 Background \u2192 Thesis','Point \u2192 Explain \u2192 Example \u2192 Link','Restate \u2192 Summary \u2192 Final thought'];
+    let svgParts = '';
+    boxes.forEach((b,i)=>{
+      const y = 10 + i*72;
+      const isHi = i===highlight;
+      const stroke = isHi ? '#e3b567' : '#2c4a58';
+      const fill = isHi ? 'rgba(227,181,103,0.18)' : 'rgba(16,31,39,0.4)';
+      svgParts += `<rect x="30" y="${y}" width="260" height="56" rx="8" fill="${fill}" stroke="${stroke}" stroke-width="${isHi?2.5:1.5}"/>`;
+      svgParts += `<text x="160" y="${y+24}" text-anchor="middle" fill="${isHi?'#e3b567':'#efe7d6'}" font-size="11" font-family="Courier New, monospace" font-weight="bold">${b}</text>`;
+      svgParts += `<text x="160" y="${y+42}" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">${subs[i]}</text>`;
+      if(i<2){
+        const ay = y+56;
+        svgParts += `<line x1="160" y1="${ay}" x2="160" y2="${ay+16}" stroke="#b9c4c8" stroke-width="1.5" marker-end="url(#arrowhead)"/>`;
+      }
+    });
+    return `<div class="diagram-box"><svg viewBox="0 0 320 226" style="width:100%;max-width:280px;height:auto;display:block;margin:0 auto;">
+      <defs><marker id="arrowhead" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#b9c4c8"/></marker></defs>
+      ${svgParts}
+    </svg><div class="diagram-caption">A full essay = Introduction → Body paragraphs (PEEL) → Conclusion. This mission trains one piece.</div></div>`;
+  }
+  function checklistFlowSVG(title, steps){
+    let y = 34;
+    let parts = '';
+    steps.forEach((s,i)=>{
+      parts += `<rect x="30" y="${y}" width="260" height="34" rx="7" fill="rgba(16,31,39,0.4)" stroke="#2c4a58" stroke-width="1.5"/>`;
+      parts += `<text x="160" y="${y+22}" text-anchor="middle" fill="#efe7d6" font-size="10.5" font-family="Courier New, monospace" font-weight="bold">${s}</text>`;
+      if(i<steps.length-1){
+        parts += `<line x1="160" y1="${y+34}" x2="160" y2="${y+44}" stroke="#b9c4c8" stroke-width="1.5" marker-end="url(#arrowhead2)"/>`;
+      }
+      y += 44;
+    });
+    return `<div class="diagram-box"><svg viewBox="0 0 320 ${y+6}" style="width:100%;max-width:280px;height:auto;display:block;margin:0 auto;">
+      <defs><marker id="arrowhead2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#b9c4c8"/></marker></defs>
+      <text x="160" y="16" text-anchor="middle" fill="#e3b567" font-size="10" font-family="Courier New, monospace">${title}</text>
+      ${parts}
+    </svg><div class="diagram-caption">Every formal message follows this order — check off each part as you write it.</div></div>`;
   }
   const DIAGRAMS = {
     'ice-float': `<div class="diagram-box"><svg viewBox="0 0 320 175" style="width:100%;max-width:280px;height:auto;display:block;margin:0 auto;">
@@ -1029,7 +1579,110 @@
       'Choosing the route',
       'ROUTE A', ['Shorter path','Passes icebergs'],
       'ROUTE B', ['Adds 1 day','Avoids icebergs']
-    )
+    ),
+
+    'temp-line': `<div class="diagram-box"><svg viewBox="0 0 320 190" style="width:100%;max-width:280px;height:auto;display:block;margin:0 auto;">
+      <text x="160" y="16" text-anchor="middle" fill="#e3b567" font-size="10" font-family="Courier New, monospace">ATLANTIC TEMPERATURE (°C)</text>
+      <line x1="40" y1="150" x2="290" y2="150" stroke="#b9c4c8" stroke-width="1"/>
+      <line x1="40" y1="20" x2="40" y2="150" stroke="#b9c4c8" stroke-width="1"/>
+      <polyline points="60,150 115,106 170,63 225,30 280,85" fill="none" stroke="#e3b567" stroke-width="2.5"/>
+      <circle cx="60" cy="150" r="4" fill="#e3b567"/><circle cx="115" cy="106" r="4" fill="#e3b567"/>
+      <circle cx="170" cy="63" r="4" fill="#e3b567"/><circle cx="225" cy="30" r="4" fill="#e3b567"/>
+      <circle cx="280" cy="85" r="4" fill="#e3b567"/>
+      <text x="60" y="90" text-anchor="middle" fill="#efe7d6" font-size="9" font-family="Courier New, monospace">18°</text>
+      <text x="115" y="98" text-anchor="middle" fill="#efe7d6" font-size="9" font-family="Courier New, monospace">22°</text>
+      <text x="170" y="55" text-anchor="middle" fill="#efe7d6" font-size="9" font-family="Courier New, monospace">26°</text>
+      <text x="225" y="22" text-anchor="middle" fill="#efe7d6" font-size="9" font-family="Courier New, monospace">29°</text>
+      <text x="280" y="77" text-anchor="middle" fill="#efe7d6" font-size="9" font-family="Courier New, monospace">24°</text>
+      <text x="60" y="165" text-anchor="middle" fill="#b9c4c8" font-size="8.5" font-family="Courier New, monospace">6am</text>
+      <text x="115" y="165" text-anchor="middle" fill="#b9c4c8" font-size="8.5" font-family="Courier New, monospace">9am</text>
+      <text x="170" y="165" text-anchor="middle" fill="#b9c4c8" font-size="8.5" font-family="Courier New, monospace">12pm</text>
+      <text x="225" y="165" text-anchor="middle" fill="#b9c4c8" font-size="8.5" font-family="Courier New, monospace">3pm</text>
+      <text x="280" y="165" text-anchor="middle" fill="#b9c4c8" font-size="8.5" font-family="Courier New, monospace">6pm</text>
+    </svg><div class="diagram-caption">Read the temperature at each time before you describe the trend.</div></div>`,
+
+    'wave-bar': `<div class="diagram-box"><svg viewBox="0 0 320 190" style="width:100%;max-width:280px;height:auto;display:block;margin:0 auto;">
+      <text x="160" y="16" text-anchor="middle" fill="#e3b567" font-size="10" font-family="Courier New, monospace">WAVE HEIGHT (metres)</text>
+      <line x1="40" y1="160" x2="290" y2="160" stroke="#b9c4c8" stroke-width="1"/>
+      <rect x="55" y="140" width="36" height="20" fill="rgba(227,181,103,0.5)" stroke="#e3b567"/>
+      <rect x="120" y="110" width="36" height="50" fill="rgba(227,181,103,0.5)" stroke="#e3b567"/>
+      <rect x="185" y="40" width="36" height="120" fill="rgba(227,181,103,0.5)" stroke="#e3b567"/>
+      <rect x="250" y="120" width="36" height="40" fill="rgba(227,181,103,0.5)" stroke="#e3b567"/>
+      <text x="73" y="134" text-anchor="middle" fill="#efe7d6" font-size="9" font-family="Courier New, monospace">1m</text>
+      <text x="138" y="104" text-anchor="middle" fill="#efe7d6" font-size="9" font-family="Courier New, monospace">2.5m</text>
+      <text x="203" y="34" text-anchor="middle" fill="#efe7d6" font-size="9" font-family="Courier New, monospace">6m</text>
+      <text x="268" y="114" text-anchor="middle" fill="#efe7d6" font-size="9" font-family="Courier New, monospace">2m</text>
+      <text x="73" y="174" text-anchor="middle" fill="#b9c4c8" font-size="8.5" font-family="Courier New, monospace">Day 1</text>
+      <text x="138" y="174" text-anchor="middle" fill="#b9c4c8" font-size="8.5" font-family="Courier New, monospace">Day 2</text>
+      <text x="203" y="174" text-anchor="middle" fill="#b9c4c8" font-size="8.5" font-family="Courier New, monospace">Day 3</text>
+      <text x="268" y="174" text-anchor="middle" fill="#b9c4c8" font-size="8.5" font-family="Courier New, monospace">Day 4</text>
+    </svg><div class="diagram-caption">Compare the bar heights — Day 3 was the peak of the storm.</div></div>`,
+
+    'route-compare': `<div class="diagram-box"><svg viewBox="0 0 320 200" style="width:100%;max-width:280px;height:auto;display:block;margin:0 auto;">
+      <text x="160" y="16" text-anchor="middle" fill="#e3b567" font-size="10" font-family="Courier New, monospace">SPEED (knots) — ROUTE A vs ROUTE B</text>
+      <line x1="40" y1="150" x2="290" y2="150" stroke="#b9c4c8" stroke-width="1"/>
+      <polyline points="60,90 130,50 200,70 270,30" fill="none" stroke="#e3b567" stroke-width="2.5"/>
+      <polyline points="60,150 130,130 200,150 270,110" fill="none" stroke="#7fb3c9" stroke-width="2.5"/>
+      <circle cx="60" cy="90" r="4" fill="#e3b567"/><circle cx="130" cy="50" r="4" fill="#e3b567"/>
+      <circle cx="200" cy="70" r="4" fill="#e3b567"/><circle cx="270" cy="30" r="4" fill="#e3b567"/>
+      <circle cx="60" cy="150" r="4" fill="#7fb3c9"/><circle cx="130" cy="130" r="4" fill="#7fb3c9"/>
+      <circle cx="200" cy="150" r="4" fill="#7fb3c9"/><circle cx="270" cy="110" r="4" fill="#7fb3c9"/>
+      <text x="60" y="172" text-anchor="middle" fill="#b9c4c8" font-size="8.5" font-family="Courier New, monospace">Day 1</text>
+      <text x="130" y="172" text-anchor="middle" fill="#b9c4c8" font-size="8.5" font-family="Courier New, monospace">Day 2</text>
+      <text x="200" y="172" text-anchor="middle" fill="#b9c4c8" font-size="8.5" font-family="Courier New, monospace">Day 3</text>
+      <text x="270" y="172" text-anchor="middle" fill="#b9c4c8" font-size="8.5" font-family="Courier New, monospace">Day 4</text>
+      <circle cx="55" cy="190" r="4" fill="#e3b567"/><text x="65" y="193" fill="#e3b567" font-size="9" font-family="Courier New, monospace">Route A</text>
+      <circle cx="150" cy="190" r="4" fill="#7fb3c9"/><text x="160" y="193" fill="#7fb3c9" font-size="9" font-family="Courier New, monospace">Route B</text>
+    </svg><div class="diagram-caption">Route A (gold) stayed faster than Route B (blue) on every day shown.</div></div>`,
+
+    'essay-intro': essayStructureSVG(0),
+    'essay-body': essayStructureSVG(1),
+    'essay-conclusion': essayStructureSVG(2),
+
+    'email-structure': checklistFlowSVG('FORMAL MESSAGE STRUCTURE', ['GREETING','PURPOSE','DETAILS','REQUEST','CLOSING']),
+
+    'propeller-thrust': `<div class="diagram-box"><svg viewBox="0 0 320 170" style="width:100%;max-width:280px;height:auto;display:block;margin:0 auto;">
+      <text x="160" y="16" text-anchor="middle" fill="#e3b567" font-size="10" font-family="Courier New, monospace">PROPELLER THRUST TEST</text>
+      <circle cx="90" cy="95" r="12" fill="rgba(227,181,103,0.3)" stroke="#e3b567" stroke-width="2"/>
+      <rect x="84" y="45" width="12" height="50" rx="4" fill="rgba(227,181,103,0.4)" stroke="#e3b567" stroke-width="2" transform="rotate(30 90 95)"/>
+      <text x="70" y="135" fill="#b9c4c8" font-size="8.5" font-family="Courier New, monospace">Blade angle</text>
+      <line x1="115" y1="80" x2="165" y2="72" stroke="#7fb3c9" stroke-width="2"/>
+      <line x1="115" y1="95" x2="165" y2="95" stroke="#7fb3c9" stroke-width="2"/>
+      <line x1="115" y1="110" x2="165" y2="118" stroke="#7fb3c9" stroke-width="2"/>
+      <text x="140" y="135" text-anchor="middle" fill="#7fb3c9" font-size="8" font-family="Courier New, monospace">Water pushed back</text>
+      <circle cx="250" cy="95" r="34" fill="none" stroke="#b9c4c8" stroke-width="1.5"/>
+      <line x1="250" y1="95" x2="272" y2="72" stroke="#e3b567" stroke-width="2.5"/>
+      <circle cx="250" cy="95" r="3" fill="#e3b567"/>
+      <text x="250" y="146" text-anchor="middle" fill="#b9c4c8" font-size="8.5" font-family="Courier New, monospace">THRUST GAUGE</text>
+    </svg><div class="diagram-caption">A steeper blade angle pushes more water backward — watch how the thrust gauge responds.</div></div>`,
+
+    'buoyancy-shapes': `<div class="diagram-box"><svg viewBox="0 0 320 175" style="width:100%;max-width:280px;height:auto;display:block;margin:0 auto;">
+      <text x="160" y="16" text-anchor="middle" fill="#e3b567" font-size="10" font-family="Courier New, monospace">CLAY SHAPE TEST</text>
+      <rect x="20" y="90" width="280" height="60" fill="rgba(120,180,210,0.15)"/>
+      <line x1="20" y1="90" x2="300" y2="90" stroke="#b9c4c8" stroke-width="1"/>
+      <circle cx="90" cy="128" r="16" fill="rgba(227,181,103,0.4)" stroke="#e3b567" stroke-width="2"/>
+      <text x="90" y="162" text-anchor="middle" fill="#b9c4c8" font-size="8.5" font-family="Courier New, monospace">BALL: sinks</text>
+      <path d="M190 85 Q220 68 250 85 L244 96 Q220 86 196 96 Z" fill="rgba(227,181,103,0.4)" stroke="#e3b567" stroke-width="2"/>
+      <text x="220" y="55" text-anchor="middle" fill="#b9c4c8" font-size="8.5" font-family="Courier New, monospace">BOAT SHAPE: floats</text>
+    </svg><div class="diagram-caption">Same amount of clay, two shapes — the boat shape traps air and displaces more water.</div></div>`,
+
+    'spoon-heat': `<div class="diagram-box"><svg viewBox="0 0 320 190" style="width:100%;max-width:280px;height:auto;display:block;margin:0 auto;">
+      <text x="160" y="16" text-anchor="middle" fill="#e3b567" font-size="10" font-family="Courier New, monospace">SPOON HEAT TEST</text>
+      <path d="M60 45 L70 145 L250 145 L260 45" fill="none" stroke="#c8963f" stroke-width="2"/>
+      <rect x="65" y="95" width="190" height="50" fill="rgba(220,140,90,0.15)"/>
+      <line x1="100" y1="140" x2="95" y2="55" stroke="#b9c4c8" stroke-width="3"/>
+      <circle cx="95" cy="48" r="6" fill="#e3b567"/>
+      <text x="95" y="32" text-anchor="middle" fill="#e3b567" font-size="8" font-family="Courier New, monospace">METAL</text>
+      <text x="95" y="42" text-anchor="middle" fill="#e3b567" font-size="8" font-family="Courier New, monospace">40s</text>
+      <line x1="160" y1="140" x2="160" y2="55" stroke="#b9c4c8" stroke-width="3"/>
+      <circle cx="160" cy="48" r="6" fill="#a9885f"/>
+      <text x="160" y="32" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">WOOD</text>
+      <text x="160" y="42" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">5min+</text>
+      <line x1="220" y1="140" x2="226" y2="55" stroke="#b9c4c8" stroke-width="3"/>
+      <circle cx="227" cy="48" r="6" fill="#7fb3c9"/>
+      <text x="227" y="32" text-anchor="middle" fill="#7fb3c9" font-size="8" font-family="Courier New, monospace">PLASTIC</text>
+      <text x="227" y="42" text-anchor="middle" fill="#7fb3c9" font-size="8" font-family="Courier New, monospace">3min</text>
+    </svg><div class="diagram-caption">Same hot water, three spoon materials — watch which butter blob melts first.</div></div>`
   };
 
   // ---------- STATE ----------
