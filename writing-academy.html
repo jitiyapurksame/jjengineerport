@@ -103,6 +103,38 @@
     text-transform:uppercase; margin:22px 2px 10px;
   }
 
+  .plan-map{display:flex; flex-direction:column; align-items:stretch; margin:6px 0 16px;}
+  .plan-step-box{background:rgba(16,31,39,0.5); border:1px solid var(--rivet); border-radius:10px; padding:10px 12px;}
+  .plan-step-label{font-family:var(--font-gauge); font-size:10px; letter-spacing:0.08em; color:var(--brass); text-transform:uppercase; margin-bottom:4px;}
+  .plan-step-text{font-size:13px; color:var(--steam); line-height:1.4;}
+  .plan-arrow{text-align:center; color:var(--steam-dim); font-size:14px; margin:2px 0;}
+  .plan-cta{
+    margin-top:6px; background:rgba(200,150,63,0.1); border:1px dashed var(--brass);
+    border-radius:12px; padding:14px; text-align:center;
+  }
+  .plan-cta p{font-size:13px; color:var(--steam-dim); margin:0 0 10px;}
+  details.plan-peek{
+    background:rgba(16,31,39,0.4); border:1px solid var(--rivet); border-radius:10px;
+    padding:10px 12px; margin-bottom:14px;
+  }
+  details.plan-peek summary{
+    font-family:var(--font-gauge); font-size:12px; color:var(--brass-bright); cursor:pointer;
+    letter-spacing:0.04em;
+  }
+  details.plan-peek .plan-map{margin-top:10px; margin-bottom:2px;}
+
+  .world-intro-card{
+    background:linear-gradient(180deg, var(--hull-panel-2), var(--hull-panel));
+    border:1px solid var(--rivet); border-radius:14px;
+    padding:18px 16px; margin-bottom:20px;
+  }
+  .world-intro-heading{
+    font-family:var(--font-plate); font-size:16px; color:var(--brass-bright); margin-bottom:8px;
+  }
+  .world-intro-body{
+    font-size:13px; color:var(--steam-dim); line-height:1.5; margin:0 0 8px;
+  }
+
   .mission-list{display:flex; flex-direction:column; gap:14px;}
   .mission-card{
     background:linear-gradient(180deg, var(--hull-panel-2), var(--hull-panel));
@@ -1113,7 +1145,103 @@
       id:'essay-builder', icon:'📝', title:'Atlantic Voyages', worldsub:'Essay Builder',
       desc:'Build the three pieces of a full essay: introduction, PEEL body paragraph, conclusion.',
       status:'ready',
+      intro:{
+        heading:'Before you write: know the argument, then plan it',
+        body:'Every mission in this world uses the same essay question — Should ships rely more on automation? Look at both sides below, then see how a full plan comes together before any writing starts.',
+        diagrams:['essay-context','essay-planning']
+      },
+      planning:{
+        question:'Should ships rely more on automation?',
+        reasons:{
+          yes:[
+            {text:'Automation reacts faster than a human crew.', example:'e.g. radar-based collision-avoidance can respond in milliseconds.'},
+            {text:'Automation uses less fuel.', example:'e.g. smart engine control adjusts speed automatically for efficiency.'},
+            {text:'Automation reduces human error.', example:'e.g. computers do not get tired or distracted on a long watch.'}
+          ],
+          no:[
+            {text:'Human crews adapt better to surprises.', example:'e.g. a sailor can improvise when something unexpected happens.'},
+            {text:'Human crews bring hands-on experience.', example:'e.g. an experienced captain can sense trouble before the instruments do.'},
+            {text:'Full automation is not yet reliable enough.', example:'e.g. sensors and software can still fail or be fooled.'}
+          ]
+        },
+        counters:{
+          yes:[
+            {text:'But human judgement is still needed for the unexpected.'},
+            {text:'But automated systems can be hacked or fail.'},
+            {text:'But sailors could lose their jobs.'}
+          ],
+          no:[
+            {text:'But automation can react faster in an emergency.'},
+            {text:'But automation could reduce costs over time.'},
+            {text:'But technology cannot improve if it is never used.'}
+          ]
+        },
+        conclusions:{
+          yes:[
+            {text:'Automation improves safety and efficiency, so ships should use more of it, working alongside skilled crews.'},
+            {text:'Automation is the clear future of shipping, and crews should adapt to work with it.'}
+          ],
+          no:[
+            {text:'Human crews should remain in charge, with automation only used to support their decisions.'},
+            {text:'Ships should limit automation until the technology is proven to be fully reliable.'}
+          ]
+        }
+      },
       missions:[
+        {
+          id:'writing-introduction', icon:'🚪', title:'Writing an Introduction', diagram:'essay-intro',
+          desc:'Open the essay: Hook → Background → Thesis.', equation:'Essay topic: Should ships rely more on automation?',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'Which sentence works best as the HOOK that opens this essay?',
+              scenario:'A hook grabs attention and introduces the topic — it isn\'t a conclusion, a prediction, or an error report.',
+              options:['"Modern ships are increasingly controlled by computers instead of people."','"In conclusion, automation is useful."','"I predict that automation will increase."','"The mistake is that automation is expensive."'],
+              correct:0,
+              feedback:'Right — that opens the topic in an interesting way, without concluding or predicting anything yet.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the hook sentence.',
+              words:['Modern','ships','are','increasingly','controlled','by','computers','instead','of','people.'],
+              target:'Modern ships are increasingly controlled by computers instead of people.',
+              feedback:'That\'s an engaging opening statement.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'After the hook, you should give some',
+              prefix:'', suffix:' before stating your argument.', accept:['background','context'], options:['background','conclusion','evidence','opinion'],
+              feedback:'Correct — background helps the reader understand the topic before you state your thesis.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'State your thesis using the starter below.',
+              starter:'This essay will argue that ',
+              hints:['ships should rely more on automation','human crews are still essential, even with new technology'],
+              minWords:3,
+              feedback:'Good — that\'s a clear thesis statement.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Write a hook and a thesis statement for this essay.',
+              scenario:'Write one sentence for the hook, one for the thesis.',
+              hints:['Modern ships are increasingly controlled by computers instead of people.','This essay will argue that ships should rely more on automation.'],
+              minWords:10,
+              model:'Modern ships are increasingly controlled by computers instead of people. This essay will argue that ships should rely more on automation, because it improves safety and efficiency.',
+              feedback:'A strong opening — an engaging hook, followed by a clear thesis.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full introduction.',
+              scenario:'Use Hook → Background → Thesis.',
+              framework:[
+                {label:'Hook…', placeholder:'e.g. Modern ships are increasingly controlled by computers instead of people.'},
+                {label:'Background…', placeholder:'e.g. Over the last twenty years, automated systems have taken over many tasks once done by sailors.'},
+                {label:'Thesis…', placeholder:'e.g. This essay will argue that ships should rely more on automation, because it improves safety and efficiency.'}
+              ],
+              model:'Modern ships are increasingly controlled by computers instead of people. Over the last twenty years, automated systems have taken over many tasks once done by sailors. This essay will argue that ships should rely more on automation, because it improves safety and efficiency.',
+              feedback:'A complete introduction — hook, context, and a clear argument, ready to guide the whole essay.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Write a full introduction on your own for a new topic: should the age of ship captains be limited by law?',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['Hook:...','Background:...','Thesis:...'],
+              minWords:25,
+              model:'Ship captains carry enormous responsibility for the safety of everyone on board. As vessels have become larger and more complex, some have questioned whether age limits should apply to captains, just as they do for airline pilots. This essay will argue that a strict age limit is not necessary, as long as captains pass regular health and skill checks.',
+              feedback:'You wrote a complete introduction on a brand-new topic, entirely on your own.' }
+          ]
+        },
         {
           id:'peel-paragraph', icon:'🧱', title:'Writing a PEEL Paragraph', diagram:'essay-body',
           desc:'Build one strong body paragraph: Point → Explain → Example → Link.', equation:'Essay topic: Should ships rely more on automation?',
@@ -1167,60 +1295,6 @@
               minWords:25,
               model:'One drawback of automation is that it could put crew jobs at risk. This means that fewer sailors may be needed to run the ship day to day. For example, some cargo ships now operate with much smaller crews than they did twenty years ago. This shows that automation brings real costs for the people who work at sea, not just benefits for the ship owners.',
               feedback:'You built a full PEEL paragraph on a brand-new point, entirely on your own.' }
-          ]
-        },
-        {
-          id:'writing-introduction', icon:'🚪', title:'Writing an Introduction', diagram:'essay-intro',
-          desc:'Open the essay: Hook → Background → Thesis.', equation:'Essay topic: Should ships rely more on automation?',
-          levels:[
-            { type:'choice', kicker:'Level 1 · Choose',
-              title:'Which sentence works best as the HOOK that opens this essay?',
-              scenario:'A hook grabs attention and introduces the topic — it isn\'t a conclusion, a prediction, or an error report.',
-              options:['"Modern ships are increasingly controlled by computers instead of people."','"In conclusion, automation is useful."','"I predict that automation will increase."','"The mistake is that automation is expensive."'],
-              correct:0,
-              feedback:'Right — that opens the topic in an interesting way, without concluding or predicting anything yet.' },
-            { type:'build', kicker:'Level 2 · Build',
-              title:'Put the words in order.',
-              scenario:'Build the hook sentence.',
-              words:['Modern','ships','are','increasingly','controlled','by','computers','instead','of','people.'],
-              target:'Modern ships are increasingly controlled by computers instead of people.',
-              feedback:'That\'s an engaging opening statement.' },
-            { type:'complete', kicker:'Level 3 · Complete',
-              title:'Fill in the missing word.',
-              scenario:'After the hook, you should give some',
-              prefix:'', suffix:' before stating your argument.', accept:['background','context'], options:['background','conclusion','evidence','opinion'],
-              feedback:'Correct — background helps the reader understand the topic before you state your thesis.' },
-            { type:'starter', kicker:'Level 4 · Sentence Starter',
-              title:'Finish the sentence.',
-              scenario:'State your thesis using the starter below.',
-              starter:'This essay will argue that ',
-              hints:['ships should rely more on automation','human crews are still essential, even with new technology'],
-              minWords:3,
-              feedback:'Good — that\'s a clear thesis statement.' },
-            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
-              title:'Write a hook and a thesis statement for this essay.',
-              scenario:'Write one sentence for the hook, one for the thesis.',
-              hints:['Modern ships are increasingly controlled by computers instead of people.','This essay will argue that ships should rely more on automation.'],
-              minWords:10,
-              model:'Modern ships are increasingly controlled by computers instead of people. This essay will argue that ships should rely more on automation, because it improves safety and efficiency.',
-              feedback:'A strong opening — an engaging hook, followed by a clear thesis.' },
-            { type:'structured', kicker:'Level 6 · Structured Paragraph',
-              title:'Write the full introduction.',
-              scenario:'Use Hook → Background → Thesis.',
-              framework:[
-                {label:'Hook…', placeholder:'e.g. Modern ships are increasingly controlled by computers instead of people.'},
-                {label:'Background…', placeholder:'e.g. Over the last twenty years, automated systems have taken over many tasks once done by sailors.'},
-                {label:'Thesis…', placeholder:'e.g. This essay will argue that ships should rely more on automation, because it improves safety and efficiency.'}
-              ],
-              model:'Modern ships are increasingly controlled by computers instead of people. Over the last twenty years, automated systems have taken over many tasks once done by sailors. This essay will argue that ships should rely more on automation, because it improves safety and efficiency.',
-              feedback:'A complete introduction — hook, context, and a clear argument, ready to guide the whole essay.' },
-            { type:'independent', kicker:'Level 7 · Independent',
-              title:'Write a full introduction on your own for a new topic: should the age of ship captains be limited by law?',
-              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
-              hints:['Hook:...','Background:...','Thesis:...'],
-              minWords:25,
-              model:'Ship captains carry enormous responsibility for the safety of everyone on board. As vessels have become larger and more complex, some have questioned whether age limits should apply to captains, just as they do for airline pilots. This essay will argue that a strict age limit is not necessary, as long as captains pass regular health and skill checks.',
-              feedback:'You wrote a complete introduction on a brand-new topic, entirely on your own.' }
           ]
         },
         {
@@ -1513,6 +1587,24 @@
       ${parts}
     </svg><div class="diagram-caption">Every formal message follows this order — check off each part as you write it.</div></div>`;
   }
+  function ideaMapSVG(title, steps){
+    let y = 34;
+    let parts = '';
+    steps.forEach((s,i)=>{
+      parts += `<rect x="20" y="${y}" width="280" height="46" rx="8" fill="rgba(16,31,39,0.4)" stroke="#2c4a58" stroke-width="1.5"/>`;
+      parts += `<text x="160" y="${y+18}" text-anchor="middle" fill="#e3b567" font-size="9.5" font-family="Courier New, monospace" font-weight="bold">${s.label}</text>`;
+      parts += `<text x="160" y="${y+34}" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">${s.example}</text>`;
+      if(i<steps.length-1){
+        parts += `<line x1="160" y1="${y+46}" x2="160" y2="${y+58}" stroke="#b9c4c8" stroke-width="1.5" marker-end="url(#arrowhead3)"/>`;
+      }
+      y += 58;
+    });
+    return `<div class="diagram-box"><svg viewBox="0 0 320 ${y+6}" style="width:100%;max-width:300px;height:auto;display:block;margin:0 auto;">
+      <defs><marker id="arrowhead3" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#b9c4c8"/></marker></defs>
+      <text x="160" y="16" text-anchor="middle" fill="#e3b567" font-size="10" font-family="Courier New, monospace">${title}</text>
+      ${parts}
+    </svg><div class="diagram-caption">Plan your whole essay like this before you start writing any paragraph.</div></div>`;
+  }
   const DIAGRAMS = {
     'ice-float': `<div class="diagram-box"><svg viewBox="0 0 320 175" style="width:100%;max-width:280px;height:auto;display:block;margin:0 auto;">
       <path d="M90 20 L100 150 L220 150 L230 20" fill="none" stroke="#c8963f" stroke-width="2"/>
@@ -1682,8 +1774,40 @@
       <circle cx="227" cy="48" r="6" fill="#7fb3c9"/>
       <text x="227" y="32" text-anchor="middle" fill="#7fb3c9" font-size="8" font-family="Courier New, monospace">PLASTIC</text>
       <text x="227" y="42" text-anchor="middle" fill="#7fb3c9" font-size="8" font-family="Courier New, monospace">3min</text>
-    </svg><div class="diagram-caption">Same hot water, three spoon materials — watch which butter blob melts first.</div></div>`
+    </svg><div class="diagram-caption">Same hot water, three spoon materials — watch which butter blob melts first.</div></div>`,
+
+    'essay-context': decisionTreeSVG(
+      'Should ships rely more on automation?',
+      'AUTOMATION', ['Faster reactions','Uses less fuel','Risk: untested'],
+      'HUMAN CREW', ['Proven experience','Adapts to surprises','Uses more fuel']
+    ),
+
+    'essay-planning': ideaMapSVG('IDEA MAP: PLAN BEFORE YOU WRITE', [
+      {label:'QUESTION', example:'Should ships rely more on automation?'},
+      {label:'MY ANSWER', example:'Yes — automation improves safety.'},
+      {label:'REASON 1 + EXAMPLE', example:'Faster reactions — e.g. radar avoids hazards'},
+      {label:'REASON 2 + EXAMPLE', example:'Uses less fuel — e.g. smart engine control'},
+      {label:'COUNTERARGUMENT', example:'But humans handle surprises better'},
+      {label:'CONCLUSION', example:'Automation + skilled crew = safest option'}
+    ])
   };
+
+  function planSummaryHTML(question, answerText, reasonObj, counterObj, conclusionObj){
+    const rows = [
+      {label:'QUESTION', text:question},
+      {label:'MY ANSWER', text:answerText},
+      {label:'REASON', text:reasonObj.text + (reasonObj.example ? ' ('+reasonObj.example+')' : '')},
+      {label:'COUNTERARGUMENT', text:counterObj.text},
+      {label:'CONCLUSION', text:conclusionObj.text}
+    ];
+    let html = `<div class="plan-map">`;
+    rows.forEach((r,i)=>{
+      html += `<div class="plan-step-box"><div class="plan-step-label">${r.label}</div><div class="plan-step-text">${r.text}</div></div>`;
+      if(i<rows.length-1) html += `<div class="plan-arrow">↓</div>`;
+    });
+    html += `</div>`;
+    return html;
+  }
 
   // ---------- STATE ----------
   function loadState(){
@@ -1703,6 +1827,7 @@
     w.missions.forEach(m=>{
       if(!state.worlds[w.id][m.id]) state.worlds[w.id][m.id] = { levelIndex:0, done:false };
     });
+    if(w.planning && !state.worlds[w.id].plan) state.worlds[w.id].plan = null;
   });
 
   function worldPct(world){
@@ -1750,6 +1875,14 @@
       topTitle.textContent = w.title;
       topSub.textContent = 'S.S. Wordcraft · '+w.worldsub;
       backBtn.disabled = false; backBtn.textContent = '← Map';
+    } else if(view.screen==='planning'){
+      const w = getWorld(view.worldId);
+      const pct = worldPct(w);
+      document.querySelector('.gauge').style.setProperty('--pct', pct);
+      topGaugeNum.textContent = pct+'%';
+      topTitle.textContent = 'Plan Your Essay';
+      topSub.textContent = 'S.S. Wordcraft · '+w.worldsub;
+      backBtn.disabled = false; backBtn.textContent = '← Missions';
     } else {
       const w = getWorld(view.worldId);
       const pct = worldPct(w);
@@ -1765,12 +1898,14 @@
   backBtn.addEventListener('click', ()=>{
     if(view.screen==='worldmap') return;
     if(view.screen==='missions'){ goWorldMap(); return; }
+    if(view.screen==='planning'){ view = { screen:'missions', worldId:view.worldId, missionId:null, levelIndex:0, buildOrder:[], buildBank:[] }; render(); return; }
     view = { screen:'missions', worldId:view.worldId, missionId:null, levelIndex:0, buildOrder:[], buildBank:[] };
     render();
   });
 
   function goWorldMap(){ view = { screen:'worldmap', worldId:null, missionId:null, levelIndex:0, buildOrder:[], buildBank:[] }; render(); }
   function openWorld(worldId){ view = { screen:'missions', worldId, missionId:null, levelIndex:0, buildOrder:[], buildBank:[] }; render(); }
+  function openPlanning(worldId){ view = { screen:'planning', worldId, missionId:null, levelIndex:0, buildOrder:[], buildBank:[], planStep:0, planChoices:{} }; render(); }
   function openMission(worldId, missionId){
     const m = getMission(worldId, missionId);
     const progress = state.worlds[worldId][missionId];
@@ -1848,6 +1983,29 @@
       <h2>${w.title}</h2>
       <p>${w.desc}</p>
     </div>`;
+    if(w.intro){
+      html += `<div class="world-intro-card">
+        <div class="world-intro-heading">${w.intro.heading}</div>
+        <p class="world-intro-body">${w.intro.body}</p>
+        ${w.intro.diagrams.map(d=>DIAGRAMS[d]||'').join('')}
+      </div>`;
+    }
+    if(w.planning){
+      const savedPlan = state.worlds[w.id].plan;
+      if(savedPlan){
+        html += `<div class="world-intro-card">
+          <div class="world-intro-heading">📋 Your Plan</div>
+          <p class="world-intro-body">This is the plan you built. Use it while you write, or redo it if you've changed your mind.</p>
+          ${planSummaryHTML(w.planning.question, savedPlan.answerText, savedPlan.reason, savedPlan.counter, savedPlan.conclusion)}
+          <div class="btn-row"><button class="btn ghost" id="redoPlanBtn">Redo My Plan</button></div>
+        </div>`;
+      } else {
+        html += `<div class="plan-cta">
+          <p>Ready to plan your own essay? Choose your answer, reason, counterargument, and conclusion — then start writing.</p>
+          <button class="btn primary" id="startPlanBtn" style="max-width:240px;margin:0 auto;">Build My Plan →</button>
+        </div>`;
+      }
+    }
     html += `<div class="mission-list">`;
     w.missions.forEach((m,i)=>{
       const prog = state.worlds[w.id][m.id];
@@ -1875,6 +2033,119 @@
         openMission(w.id, card.dataset.mission);
       });
     });
+    if(document.getElementById('startPlanBtn')){
+      document.getElementById('startPlanBtn').addEventListener('click', ()=>openPlanning(w.id));
+    }
+    if(document.getElementById('redoPlanBtn')){
+      document.getElementById('redoPlanBtn').addEventListener('click', ()=>openPlanning(w.id));
+    }
+  }
+
+  // ---------- RENDER: PLANNING (interactive plan builder) ----------
+  function renderPlanning(){
+    const w = getWorld(view.worldId);
+    const p = w.planning;
+    const stepNames = ['answer','reason','counter','conclusion','summary'];
+    const stepName = stepNames[view.planStep];
+    let html = '';
+
+    html += `<div class="rung-track">`;
+    stepNames.slice(0,4).forEach((s,i)=>{
+      let cls = 'rung';
+      if(i<view.planStep) cls += ' done'; else if(i===view.planStep) cls += ' active';
+      html += `<div class="${cls}">${i+1}</div>`;
+    });
+    html += `</div>`;
+
+    html += `<div class="level-card">`;
+
+    if(stepName==='answer'){
+      html += `<div class="level-kicker">PLAN STEP 1 · YOUR ANSWER</div>`;
+      html += `<div class="level-title">${p.question}</div>`;
+      html += `<button class="choice-btn" data-answer="yes">Yes — ships should rely more on automation</button>`;
+      html += `<button class="choice-btn" data-answer="no">No — human crews should remain primary</button>`;
+    } else if(stepName==='reason'){
+      const opts = p.reasons[view.planChoices.answer];
+      html += `<div class="level-kicker">PLAN STEP 2 · YOUR REASON</div>`;
+      html += `<div class="level-title">Pick your strongest reason.</div>`;
+      opts.forEach((o,i)=>{
+        html += `<button class="choice-btn" data-reason="${i}">${o.text}<br><span style="font-size:12px;color:var(--steam-dim);">${o.example}</span></button>`;
+      });
+    } else if(stepName==='counter'){
+      const opts = p.counters[view.planChoices.answer];
+      html += `<div class="level-kicker">PLAN STEP 3 · COUNTERARGUMENT</div>`;
+      html += `<div class="level-title">Pick a counterargument to address.</div>`;
+      opts.forEach((o,i)=>{ html += `<button class="choice-btn" data-counter="${i}">${o.text}</button>`; });
+    } else if(stepName==='conclusion'){
+      const opts = p.conclusions[view.planChoices.answer];
+      html += `<div class="level-kicker">PLAN STEP 4 · CONCLUSION</div>`;
+      html += `<div class="level-title">Pick your conclusion.</div>`;
+      opts.forEach((o,i)=>{ html += `<button class="choice-btn" data-conclusion="${i}">${o.text}</button>`; });
+    } else if(stepName==='summary'){
+      const ans = view.planChoices;
+      const answerText = ans.answer==='yes' ? 'Yes — ships should rely more on automation.' : 'No — human crews should remain primary.';
+      const reasonObj = p.reasons[ans.answer][ans.reasonIdx];
+      const counterObj = p.counters[ans.answer][ans.counterIdx];
+      const conclusionObj = p.conclusions[ans.answer][ans.conclusionIdx];
+      html += `<div class="level-kicker">YOUR PLAN IS READY</div>`;
+      html += `<div class="level-title">Here's your essay plan.</div>`;
+      html += planSummaryHTML(p.question, answerText, reasonObj, counterObj, conclusionObj);
+      html += `<div class="btn-row"><button class="btn ghost" id="editPlanBtn">Change Answer</button><button class="btn primary" id="startWritingBtn">Start Writing →</button></div>`;
+    }
+
+    html += `</div>`;
+    app.innerHTML = html;
+
+    if(stepName==='answer'){
+      document.querySelectorAll('[data-answer]').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          view.planChoices.answer = btn.dataset.answer;
+          view.planStep = 1;
+          render();
+        });
+      });
+    } else if(stepName==='reason'){
+      document.querySelectorAll('[data-reason]').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          view.planChoices.reasonIdx = parseInt(btn.dataset.reason,10);
+          view.planStep = 2;
+          render();
+        });
+      });
+    } else if(stepName==='counter'){
+      document.querySelectorAll('[data-counter]').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          view.planChoices.counterIdx = parseInt(btn.dataset.counter,10);
+          view.planStep = 3;
+          render();
+        });
+      });
+    } else if(stepName==='conclusion'){
+      document.querySelectorAll('[data-conclusion]').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          view.planChoices.conclusionIdx = parseInt(btn.dataset.conclusion,10);
+          view.planStep = 4;
+          render();
+        });
+      });
+    } else if(stepName==='summary'){
+      document.getElementById('editPlanBtn').addEventListener('click', ()=>{
+        view.planStep = 0; view.planChoices = {};
+        render();
+      });
+      document.getElementById('startWritingBtn').addEventListener('click', ()=>{
+        const ans = view.planChoices;
+        const answerText = ans.answer==='yes' ? 'Yes — ships should rely more on automation.' : 'No — human crews should remain primary.';
+        state.worlds[w.id].plan = {
+          answerText,
+          reason: p.reasons[ans.answer][ans.reasonIdx],
+          counter: p.counters[ans.answer][ans.counterIdx],
+          conclusion: p.conclusions[ans.answer][ans.conclusionIdx]
+        };
+        saveState();
+        openWorld(w.id);
+      });
+    }
   }
 
   // ---------- RENDER: LEVEL ----------
@@ -1916,6 +2187,12 @@
       html += `<div class="${cls}">${i+1}</div>`;
     });
     html += `</div>`;
+
+    const w = getWorld(view.worldId);
+    const savedPlan = state.worlds[view.worldId].plan;
+    if(w.planning && savedPlan){
+      html += `<details class="plan-peek"><summary>📋 Peek at your plan</summary>${planSummaryHTML(w.planning.question, savedPlan.answerText, savedPlan.reason, savedPlan.counter, savedPlan.conclusion)}</details>`;
+    }
 
     html += `<div class="level-card">`;
     html += `<div class="level-kicker">${lvl.kicker}</div>`;
@@ -2149,6 +2426,7 @@
     updateTopbar();
     if(view.screen==='worldmap') renderWorldMap();
     else if(view.screen==='missions') renderMissions();
+    else if(view.screen==='planning') renderPlanning();
     else if(view.screen==='level') renderLevel();
     else if(view.screen==='complete') renderComplete();
   }
