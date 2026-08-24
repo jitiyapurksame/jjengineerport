@@ -150,9 +150,19 @@
     background:var(--hull-panel-2); border:1px solid var(--rivet); border-radius:12px;
     padding:14px 16px; margin-bottom:12px;
   }
-  .verb-word{font-family:var(--font-plate); font-size:17px; color:var(--brass-bright); margin-bottom:4px;}
+  .verb-header{display:flex; align-items:center; gap:8px; margin-bottom:4px;}
+  .verb-icon{font-size:20px;}
+  .verb-word{font-family:var(--font-plate); font-size:17px; color:var(--brass-bright);}
   .verb-meaning{font-size:13px; color:var(--steam); margin-bottom:6px; line-height:1.4;}
   .verb-example{font-size:12.5px; color:var(--steam-dim); font-style:italic; line-height:1.4;}
+  .verb-quiz{margin-top:12px; padding-top:12px; border-top:1px dashed var(--rivet);}
+  .verb-quiz-q{
+    font-family:var(--font-gauge); font-size:10.5px; letter-spacing:0.05em; color:var(--brass);
+    text-transform:uppercase; margin-bottom:8px;
+  }
+  .verb-quiz .choice-btn{font-size:13px; padding:9px 12px; margin-bottom:7px;}
+  .verb-quiz-feedback{margin-top:2px;}
+  .verb-quiz-feedback .feedback{margin-top:8px; padding:9px 12px; font-size:12.5px;}
 
   .world-intro-card{
     background:linear-gradient(180deg, var(--hull-panel-2), var(--hull-panel));
@@ -1912,19 +1922,97 @@
   ];
 
   const VERBS = [
-    { word:'Define', meaning:'State what a word or term means.', example:'Define buoyancy: the upward force that keeps an object afloat in water.' },
-    { word:'Describe', meaning:'Give the details of what something is like — its features or appearance.', example:'Describe the engine room: it is loud, hot, and filled with pipes and gauges.' },
-    { word:'Explain', meaning:'Say why or how something happens.', example:'Explain why ice floats: it is less dense than liquid water.' },
-    { word:'Compare', meaning:'Show what is similar and different between two things.', example:'Compare Route A and Route B: Route A is shorter, but Route B is safer.' },
-    { word:'Analyse', meaning:'Break something down into parts and explain how they connect.', example:'Analyse the graph: as depth increases, temperature decreases because sunlight cannot reach far below the surface.' },
-    { word:'Evaluate', meaning:'Judge how good or effective something is, and say why.', example:'Evaluate the new engine: it saves fuel, but the risk of failure makes it less reliable for now.' },
-    { word:'Justify', meaning:'Give reasons that support your opinion or decision.', example:'Justify your choice: Route B is safer because it avoids the iceberg zone, even though it takes longer.' },
-    { word:'Identify', meaning:'Point out or name something specific.', example:'Identify the cause of the mistake: the 2 was not distributed to both terms.' },
-    { word:'Calculate', meaning:'Work out a number using maths.', example:'Calculate the value of x in 3x + 5 = 20.' },
-    { word:'Interpret', meaning:'Explain what a set of data or information means.', example:'Interpret the graph: the rising line suggests temperature increased throughout the morning.' },
-    { word:'Predict', meaning:'Say what you think will happen, with a reason.', example:'Predict what will happen if the blade angle gets steeper: thrust will increase.' },
-    { word:'Discuss', meaning:'Look at a topic from more than one point of view.', example:'Discuss whether ships should rely on automation: it improves safety, but could reduce jobs.' },
-    { word:'Suggest', meaning:'Propose an idea or a possible solution.', example:'Suggest a way to fix the leak: seal it with a temporary patch until proper repairs can be made.' }
+    { word:'Define', icon:'📌', meaning:'State what a word or term means.', example:'Define buoyancy: the upward force that keeps an object afloat in water.',
+      quiz:{ question:'Which sentence is DEFINING a term?', options:[
+        'The ship floats because it displaces water.',
+        'Buoyancy is the upward force that keeps an object afloat.',
+        'The engine room is loud and hot.',
+        'Route A is faster than Route B.'
+      ], correct:1 } },
+    { word:'Describe', icon:'🖼️', meaning:'Give the details of what something is like — its features or appearance.', example:'Describe the engine room: it is loud, hot, and filled with pipes and gauges.',
+      quiz:{ question:'Which sentence is DESCRIBING something?', options:[
+        'The engine works because steam pushes the pistons.',
+        'A knot is a unit of speed used at sea.',
+        'The engine room is loud, hot, and filled with pipes.',
+        'Metal conducts heat faster than wood.'
+      ], correct:2 } },
+    { word:'Explain', icon:'💡', meaning:'Say why or how something happens.', example:'Explain why ice floats: it is less dense than liquid water.',
+      quiz:{ question:'Which sentence EXPLAINS why something happens?', options:[
+        'The ship is 300 metres long.',
+        'Ice floats because it is less dense than water.',
+        'I predict the storm will pass by morning.',
+        'Overall, automation is a good choice.'
+      ], correct:1 } },
+    { word:'Compare', icon:'⚖️', meaning:'Show what is similar and different between two things.', example:'Compare Route A and Route B: Route A is shorter, but Route B is safer.',
+      quiz:{ question:'Which sentence is COMPARING two things?', options:[
+        'The wave height reached six metres.',
+        'This mistake happened because the calculation was wrong.',
+        'I suggest checking the pressure valve first.',
+        'Route A is shorter, but Route B is safer.'
+      ], correct:3 } },
+    { word:'Analyse', icon:'🔍', meaning:'Break something down into parts and explain how they connect.', example:'Analyse the graph: as depth increases, temperature decreases because sunlight cannot reach far below the surface.',
+      quiz:{ question:'Which sentence is ANALYSING data (linking cause and effect)?', options:[
+        'The ocean is very deep in some places.',
+        'As depth increases, temperature decreases because sunlight can\'t reach that far.',
+        'I think the ocean is beautiful.',
+        'Add 5 to both sides of the equation.'
+      ], correct:1 } },
+    { word:'Evaluate', icon:'⭐', meaning:'Judge how good or effective something is, and say why.', example:'Evaluate the new engine: it saves fuel, but the risk of failure makes it less reliable for now.',
+      quiz:{ question:'Which sentence is EVALUATING (judging, with a reason)?', options:[
+        'The new engine was installed last year.',
+        'The old engine is heavier than the new one.',
+        'The new engine saves fuel, but its lack of a track record makes it risky.',
+        'The engine converts fuel into motion.'
+      ], correct:2 } },
+    { word:'Justify', icon:'🛡️', meaning:'Give reasons that support your opinion or decision.', example:'Justify your choice: Route B is safer because it avoids the iceberg zone, even though it takes longer.',
+      quiz:{ question:'Which sentence is JUSTIFYING a decision?', options:[
+        'Route B takes one extra day.',
+        'I chose Route B because avoiding the iceberg zone is worth the extra day.',
+        'Icebergs are dangerous for ships.',
+        'The captain prefers Route A.'
+      ], correct:1 } },
+    { word:'Identify', icon:'🎯', meaning:'Point out or name something specific.', example:'Identify the cause of the mistake: the 2 was not distributed to both terms.',
+      quiz:{ question:'Which sentence is IDENTIFYING a specific cause?', options:[
+        'Pipes carry water around the ship.',
+        'The leak got worse over three days.',
+        'We should replace the pipe soon.',
+        'The cause of the leak is a cracked pipe near the boiler.'
+      ], correct:3 } },
+    { word:'Calculate', icon:'🧮', meaning:'Work out a number using maths.', example:'Calculate the value of x in 3x + 5 = 20.',
+      quiz:{ question:'Which sentence shows a CALCULATION?', options:[
+        'x is the unknown number in an equation.',
+        '3x + 5 = 20, so x = 5.',
+        'This method is faster than the other one.',
+        'The engineer solved the equation for x.'
+      ], correct:1 } },
+    { word:'Interpret', icon:'🗺️', meaning:'Explain what a set of data or information means.', example:'Interpret the graph: the rising line suggests temperature increased throughout the morning.',
+      quiz:{ question:'Which sentence is INTERPRETING what a graph means?', options:[
+        'The temperature was 22°C at 9am.',
+        'Temperature graphs use degrees Celsius.',
+        'The rising line suggests the temperature increased throughout the morning.',
+        'I predict tomorrow will be hotter.'
+      ], correct:2 } },
+    { word:'Predict', icon:'🔮', meaning:'Say what you think will happen, with a reason.', example:'Predict what will happen if the blade angle gets steeper: thrust will increase.',
+      quiz:{ question:'Which sentence is PREDICTING (before it happens)?', options:[
+        'Thrust increased when the angle increased.',
+        'The propeller pushes water backward.',
+        'The gauge reads 40 newtons of thrust.',
+        'I predict thrust will increase if the blade angle gets steeper.'
+      ], correct:3 } },
+    { word:'Discuss', icon:'💬', meaning:'Look at a topic from more than one point of view.', example:'Discuss whether ships should rely on automation: it improves safety, but could reduce jobs.',
+      quiz:{ question:'Which sentence is DISCUSSING (more than one viewpoint)?', options:[
+        'Automation improves safety, but it could also reduce crew jobs.',
+        'Automation always makes ships safer.',
+        'Automation uses sensors and computers.',
+        'I predict automation will increase.'
+      ], correct:0 } },
+    { word:'Suggest', icon:'🛠️', meaning:'Propose an idea or a possible solution.', example:'Suggest a way to fix the leak: seal it with a temporary patch until proper repairs can be made.',
+      quiz:{ question:'Which sentence is SUGGESTING a solution?', options:[
+        'The leak is getting worse.',
+        'The leak was caused by a cracked pipe.',
+        'I suggest sealing the leak with a temporary patch until it can be repaired properly.',
+        'Leaks can sink a ship if untreated.'
+      ], correct:2 } }
   ];
 
   function updateTopbar(){
@@ -2140,16 +2228,41 @@
     html += `<div class="hero">
       <div class="eyebrow">Toolkit</div>
       <h2>Command Word Glossary</h2>
-      <p>Every assignment uses instruction words like these. Know what each one is really asking you to do.</p>
+      <p>Every assignment uses instruction words like these. Know what each one is really asking you to do — then try the quick check.</p>
     </div>`;
-    VERBS.forEach(v=>{
+    VERBS.forEach((v,vi)=>{
       html += `<div class="verb-card">
-        <div class="verb-word">${v.word}</div>
+        <div class="verb-header"><span class="verb-icon">${v.icon}</span><span class="verb-word">${v.word}</span></div>
         <div class="verb-meaning">${v.meaning}</div>
         <div class="verb-example">${v.example}</div>
+        <div class="verb-quiz">
+          <div class="verb-quiz-q">${v.quiz.question}</div>
+          ${v.quiz.options.map((opt,oi)=>`<button class="choice-btn verb-quiz-btn" data-verb="${vi}" data-opt="${oi}">${opt}</button>`).join('')}
+          <div class="verb-quiz-feedback" id="vqFeedback-${vi}"></div>
+        </div>
       </div>`;
     });
     app.innerHTML = html;
+
+    document.querySelectorAll('.verb-quiz-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const vi = btn.dataset.verb;
+        const groupBtns = document.querySelectorAll(`.verb-quiz-btn[data-verb="${vi}"]`);
+        if(groupBtns[0].dataset.locked) return;
+        groupBtns.forEach(b=>b.dataset.locked='1');
+        const oi = parseInt(btn.dataset.opt,10);
+        const v = VERBS[vi];
+        const feedback = document.getElementById('vqFeedback-'+vi);
+        if(oi===v.quiz.correct){
+          btn.classList.add('correct');
+          feedback.innerHTML = `<div class="feedback good">Right — that\u2019s a real example of "${v.word}".</div>`;
+        } else {
+          btn.classList.add('wrong');
+          groupBtns[v.quiz.correct].classList.add('correct');
+          feedback.innerHTML = `<div class="feedback info">Not quite — the highlighted sentence is the one that "${v.word}s".</div>`;
+        }
+      });
+    });
   }
 
   // ---------- RENDER: PLANNING (interactive plan builder) ----------
