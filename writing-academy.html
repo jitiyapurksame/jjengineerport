@@ -123,6 +123,37 @@
   }
   details.plan-peek .plan-map{margin-top:10px; margin-bottom:2px;}
 
+  .badge-shelf{display:flex; flex-wrap:wrap; gap:14px; justify-content:center; margin:6px 0 26px;}
+  .badge-item{width:76px; text-align:center;}
+  .badge-icon{
+    width:54px; height:54px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-size:24px; margin:0 auto 6px; background:var(--hull-panel-2); border:2px solid var(--rivet);
+  }
+  .badge-item.earned .badge-icon{
+    border-color:var(--brass-bright);
+    background:linear-gradient(180deg, rgba(227,181,103,0.28), rgba(227,181,103,0.08));
+    box-shadow:0 0 10px rgba(227,181,103,0.35);
+  }
+  .badge-item.locked .badge-icon{opacity:0.35; filter:grayscale(1);}
+  .badge-name{font-size:9.5px; color:var(--steam-dim); line-height:1.3;}
+  .badge-item.earned .badge-name{color:var(--brass-bright);}
+
+  .badge-unlock{
+    display:flex; align-items:center; gap:12px; background:rgba(227,181,103,0.12); border:1px solid var(--brass);
+    border-radius:12px; padding:12px 14px; margin:0 auto 16px; max-width:320px; text-align:left;
+  }
+  .badge-unlock-icon{font-size:32px;}
+  .badge-unlock-title{font-family:var(--font-gauge); font-size:10px; letter-spacing:0.08em; color:var(--brass); text-transform:uppercase;}
+  .badge-unlock-name{font-family:var(--font-plate); font-size:15px; color:var(--steam);}
+
+  .verb-card{
+    background:var(--hull-panel-2); border:1px solid var(--rivet); border-radius:12px;
+    padding:14px 16px; margin-bottom:12px;
+  }
+  .verb-word{font-family:var(--font-plate); font-size:17px; color:var(--brass-bright); margin-bottom:4px;}
+  .verb-meaning{font-size:13px; color:var(--steam); margin-bottom:6px; line-height:1.4;}
+  .verb-example{font-size:12.5px; color:var(--steam-dim); font-style:italic; line-height:1.4;}
+
   .world-intro-card{
     background:linear-gradient(180deg, var(--hull-panel-2), var(--hull-panel));
     border:1px solid var(--rivet); border-radius:14px;
@@ -1860,6 +1891,42 @@
   function getWorld(id){ return WORLDS.find(w=>w.id===id); }
   function getMission(worldId, missionId){ return getWorld(worldId).missions.find(m=>m.id===missionId); }
 
+  function totalMissionsDone(){
+    let n = 0;
+    WORLDS.forEach(w=>{
+      if(w.status!=='ready') return;
+      w.missions.forEach(m=>{ if(state.worlds[w.id][m.id].done) n++; });
+    });
+    return n;
+  }
+
+  const BADGES = [
+    { id:'first-mission', icon:'🧩', name:'Sentence Builder', desc:'Complete your first mission.', check:()=>totalMissionsDone()>=1 },
+    { id:'cause-effect', icon:'🔗', name:'Cause & Effect Engineer', desc:'Complete all of Marine Science Lab.', check:()=>worldPct(getWorld('science-explainer'))===100 },
+    { id:'data-navigator', icon:'📊', name:'Data Navigator', desc:'Complete all of Navigation & Data Deck.', check:()=>worldPct(getWorld('data-detective'))===100 },
+    { id:'lab-scientist', icon:'🧪', name:'Lab Scientist', desc:'Complete all of Engineering Test Lab.', check:()=>worldPct(getWorld('lab-reporter'))===100 },
+    { id:'debate-officer', icon:'🗣️', name:'Debate Officer', desc:'Complete all of Captain\'s Council.', check:()=>worldPct(getWorld('opinion-arena'))===100 },
+    { id:'report-writer', icon:'📝', name:'Report Writer', desc:'Complete all of Atlantic Voyages.', check:()=>worldPct(getWorld('essay-builder'))===100 },
+    { id:'independent-writer', icon:'🚢', name:'Independent Writer', desc:'Complete 10 missions across the Academy.', check:()=>totalMissionsDone()>=10 },
+    { id:'chief-engineer', icon:'👑', name:'Chief Engineer of the Atlantic', desc:'Complete every mission in every world.', check:()=>totalMissionsDone()>=21 }
+  ];
+
+  const VERBS = [
+    { word:'Define', meaning:'State what a word or term means.', example:'Define buoyancy: the upward force that keeps an object afloat in water.' },
+    { word:'Describe', meaning:'Give the details of what something is like — its features or appearance.', example:'Describe the engine room: it is loud, hot, and filled with pipes and gauges.' },
+    { word:'Explain', meaning:'Say why or how something happens.', example:'Explain why ice floats: it is less dense than liquid water.' },
+    { word:'Compare', meaning:'Show what is similar and different between two things.', example:'Compare Route A and Route B: Route A is shorter, but Route B is safer.' },
+    { word:'Analyse', meaning:'Break something down into parts and explain how they connect.', example:'Analyse the graph: as depth increases, temperature decreases because sunlight cannot reach far below the surface.' },
+    { word:'Evaluate', meaning:'Judge how good or effective something is, and say why.', example:'Evaluate the new engine: it saves fuel, but the risk of failure makes it less reliable for now.' },
+    { word:'Justify', meaning:'Give reasons that support your opinion or decision.', example:'Justify your choice: Route B is safer because it avoids the iceberg zone, even though it takes longer.' },
+    { word:'Identify', meaning:'Point out or name something specific.', example:'Identify the cause of the mistake: the 2 was not distributed to both terms.' },
+    { word:'Calculate', meaning:'Work out a number using maths.', example:'Calculate the value of x in 3x + 5 = 20.' },
+    { word:'Interpret', meaning:'Explain what a set of data or information means.', example:'Interpret the graph: the rising line suggests temperature increased throughout the morning.' },
+    { word:'Predict', meaning:'Say what you think will happen, with a reason.', example:'Predict what will happen if the blade angle gets steeper: thrust will increase.' },
+    { word:'Discuss', meaning:'Look at a topic from more than one point of view.', example:'Discuss whether ships should rely on automation: it improves safety, but could reduce jobs.' },
+    { word:'Suggest', meaning:'Propose an idea or a possible solution.', example:'Suggest a way to fix the leak: seal it with a temporary patch until proper repairs can be made.' }
+  ];
+
   function updateTopbar(){
     if(view.screen==='worldmap'){
       document.querySelector('.gauge').style.setProperty('--pct', overallPct());
@@ -1883,6 +1950,12 @@
       topTitle.textContent = 'Plan Your Essay';
       topSub.textContent = 'S.S. Wordcraft · '+w.worldsub;
       backBtn.disabled = false; backBtn.textContent = '← Missions';
+    } else if(view.screen==='verbtrainer'){
+      document.querySelector('.gauge').style.setProperty('--pct', overallPct());
+      topGaugeNum.textContent = overallPct()+'%';
+      topTitle.textContent = 'Command Word Glossary';
+      topSub.textContent = 'S.S. Wordcraft';
+      backBtn.disabled = false; backBtn.textContent = '← Map';
     } else {
       const w = getWorld(view.worldId);
       const pct = worldPct(w);
@@ -1898,6 +1971,7 @@
   backBtn.addEventListener('click', ()=>{
     if(view.screen==='worldmap') return;
     if(view.screen==='missions'){ goWorldMap(); return; }
+    if(view.screen==='verbtrainer'){ goWorldMap(); return; }
     if(view.screen==='planning'){ view = { screen:'missions', worldId:view.worldId, missionId:null, levelIndex:0, buildOrder:[], buildBank:[] }; render(); return; }
     view = { screen:'missions', worldId:view.worldId, missionId:null, levelIndex:0, buildOrder:[], buildBank:[] };
     render();
@@ -1906,6 +1980,7 @@
   function goWorldMap(){ view = { screen:'worldmap', worldId:null, missionId:null, levelIndex:0, buildOrder:[], buildBank:[] }; render(); }
   function openWorld(worldId){ view = { screen:'missions', worldId, missionId:null, levelIndex:0, buildOrder:[], buildBank:[] }; render(); }
   function openPlanning(worldId){ view = { screen:'planning', worldId, missionId:null, levelIndex:0, buildOrder:[], buildBank:[], planStep:0, planChoices:{} }; render(); }
+  function openVerbTrainer(){ view = { screen:'verbtrainer', worldId:null, missionId:null, levelIndex:0, buildOrder:[], buildBank:[] }; render(); }
   function openMission(worldId, missionId){
     const m = getMission(worldId, missionId);
     const progress = state.worlds[worldId][missionId];
@@ -1919,8 +1994,11 @@
     if(prog.levelIndex < view.levelIndex+1) prog.levelIndex = view.levelIndex+1;
     saveState();
     if(view.levelIndex+1 >= m.levels.length){
+      const badgesBefore = BADGES.filter(b=>b.check()).map(b=>b.id);
       prog.done = true; prog.levelIndex = m.levels.length;
       saveState();
+      const badgesAfter = BADGES.filter(b=>b.check());
+      view.newBadges = badgesAfter.filter(b=>!badgesBefore.includes(b.id));
       view.screen = 'complete';
       render();
     } else {
@@ -1941,6 +2019,20 @@
     </div>`;
     html += `<div class="big-gauge-wrap"><div class="big-gauge" style="--pct:${pct}"><div class="inner"><div class="num">${pct}%</div><div class="lbl">Overall Progress</div></div></div></div>`;
     html += `<div class="rank-line">Current rank: <b>${rankLabel(pct)}</b></div>`;
+    html += `<div class="section-label">🎖️ Badges</div>`;
+    html += `<div class="badge-shelf">`;
+    BADGES.forEach(b=>{
+      const earned = b.check();
+      html += `<div class="badge-item ${earned?'earned':'locked'}">
+        <div class="badge-icon">${earned?b.icon:'🔒'}</div>
+        <div class="badge-name">${b.name}</div>
+      </div>`;
+    });
+    html += `</div>`;
+    html += `<div class="world-intro-card" id="verbTrainerCard" style="cursor:pointer;">
+      <div class="world-intro-heading">📖 Command Word Glossary</div>
+      <p class="world-intro-body">Define, Describe, Explain, Compare, Evaluate... See exactly what each instruction word is asking you to do, with a ship example for every one.</p>
+    </div>`;
     html += `<div class="mission-list">`;
     WORLDS.forEach(w=>{
       if(w.status==='ready'){
@@ -1972,6 +2064,7 @@
     document.querySelectorAll('.mission-card[data-world]').forEach(card=>{
       card.addEventListener('click', ()=>openWorld(card.dataset.world));
     });
+    document.getElementById('verbTrainerCard').addEventListener('click', openVerbTrainer);
   }
 
   // ---------- RENDER: MISSIONS (within a world) ----------
@@ -2039,6 +2132,24 @@
     if(document.getElementById('redoPlanBtn')){
       document.getElementById('redoPlanBtn').addEventListener('click', ()=>openPlanning(w.id));
     }
+  }
+
+  // ---------- RENDER: VERB TRAINER (command word glossary) ----------
+  function renderVerbTrainer(){
+    let html = '';
+    html += `<div class="hero">
+      <div class="eyebrow">Toolkit</div>
+      <h2>Command Word Glossary</h2>
+      <p>Every assignment uses instruction words like these. Know what each one is really asking you to do.</p>
+    </div>`;
+    VERBS.forEach(v=>{
+      html += `<div class="verb-card">
+        <div class="verb-word">${v.word}</div>
+        <div class="verb-meaning">${v.meaning}</div>
+        <div class="verb-example">${v.example}</div>
+      </div>`;
+    });
+    app.innerHTML = html;
   }
 
   // ---------- RENDER: PLANNING (interactive plan builder) ----------
@@ -2413,19 +2524,28 @@
   function renderComplete(){
     const w = getWorld(view.worldId);
     const m = getMission(view.worldId, view.missionId);
+    let badgeHtml = '';
+    if(view.newBadges && view.newBadges.length){
+      badgeHtml = view.newBadges.map(b=>`<div class="badge-unlock">
+        <div class="badge-unlock-icon">${b.icon}</div>
+        <div><div class="badge-unlock-title">Badge Unlocked!</div><div class="badge-unlock-name">${b.name}</div></div>
+      </div>`).join('');
+    }
     app.innerHTML = `<div class="complete-screen">
       <div class="badge">${m.icon}</div>
       <h2>Mission Complete</h2>
       <p>You explained your thinking from a multiple-choice hint all the way to a fully independent write-up. <b>${m.title}</b> is signed off.</p>
+      ${badgeHtml}
       <button class="btn primary" id="doneBtn" style="max-width:220px;margin:0 auto;">Back to ${w.worldsub}</button>
     </div>`;
-    document.getElementById('doneBtn').addEventListener('click', ()=>openWorld(w.id));
+    document.getElementById('doneBtn').addEventListener('click', ()=>{ view.newBadges=null; openWorld(w.id); });
   }
 
   function render(){
     updateTopbar();
     if(view.screen==='worldmap') renderWorldMap();
     else if(view.screen==='missions') renderMissions();
+    else if(view.screen==='verbtrainer') renderVerbTrainer();
     else if(view.screen==='planning') renderPlanning();
     else if(view.screen==='level') renderLevel();
     else if(view.screen==='complete') renderComplete();
