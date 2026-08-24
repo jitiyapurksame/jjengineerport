@@ -497,6 +497,168 @@
               model:'One method is to add 9 to both sides first, giving 3x = 27, then divide by 3, so x = 9. Another method is to divide everything by 3 first, giving x − 3 = 6, then add 3. The first method is more efficient because it avoids dividing the 9 by 3.',
               feedback:'You compared two full methods and justified a choice, entirely on your own.' }
           ]
+        },
+        {
+          id:'deck-area', icon:'📐', title:'Deck Area Calculation', diagram:'deck-area',
+          desc:'Explain how to find the area of an L-shaped deck.', equation:'Area: split into rectangles',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'To find the area of an L-shaped deck, what should you do first?',
+              scenario:'The deck is L-shaped: a main rectangular section plus a smaller extension.',
+              options:['Split the shape into two rectangles','Multiply all four side lengths together','Add all the side lengths','Find the perimeter first'],
+              correct:0,
+              feedback:'Right — splitting an irregular shape into simple rectangles is the first step.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the first-step sentence.',
+              words:['Split','the','shape','into','two','rectangles.'],
+              target:'Split the shape into two rectangles.',
+              feedback:'That\'s the right first move for any composite shape.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'The area of a rectangle is length ×',
+              prefix:'', suffix:'.', accept:['width'], options:['width','depth','angle','circumference'],
+              feedback:'Correct — length × width gives the area of a rectangle.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Describe your first step using the starter below.',
+              starter:'First, I split the deck into ',
+              hints:['two separate rectangles','a main rectangle and a smaller extension'],
+              minWords:3,
+              feedback:'Good — a clear first step for a composite shape.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Explain how you found the area of the L-shaped deck (10m×6m main section, plus a 4m×3m extension).',
+              scenario:'Write two sentences: one for splitting the shape, one for the two areas.',
+              hints:['First, I split the deck into two rectangles: 10m by 6m, and 4m by 3m.','Then, I calculated each area separately: 60 square metres and 12 square metres.'],
+              minWords:10,
+              model:'First, I split the deck into two rectangles: 10m by 6m, and 4m by 3m. Then, I calculated each area separately: 60 square metres and 12 square metres.',
+              feedback:'Nice work — you explained the method, not just the final number.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full explanation using the framework.',
+              scenario:'Use First → Then → Therefore.',
+              framework:[
+                {label:'First…', placeholder:'e.g. First, I split the deck into two rectangles: 10m×6m and 4m×3m.'},
+                {label:'Then…', placeholder:'e.g. Then, I calculated each area: 60m² and 12m².'},
+                {label:'Therefore…', placeholder:'e.g. Therefore, the total area is 60 + 12 = 72 square metres.'}
+              ],
+              model:'First, I split the deck into two rectangles: 10m×6m and 4m×3m. Then, I calculated each area: 60m² and 12m². Therefore, the total area is 60 + 12 = 72 square metres.',
+              feedback:'A complete, structured explanation — the Chief can follow every step.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Explain how to find the area of a new L-shaped storage room on your own: a main section 8m×5m, plus an extension 3m×2m.',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['First, I split...','Then, I calculated...','Therefore...'],
+              minWords:15,
+              model:'First, I split the storage room into two rectangles: 8m by 5m, and 3m by 2m. Then, I calculated each area separately: 40 square metres and 6 square metres. Therefore, the total area is 40 + 6 = 46 square metres.',
+              feedback:'You explained a brand-new composite-shape problem completely by yourself.' }
+          ]
+        },
+        {
+          id:'fuel-ratio', icon:'🧴', title:'Fuel Ratio Mix', diagram:'fuel-ratio',
+          desc:'Explain how to split a mixture using a ratio.', equation:'Ratio: split 12L in 5:1',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'To split 12 litres of mixture in the ratio 5:1 (fuel:oil), what should you do first?',
+              scenario:'The small motor needs fuel and oil mixed in a ratio of 5:1, and you need 12 litres in total.',
+              options:['Add the ratio numbers together to find the total parts','Multiply 12 by 5','Divide 12 by 1','Subtract 1 from 5'],
+              correct:0,
+              feedback:'Right — finding the total number of parts (5 + 1 = 6) is the first step in any ratio problem.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the first-step sentence.',
+              words:['Add','the','ratio','numbers','together','to','find','the','total','parts.'],
+              target:'Add the ratio numbers together to find the total parts.',
+              feedback:'That\'s the right first move for any ratio problem.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'Once you know the total parts, divide the whole amount by the total to find the value of one',
+              prefix:'', suffix:'.', accept:['part'], options:['part','ratio','total','litre'],
+              feedback:'Correct — dividing by the total parts gives you the value of one part.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Describe your first step using the starter below.',
+              starter:'First, I added the ratio numbers together to get ',
+              hints:['a total of 6 parts','5 + 1 = 6'],
+              minWords:3,
+              feedback:'Good — a clear first step for a ratio problem.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Explain how you would split 12 litres of mixture in the ratio 5:1.',
+              scenario:'Write two sentences: one for finding the parts, one for finding the value of one part.',
+              hints:['First, I added the ratio numbers together to get 6 parts in total.','Then, I divided 12 litres by 6 to find that each part is 2 litres.'],
+              minWords:10,
+              model:'First, I added the ratio numbers together to get 6 parts in total. Then, I divided 12 litres by 6 to find that each part is 2 litres.',
+              feedback:'Nice work — you explained the method, not just the final numbers.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full explanation using the framework.',
+              scenario:'Use First → Then → Therefore.',
+              framework:[
+                {label:'First…', placeholder:'e.g. First, I added the ratio numbers: 5 + 1 = 6 parts.'},
+                {label:'Then…', placeholder:'e.g. Then, I divided 12 litres by 6 to find one part = 2 litres.'},
+                {label:'Therefore…', placeholder:'e.g. Therefore, fuel = 5 × 2 = 10 litres, and oil = 1 × 2 = 2 litres.'}
+              ],
+              model:'First, I added the ratio numbers: 5 + 1 = 6 parts. Then, I divided 12 litres by 6 to find one part = 2 litres. Therefore, fuel = 5 × 2 = 10 litres, and oil = 1 × 2 = 2 litres.',
+              feedback:'A complete, structured explanation — the Chief can follow every step of the mix.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Explain how to split 20kg of ballast in the ratio 3:2 between the bow and stern, on your own.',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['First, I added...','Then, I divided...','Therefore...'],
+              minWords:15,
+              model:'First, I added the ratio numbers: 3 + 2 = 5 parts. Then, I divided 20kg by 5 to find one part = 4kg. Therefore, the bow gets 3 × 4 = 12kg, and the stern gets 2 × 4 = 8kg.',
+              feedback:'You explained a brand-new ratio problem completely by yourself.' }
+          ]
+        },
+        {
+          id:'negative-number-error', icon:'➖', title:'Negative Number Error', diagram:'neg-number-line',
+          desc:'Find and explain a mistake made with negative numbers.', equation:'2x − 8 = −20',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'A junior engineer solved 2x − 8 = −20 like this: "2x = −20 − 8, so 2x = −28, x = −14." What went wrong?',
+              scenario:'To undo "−8" on the left side, think about which operation actually cancels it out.',
+              options:['He subtracted 8 instead of adding 8 to both sides','He divided incorrectly','He added instead of subtracted','There is no mistake'],
+              correct:0,
+              feedback:'Right — to undo "−8", you must add 8 to both sides, not subtract it again.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the sentence that names the mistake.',
+              words:['He','subtracted','8','instead','of','adding','8','to','both','sides.'],
+              target:'He subtracted 8 instead of adding 8 to both sides.',
+              feedback:'Exactly — naming the mistake precisely is the whole job here.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing number.',
+              scenario:'The correct first step is 2x = −20 +',
+              prefix:'', suffix:'.', accept:['8'], options:['8','-8','20','-20'],
+              feedback:'Correct — adding 8 undoes the "−8" on the left side.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Name the mistake using the starter below.',
+              starter:'The mistake is ',
+              hints:['subtracting 8 instead of adding it','not undoing the −8 correctly'],
+              minWords:3,
+              feedback:'Good — clear and specific about what went wrong.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Explain the mistake and the correct method.',
+              scenario:'Write one sentence naming the mistake, one sentence giving the correct first step.',
+              hints:['The mistake is that he subtracted 8 instead of adding it to both sides.','The correct first step is 2x = −20 + 8 = −12.'],
+              minWords:10,
+              model:'The mistake is that he subtracted 8 instead of adding it to both sides. The correct first step is 2x = −20 + 8 = −12.',
+              feedback:'That\'s a full mistake report — what went wrong, and what\'s correct instead.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full explanation using the framework.',
+              scenario:'Use Mistake → Correct method → Therefore.',
+              framework:[
+                {label:'The mistake is…', placeholder:'e.g. The mistake is that he subtracted 8 instead of adding it to both sides.'},
+                {label:'The correct method is…', placeholder:'e.g. The correct method is 2x = −20 + 8 = −12, then x = −6.'},
+                {label:'Therefore…', placeholder:'e.g. Therefore, the correct answer is x = −6, not x = −14.'}
+              ],
+              model:'The mistake is that he subtracted 8 instead of adding it to both sides. The correct method is 2x = −20 + 8 = −12, then x = −6. Therefore, the correct answer is x = −6, not x = −14.',
+              feedback:'A complete, professional error report — exactly what the Chief needs to sign off on a fix.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Find and explain a new error on your own: 3x + 6 = −9 was solved as "3x = −9 + 6, so 3x = −3, x = −1."',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['The mistake is...','The correct method is...','Therefore...'],
+              minWords:15,
+              model:'The mistake is that he added 6 instead of subtracting it from both sides. The correct method is 3x = −9 − 6 = −15, then x = −5. Therefore, the correct answer is x = −5, not x = −1.',
+              feedback:'You caught and explained a brand-new mistake completely on your own.' }
+          ]
         }
       ]
     },
@@ -1830,7 +1992,47 @@
       {label:'REASON 2 + EXAMPLE', example:'Uses less fuel — e.g. smart engine control'},
       {label:'COUNTERARGUMENT', example:'But humans handle surprises better'},
       {label:'CONCLUSION', example:'Automation + skilled crew = safest option'}
-    ])
+    ]),
+
+    'deck-area': `<div class="diagram-box"><svg viewBox="0 0 320 190" style="width:100%;max-width:280px;height:auto;display:block;margin:0 auto;">
+      <text x="160" y="16" text-anchor="middle" fill="#e3b567" font-size="10" font-family="Courier New, monospace">L-SHAPED DECK</text>
+      <rect x="40" y="40" width="160" height="96" fill="rgba(227,181,103,0.15)" stroke="#e3b567" stroke-width="2"/>
+      <text x="120" y="90" text-anchor="middle" fill="#efe7d6" font-size="11" font-family="Courier New, monospace">10m × 6m</text>
+      <text x="120" y="106" text-anchor="middle" fill="#b9c4c8" font-size="9" font-family="Courier New, monospace">= 60m²</text>
+      <rect x="200" y="40" width="64" height="48" fill="rgba(127,179,201,0.2)" stroke="#7fb3c9" stroke-width="2"/>
+      <text x="232" y="60" text-anchor="middle" fill="#efe7d6" font-size="9.5" font-family="Courier New, monospace">4m×3m</text>
+      <text x="232" y="74" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">=12m²</text>
+      <text x="150" y="165" text-anchor="middle" fill="#b9c4c8" font-size="9" font-family="Courier New, monospace">Total area = 60m² + 12m² = 72m²</text>
+    </svg><div class="diagram-caption">Split the L-shape into two rectangles, find each area, then add them together.</div></div>`,
+
+    'fuel-ratio': `<div class="diagram-box"><svg viewBox="0 0 320 140" style="width:100%;max-width:280px;height:auto;display:block;margin:0 auto;">
+      <text x="160" y="16" text-anchor="middle" fill="#e3b567" font-size="10" font-family="Courier New, monospace">12 LITRES — RATIO 5:1</text>
+      <rect x="30" y="40" width="36" height="40" fill="rgba(227,181,103,0.35)" stroke="#e3b567" stroke-width="1.5"/>
+      <rect x="66" y="40" width="36" height="40" fill="rgba(227,181,103,0.35)" stroke="#e3b567" stroke-width="1.5"/>
+      <rect x="102" y="40" width="36" height="40" fill="rgba(227,181,103,0.35)" stroke="#e3b567" stroke-width="1.5"/>
+      <rect x="138" y="40" width="36" height="40" fill="rgba(227,181,103,0.35)" stroke="#e3b567" stroke-width="1.5"/>
+      <rect x="174" y="40" width="36" height="40" fill="rgba(227,181,103,0.35)" stroke="#e3b567" stroke-width="1.5"/>
+      <rect x="210" y="40" width="36" height="40" fill="rgba(127,179,201,0.35)" stroke="#7fb3c9" stroke-width="1.5"/>
+      <text x="130" y="98" text-anchor="middle" fill="#e3b567" font-size="9.5" font-family="Courier New, monospace">FUEL: 5 parts = 10L</text>
+      <text x="228" y="98" text-anchor="middle" fill="#7fb3c9" font-size="9" font-family="Courier New, monospace">OIL:</text>
+      <text x="228" y="110" text-anchor="middle" fill="#7fb3c9" font-size="9" font-family="Courier New, monospace">1 part = 2L</text>
+      <text x="160" y="128" text-anchor="middle" fill="#b9c4c8" font-size="8.5" font-family="Courier New, monospace">6 parts total → each part = 12L ÷ 6 = 2L</text>
+    </svg><div class="diagram-caption">Each block is one "part" — 6 parts in total, so each part equals 12L ÷ 6 = 2L.</div></div>`,
+
+    'neg-number-line': `<div class="diagram-box"><svg viewBox="0 0 320 150" style="width:100%;max-width:280px;height:auto;display:block;margin:0 auto;">
+      <text x="160" y="16" text-anchor="middle" fill="#e3b567" font-size="10" font-family="Courier New, monospace">2x − 8 = −20</text>
+      <line x1="30" y1="80" x2="290" y2="80" stroke="#b9c4c8" stroke-width="1.5"/>
+      <line x1="60" y1="74" x2="60" y2="86" stroke="#b9c4c8" stroke-width="1.5"/>
+      <text x="60" y="100" text-anchor="middle" fill="#b9c4c8" font-size="9" font-family="Courier New, monospace">−28</text>
+      <line x1="160" y1="74" x2="160" y2="86" stroke="#b9c4c8" stroke-width="1.5"/>
+      <text x="160" y="100" text-anchor="middle" fill="#b9c4c8" font-size="9" font-family="Courier New, monospace">−20</text>
+      <line x1="230" y1="74" x2="230" y2="86" stroke="#b9c4c8" stroke-width="1.5"/>
+      <text x="230" y="100" text-anchor="middle" fill="#efe7d6" font-size="9" font-family="Courier New, monospace">−12</text>
+      <path d="M160,60 Q195,40 228,60" fill="none" stroke="#57a373" stroke-width="2"/>
+      <text x="195" y="34" text-anchor="middle" fill="#57a373" font-size="9" font-family="Courier New, monospace">+8 correct</text>
+      <path d="M160,120 Q110,140 62,120" fill="none" stroke="#c1543c" stroke-width="2" stroke-dasharray="4 3"/>
+      <text x="112" y="146" text-anchor="middle" fill="#c1543c" font-size="9" font-family="Courier New, monospace">−8 mistake</text>
+    </svg><div class="diagram-caption">Adding 8 (green) undoes "−8" correctly. Subtracting 8 again (red, dashed) is the mistake.</div></div>`
   };
 
   function planSummaryHTML(question, answerText, reasonObj, counterObj, conclusionObj){
@@ -1909,6 +2111,11 @@
     });
     return n;
   }
+  function totalMissionsPossible(){
+    let n = 0;
+    WORLDS.forEach(w=>{ if(w.status==='ready') n += w.missions.length; });
+    return n;
+  }
 
   const BADGES = [
     { id:'first-mission', icon:'🧩', name:'Sentence Builder', desc:'Complete your first mission.', check:()=>totalMissionsDone()>=1 },
@@ -1918,7 +2125,7 @@
     { id:'debate-officer', icon:'🗣️', name:'Debate Officer', desc:'Complete all of Captain\'s Council.', check:()=>worldPct(getWorld('opinion-arena'))===100 },
     { id:'report-writer', icon:'📝', name:'Report Writer', desc:'Complete all of Atlantic Voyages.', check:()=>worldPct(getWorld('essay-builder'))===100 },
     { id:'independent-writer', icon:'🚢', name:'Independent Writer', desc:'Complete 10 missions across the Academy.', check:()=>totalMissionsDone()>=10 },
-    { id:'chief-engineer', icon:'👑', name:'Chief Engineer of the Atlantic', desc:'Complete every mission in every world.', check:()=>totalMissionsDone()>=21 }
+    { id:'chief-engineer', icon:'👑', name:'Chief Engineer of the Atlantic', desc:'Complete every mission in every world.', check:()=>totalMissionsDone()>=totalMissionsPossible() }
   ];
 
   const VERBS = [
