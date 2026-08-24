@@ -957,7 +957,7 @@ textarea.freetext, input.freetext {
           { label: "Route A", shape: "line-diag", target: { x: 0.3, y: 0.3 } },
           { label: "Route B", shape: "line-diag", target: { x: 0.5, y: 0.5 } },
           { label: "Route C", shape: "line-diag", target: { x: 0.7, y: 0.7 } }
-        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><path d="M20,30 L100,20 L180,40 L260,15" fill="none" stroke="#D9A441" stroke-width="2"/><text x="260" y="10" fill="#D9A441" font-family="monospace" font-size="7">A</text><path d="M20,75 L120,85 L220,70 L270,75" fill="none" stroke="#3FA37A" stroke-width="2"/><text x="270" y="90" fill="#3FA37A" font-family="monospace" font-size="7">B</text><path d="M20,120 L90,135 L170,110 L260,130" fill="none" stroke="#C1503A" stroke-width="2"/><text x="260" y="145" fill="#C1503A" font-family="monospace" font-size="7">C</text></svg>' },
+        ], hint: '<svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="300" height="150" fill="#0B3550"/><line x1="75" y1="55" x2="105" y2="35" stroke="#D9A441" stroke-width="3"/><text x="108" y="35" fill="#D9A441" font-family="monospace" font-size="8">A</text><line x1="135" y1="85" x2="165" y2="65" stroke="#3FA37A" stroke-width="3"/><text x="168" y="65" fill="#3FA37A" font-family="monospace" font-size="8">B</text><line x1="195" y1="115" x2="225" y2="95" stroke="#C1503A" stroke-width="3"/><text x="228" y="95" fill="#C1503A" font-family="monospace" font-size="8">C</text></svg>' },
       variables: { options: ["Length of Route A", "Length of Route B", "Length of Route C", "Color of the pipes"], correct: ["Length of Route A", "Length of Route B", "Length of Route C"] },
       table: { columns: ["Route", "Total length (m)"], rows: [["A", "120"], ["B", "95"], ["C", { blank: true, answer: "110" }]] },
       graph: { xLabel: "Route (1=A, 2=B, 3=C)", yLabel: "Total length (m)", xMax: 4, yMax: 150, points: [[1, 120], [2, 95], [3, 110]] },
@@ -1503,6 +1503,7 @@ textarea.freetext, input.freetext {
     if (alreadyPassed) renderBossUnlock();
 
     document.getElementById("btn-check").addEventListener("click", function () {
+      runtime.checkAttempts = (runtime.checkAttempts || 0) + 1;
       var stamps = runtime.items.filter(function (it) { return it.kind === "stamp"; });
       var strokes = runtime.items.filter(function (it) { return it.kind === "stroke"; });
       var tolX = canvas.width * 0.26, tolY = canvas.height * 0.32;
@@ -1528,20 +1529,42 @@ textarea.freetext, input.freetext {
         }
         missing.push(n.label + " (" + matches.length + "/" + needed + ")");
       });
-      if (missing.length > 0) {
-        showFeedback("Still need: " + missing.join(", ") + ". You can either drop the stamp or just draw in the right spot by hand.", "warn");
-        return;
-      }
       var wrong = [];
-      stamps.forEach(function (p) {
-        if (!p.target || satisfiedByDrawing[p.text]) return;
-        var tx = p.target.x * canvas.width, ty = p.target.y * canvas.height;
-        if (Math.abs(p.x - tx) > tolX || Math.abs(p.y - ty) > tolY) wrong.push(p.text);
-      });
-      if (wrong.length === 0) {
+      if (missing.length === 0) {
+        stamps.forEach(function (p) {
+          if (!p.target || satisfiedByDrawing[p.text]) return;
+          var tx = p.target.x * canvas.width, ty = p.target.y * canvas.height;
+          if (Math.abs(p.x - tx) > tolX || Math.abs(p.y - ty) > tolY) wrong.push(p.text);
+        });
+      }
+      if (missing.length === 0 && wrong.length === 0) {
         showFeedback("Every stamp is placed and connected correctly. Nice work.", "ok");
         completeStep(model, "sketch", 10);
         renderBossUnlock();
+        return;
+      }
+      if (runtime.checkAttempts >= 3) {
+        nodes.forEach(function (n) {
+          if (n.repeatable || !n.target) return;
+          var mine = runtime.items.filter(function (it) { return it.kind === "stamp" && it.text === n.label; });
+          if (mine.length) {
+            mine[0].x = n.target.x * canvas.width; mine[0].y = n.target.y * canvas.height;
+            delete mine[0].x1; delete mine[0].y1; delete mine[0].x2; delete mine[0].y2;
+          } else {
+            runtime.items.push({ kind: "stamp", x: n.target.x * canvas.width, y: n.target.y * canvas.height, text: n.label, shape: n.shape, target: n.target });
+            var chip = document.querySelector('[data-label="' + n.label + '"]');
+            if (chip) chip.disabled = true;
+          }
+        });
+        redrawAll();
+        renderChips();
+        showFeedback("Nice effort — here's how it should look. Marked complete with no bonus this time, and you can move on.", "ok");
+        completeStep(model, "sketch", 3);
+        renderBossUnlock();
+        return;
+      }
+      if (missing.length > 0) {
+        showFeedback("Still need: " + missing.join(", ") + ". You can either drop the stamp or just draw in the right spot by hand.", "warn");
       } else {
         showFeedback("Not quite connected yet — these aren't in the right spot: " + wrong.join(", ") + ". Tap the stamp on the canvas to pick it up and move it.", "warn");
       }
