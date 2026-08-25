@@ -2032,7 +2032,24 @@
       <text x="195" y="34" text-anchor="middle" fill="#57a373" font-size="9" font-family="Courier New, monospace">+8 correct</text>
       <path d="M160,120 Q110,140 62,120" fill="none" stroke="#c1543c" stroke-width="2" stroke-dasharray="4 3"/>
       <text x="112" y="146" text-anchor="middle" fill="#c1543c" font-size="9" font-family="Courier New, monospace">−8 mistake</text>
-    </svg><div class="diagram-caption">Adding 8 (green) undoes "−8" correctly. Subtracting 8 again (red, dashed) is the mistake.</div></div>`
+    </svg><div class="diagram-caption">Adding 8 (green) undoes "−8" correctly. Subtracting 8 again (red, dashed) is the mistake.</div></div>`,
+
+    'boss-ship-race': `<div class="diagram-box"><svg viewBox="0 0 320 200" style="width:100%;max-width:280px;height:auto;display:block;margin:0 auto;">
+      <text x="160" y="16" text-anchor="middle" fill="#e3b567" font-size="10" font-family="Courier New, monospace">SPEED (knots) — SHIP ALPHA vs SHIP BETA</text>
+      <line x1="40" y1="150" x2="290" y2="150" stroke="#b9c4c8" stroke-width="1"/>
+      <polyline points="60,116 130,64 200,133 270,47" fill="none" stroke="#e3b567" stroke-width="2.5"/>
+      <polyline points="60,81 130,81 200,99 270,81" fill="none" stroke="#7fb3c9" stroke-width="2.5"/>
+      <circle cx="60" cy="116" r="4" fill="#e3b567"/><circle cx="130" cy="64" r="4" fill="#e3b567"/>
+      <circle cx="200" cy="133" r="4" fill="#e3b567"/><circle cx="270" cy="47" r="4" fill="#e3b567"/>
+      <circle cx="60" cy="81" r="4" fill="#7fb3c9"/><circle cx="130" cy="81" r="4" fill="#7fb3c9"/>
+      <circle cx="200" cy="99" r="4" fill="#7fb3c9"/><circle cx="270" cy="81" r="4" fill="#7fb3c9"/>
+      <text x="60" y="172" text-anchor="middle" fill="#b9c4c8" font-size="8.5" font-family="Courier New, monospace">Day 1</text>
+      <text x="130" y="172" text-anchor="middle" fill="#b9c4c8" font-size="8.5" font-family="Courier New, monospace">Day 2</text>
+      <text x="200" y="172" text-anchor="middle" fill="#b9c4c8" font-size="8.5" font-family="Courier New, monospace">Day 3</text>
+      <text x="270" y="172" text-anchor="middle" fill="#b9c4c8" font-size="8.5" font-family="Courier New, monospace">Day 4</text>
+      <circle cx="55" cy="190" r="4" fill="#e3b567"/><text x="65" y="193" fill="#e3b567" font-size="9" font-family="Courier New, monospace">Ship Alpha</text>
+      <circle cx="165" cy="190" r="4" fill="#7fb3c9"/><text x="175" y="193" fill="#7fb3c9" font-size="9" font-family="Courier New, monospace">Ship Beta</text>
+    </svg><div class="diagram-caption">No labels given this time — read the numbers straight off the chart.</div></div>`
   };
 
   function planSummaryHTML(question, answerText, reasonObj, counterObj, conclusionObj){
@@ -2125,7 +2142,8 @@
     { id:'debate-officer', icon:'🗣️', name:'Debate Officer', desc:'Complete all of Captain\'s Council.', check:()=>worldPct(getWorld('opinion-arena'))===100 },
     { id:'report-writer', icon:'📝', name:'Report Writer', desc:'Complete all of Atlantic Voyages.', check:()=>worldPct(getWorld('essay-builder'))===100 },
     { id:'independent-writer', icon:'🚢', name:'Independent Writer', desc:'Complete 10 missions across the Academy.', check:()=>totalMissionsDone()>=10 },
-    { id:'chief-engineer', icon:'👑', name:'Chief Engineer of the Atlantic', desc:'Complete every mission in every world.', check:()=>totalMissionsDone()>=totalMissionsPossible() }
+    { id:'chief-engineer', icon:'👑', name:'Chief Engineer of the Atlantic', desc:'Complete every mission in every world.', check:()=>totalMissionsDone()>=totalMissionsPossible() },
+    { id:'boss-slayer', icon:'🏆', name:'Boss Slayer', desc:'Defeat every Boss Battle.', check:()=>BOSSES.every(b=>state.bosses[b.id] && state.bosses[b.id].done) }
   ];
 
   const VERBS = [
@@ -2222,6 +2240,52 @@
       ], correct:2 } }
   ];
 
+  const BOSSES = [
+    { id:'blank-page', icon:'🌊', title:'The Blank Page', type:'single', unlock:[],
+      prompt:'Explain why the S.S. Wordcraft needs both a Captain and a Chief Engineer, in your own words.',
+      scenario:'No starters this time — just write at least 3 full sentences, entirely on your own.',
+      hints:['One person needs to...','The other person needs to...','Together they...'],
+      minWords:20,
+      model:'The Captain is responsible for navigation and decisions about the ship\'s course, while the Chief Engineer manages the machinery that powers it. Neither role can safely do the other\'s job, since each requires different expertise. Together, they make sure the ship runs both safely and efficiently.' },
+    { id:'confusing-graph', icon:'📊', title:'The Confusing Graph', type:'single', unlock:['data-detective'], diagram:'boss-ship-race',
+      prompt:'Describe and interpret the graph above, fully using S-C-E-I, entirely on your own.',
+      scenario:'Two ships raced across the Atlantic. Ship Alpha: 16, 19, 15, 20 knots over four days. Ship Beta: 18, 18, 17, 18 knots over the same days.',
+      hints:['State...','Compare...','Evidence...','Interpret...'],
+      minWords:25,
+      model:'The graph shows the speed of Ship Alpha and Ship Beta over four days. Ship Alpha\'s speed varied a lot, while Ship Beta stayed fairly steady. Alpha ranged from 15 to 20 knots, while Beta stayed between 17 and 18 knots. This suggests Alpha took more risks for extra speed, while Beta prioritised a steady, predictable pace.' },
+    { id:'engine-failure', icon:'🔥', title:'Engine Failure', type:'single', unlock:['science-explainer','lab-reporter'],
+      prompt:'The boiler pressure suddenly dropped during the crossing. Explain what likely caused this and what effect it had on the ship.',
+      scenario:'Use Because → This causes → As a result, entirely on your own.',
+      hints:['Because...','This causes...','As a result...'],
+      minWords:25,
+      model:'Because a valve seal had worn through, steam began leaking out of the boiler system. This causes the pressure inside the boiler to drop sharply. As a result, the engine lost power and the ship had to reduce speed until repairs were made.' },
+    { id:'captains-debate', icon:'🗣️', title:"Captain's Debate", type:'single', unlock:['opinion-arena'],
+      prompt:'Should passenger ships be allowed to carry fewer lifeboats than passengers, if they have other safety equipment instead?',
+      scenario:'Give your full opinion using OREL, entirely on your own.',
+      hints:['My opinion is...','One reason is...','For example...','Therefore...'],
+      minWords:30,
+      model:'My opinion is that ships should always carry enough lifeboats for every passenger, regardless of other safety equipment. One reason is that other equipment can fail or become unusable in an emergency. For example, the Titanic did not carry enough lifeboats, which cost many lives when it sank. Therefore, lifeboat capacity should never be reduced, no matter what other safety features a ship has.' },
+    { id:'chief-marine-engineer', icon:'👑', title:'Chief Marine Engineer', type:'final',
+      unlock:['math-writer','science-explainer','lab-reporter','opinion-arena','data-detective','essay-builder','real-life-writer'],
+      scenario:'The ship\'s fuel tank holds 5000 litres. You used 250 L/hour for 12 hours, then 300 L/hour for 4 hours. The remaining leg is 6 hours at 280 L/hour.',
+      steps:[
+        { question:'Total fuel used so far = 3000 + 1200 = ?', options:['4200 litres','3000 litres','1200 litres','5000 litres'], correct:0 },
+        { question:'Fuel remaining = 5000 − 4200 = ?', options:['800 litres','1200 litres','4200 litres','200 litres'], correct:0 },
+        { question:'Fuel needed for the remaining leg: 280 L/hour × 6 hours = ?', options:['1680 litres','800 litres','280 litres','6 litres'], correct:0 },
+        { question:'Is there enough fuel for the remaining leg?', options:['No — there is a shortfall of 880 litres','Yes — there is enough, with 880 litres to spare'], correct:0 }
+      ],
+      writeFramework:[
+        {label:'Situation…', placeholder:'e.g. The ship has used 4200 litres of fuel and has 800 litres remaining.'},
+        {label:'Calculation…', placeholder:'e.g. The remaining six-hour leg needs 1680 litres at the current speed.'},
+        {label:'Recommendation…', placeholder:'e.g. I recommend reducing speed to conserve fuel, or arranging a fuel stop.'}
+      ],
+      minWords:20,
+      model:'The ship has used 4200 litres of fuel, leaving 800 litres remaining. The remaining six-hour leg would need 1680 litres at the current speed, which is 880 litres more than we have. I recommend reducing engine speed to conserve fuel, or arranging a fuel stop before the shortfall becomes critical.' }
+  ];
+  if(!state.bosses) state.bosses = {};
+  BOSSES.forEach(b=>{ if(!state.bosses[b.id]) state.bosses[b.id] = { done:false }; });
+  function bossUnlocked(b){ return b.unlock.every(wid=>worldPct(getWorld(wid))===100); }
+
   function updateTopbar(){
     if(view.screen==='worldmap'){
       document.querySelector('.gauge').style.setProperty('--pct', overallPct());
@@ -2251,6 +2315,19 @@
       topTitle.textContent = 'Command Word Glossary';
       topSub.textContent = 'S.S. Wordcraft';
       backBtn.disabled = false; backBtn.textContent = '← Map';
+    } else if(view.screen==='bosslist'){
+      document.querySelector('.gauge').style.setProperty('--pct', overallPct());
+      topGaugeNum.textContent = overallPct()+'%';
+      topTitle.textContent = 'Boss Battles';
+      topSub.textContent = 'S.S. Wordcraft';
+      backBtn.disabled = false; backBtn.textContent = '← Map';
+    } else if(view.screen==='boss' || view.screen==='bossVictory'){
+      const boss = BOSSES.find(b=>b.id===view.bossId);
+      document.querySelector('.gauge').style.setProperty('--pct', overallPct());
+      topGaugeNum.textContent = overallPct()+'%';
+      topTitle.textContent = boss ? boss.title : 'Boss Battle';
+      topSub.textContent = 'S.S. Wordcraft · Boss Battle';
+      backBtn.disabled = false; backBtn.textContent = '← Boss Battles';
     } else {
       const w = getWorld(view.worldId);
       const pct = worldPct(w);
@@ -2267,6 +2344,8 @@
     if(view.screen==='worldmap') return;
     if(view.screen==='missions'){ goWorldMap(); return; }
     if(view.screen==='verbtrainer'){ goWorldMap(); return; }
+    if(view.screen==='bosslist'){ goWorldMap(); return; }
+    if(view.screen==='boss' || view.screen==='bossVictory'){ openBossList(); return; }
     if(view.screen==='planning'){ view = { screen:'missions', worldId:view.worldId, missionId:null, levelIndex:0, buildOrder:[], buildBank:[] }; render(); return; }
     view = { screen:'missions', worldId:view.worldId, missionId:null, levelIndex:0, buildOrder:[], buildBank:[] };
     render();
@@ -2276,6 +2355,8 @@
   function openWorld(worldId){ view = { screen:'missions', worldId, missionId:null, levelIndex:0, buildOrder:[], buildBank:[] }; render(); }
   function openPlanning(worldId){ view = { screen:'planning', worldId, missionId:null, levelIndex:0, buildOrder:[], buildBank:[], planStep:0, planChoices:{} }; render(); }
   function openVerbTrainer(){ view = { screen:'verbtrainer', worldId:null, missionId:null, levelIndex:0, buildOrder:[], buildBank:[] }; render(); }
+  function openBossList(){ view = { screen:'bosslist', worldId:null, missionId:null, levelIndex:0, buildOrder:[], buildBank:[] }; render(); }
+  function openBoss(bossId){ view = { screen:'boss', bossId, bossStep:0, missionId:null, levelIndex:0, buildOrder:[], buildBank:[] }; render(); }
   function openMission(worldId, missionId){
     const m = getMission(worldId, missionId);
     const progress = state.worlds[worldId][missionId];
@@ -2355,11 +2436,17 @@
       }
     });
     html += `</div>`;
+    const bossesDone = BOSSES.filter(b=>state.bosses[b.id].done).length;
+    html += `<div class="world-intro-card" id="bossBattlesCard" style="cursor:pointer;">
+      <div class="world-intro-heading">🔴 Boss Battles</div>
+      <p class="world-intro-body">No starters, no scaffolding — special challenges that combine everything you've learned. ${bossesDone}/${BOSSES.length} defeated.</p>
+    </div>`;
     app.innerHTML = html;
     document.querySelectorAll('.mission-card[data-world]').forEach(card=>{
       card.addEventListener('click', ()=>openWorld(card.dataset.world));
     });
     document.getElementById('verbTrainerCard').addEventListener('click', openVerbTrainer);
+    document.getElementById('bossBattlesCard').addEventListener('click', openBossList);
   }
 
   // ---------- RENDER: MISSIONS (within a world) ----------
@@ -2427,6 +2514,168 @@
     if(document.getElementById('redoPlanBtn')){
       document.getElementById('redoPlanBtn').addEventListener('click', ()=>openPlanning(w.id));
     }
+  }
+
+  // ---------- RENDER: BOSS BATTLES ----------
+  function renderBossList(){
+    let html = '';
+    html += `<div class="hero">
+      <div class="eyebrow">Special Challenges</div>
+      <h2>Boss Battles</h2>
+      <p>No sentence starters, no scaffolding by default — these combine everything you've learned. Complete the linked worlds to unlock each one.</p>
+    </div>`;
+    html += `<div class="mission-list">`;
+    BOSSES.forEach(b=>{
+      const unlocked = bossUnlocked(b);
+      const done = state.bosses[b.id].done;
+      if(unlocked){
+        html += `<div class="mission-card" data-boss="${b.id}">
+          <div class="icon">${b.icon}</div>
+          <div class="body">
+            <h3>${b.title}</h3>
+            <p class="desc">${b.type==='final' ? 'The ultimate multi-part challenge — calculate, decide, and report.' : b.prompt}</p>
+            <div class="status">${done?'✓ DEFEATED':'⚔️ READY TO CHALLENGE'}</div>
+          </div>
+        </div>`;
+      } else {
+        html += `<div class="mission-card construction">
+          <div class="icon">${b.icon}</div>
+          <div class="body">
+            <h3>${b.title}</h3>
+            <p class="desc">Unlocks after completing: ${b.unlock.map(wid=>getWorld(wid).worldsub).join(', ')}</p>
+            <div class="status construction-text">🔒 LOCKED</div>
+          </div>
+        </div>`;
+      }
+    });
+    html += `</div>`;
+    app.innerHTML = html;
+    document.querySelectorAll('.mission-card[data-boss]').forEach(card=>{
+      card.addEventListener('click', ()=>openBoss(card.dataset.boss));
+    });
+  }
+
+  function renderBoss(){
+    const boss = BOSSES.find(b=>b.id===view.bossId);
+    if(boss.type==='final') renderBossFinal(boss);
+    else renderBossSingle(boss);
+  }
+
+  function renderBossSingle(boss){
+    let html = '';
+    html += `<div class="level-card">`;
+    html += `<div class="level-kicker">🔴 BOSS BATTLE</div>`;
+    html += `<div class="level-title">${boss.prompt}</div>`;
+    if(boss.diagram && DIAGRAMS[boss.diagram]) html += DIAGRAMS[boss.diagram];
+    html += `<div class="scenario">${boss.scenario}</div>`;
+    html += `<textarea id="freeInput" placeholder="Write your full answer here…"></textarea>`;
+    html += renderHintChips(boss.hints, 'Truly stuck? Tap for a nudge:');
+    html += `<div id="bossFeedback"></div>`;
+    html += `<div class="btn-row" id="bossActionRow"><button class="btn primary" id="bossCheckBtn">Check my answer</button></div>`;
+    html += `</div>`;
+    app.innerHTML = html;
+    wireHintChips(boss.hints);
+    wireBossSingleCheck(boss);
+  }
+
+  function wireBossSingleCheck(boss){
+    document.getElementById('bossCheckBtn').addEventListener('click', ()=>{
+      const val = document.getElementById('freeInput').value;
+      if(wordCount(val) >= boss.minWords){
+        document.getElementById('bossFeedback').innerHTML = `<div class="feedback good">Boss defeated! <div class="model">Example answer: "${boss.model}"</div></div>`;
+        document.getElementById('bossActionRow').innerHTML = `<button class="btn primary" id="bossClaimBtn">Claim Victory →</button>`;
+        document.getElementById('bossClaimBtn').addEventListener('click', ()=>finishBoss(boss));
+      } else {
+        document.getElementById('bossFeedback').innerHTML = `<div class="feedback info">Add a bit more — try to include every part the prompt asks for.</div>`;
+        document.getElementById('bossActionRow').innerHTML = `<button class="btn primary" id="bossCheckBtn">Check again</button>`;
+        wireBossSingleCheck(boss);
+      }
+    });
+  }
+
+  function renderBossFinal(boss){
+    const step = view.bossStep;
+    let html = '';
+    html += `<div class="rung-track">`;
+    for(let i=0;i<boss.steps.length+1;i++){
+      let cls='rung';
+      if(i<step) cls+=' done'; else if(i===step) cls+=' active';
+      html += `<div class="${cls}">${i+1}</div>`;
+    }
+    html += `</div>`;
+    html += `<div class="level-card">`;
+    html += `<div class="level-kicker">👑 FINAL BOSS</div>`;
+    if(step===0) html += `<div class="scenario">${boss.scenario}</div>`;
+    if(step < boss.steps.length){
+      const s = boss.steps[step];
+      html += `<div class="level-title">${s.question}</div>`;
+      s.options.forEach((opt,i)=>{ html += `<button class="choice-btn" data-i="${i}">${opt}</button>`; });
+      html += `<div id="bossFeedback"></div><div class="btn-row" id="bossActionRow"></div>`;
+    } else {
+      html += `<div class="level-title">Write your report to the Captain.</div>`;
+      html += `<div class="framework">` + boss.writeFramework.map((f,i)=>`<div class="step"><label>${f.label}</label><textarea data-fi="${i}" placeholder="${f.placeholder}"></textarea></div>`).join('') + `</div>`;
+      html += `<div id="bossFeedback"></div><div class="btn-row" id="bossActionRow"><button class="btn primary" id="bossCheckBtn">Check my report</button></div>`;
+    }
+    html += `</div>`;
+    app.innerHTML = html;
+
+    if(step < boss.steps.length){
+      const s = boss.steps[step];
+      document.querySelectorAll('.choice-btn').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const btns = document.querySelectorAll('.choice-btn');
+          if(btns[0].dataset.locked) return;
+          btns.forEach(x=>x.dataset.locked='1');
+          const i = parseInt(btn.dataset.i,10);
+          if(i===s.correct){ btn.classList.add('correct'); }
+          else { btn.classList.add('wrong'); btns[s.correct].classList.add('correct'); }
+          document.getElementById('bossActionRow').innerHTML = `<button class="btn primary" id="bossNextBtn">Next →</button>`;
+          document.getElementById('bossNextBtn').addEventListener('click', ()=>{ view.bossStep++; render(); });
+        });
+      });
+    } else {
+      document.getElementById('bossCheckBtn').addEventListener('click', ()=>{
+        const areas = document.querySelectorAll('[data-fi]');
+        let allFilled = true, total = '';
+        areas.forEach(a=>{ if(wordCount(a.value)<2) allFilled=false; total += ' '+a.value; });
+        if(allFilled && wordCount(total) >= boss.minWords){
+          document.getElementById('bossFeedback').innerHTML = `<div class="feedback good">Boss defeated! <div class="model">Example answer: "${boss.model}"</div></div>`;
+          document.getElementById('bossActionRow').innerHTML = `<button class="btn primary" id="bossClaimBtn">Claim Victory →</button>`;
+          document.getElementById('bossClaimBtn').addEventListener('click', ()=>finishBoss(boss));
+        } else {
+          document.getElementById('bossFeedback').innerHTML = `<div class="feedback info">Fill in each part with enough detail before submitting your report.</div>`;
+        }
+      });
+    }
+  }
+
+  function finishBoss(boss){
+    const badgesBefore = BADGES.filter(b=>b.check()).map(b=>b.id);
+    state.bosses[boss.id].done = true;
+    saveState();
+    const badgesAfter = BADGES.filter(b=>b.check());
+    view.newBadges = badgesAfter.filter(b=>!badgesBefore.includes(b.id));
+    view.screen = 'bossVictory';
+    render();
+  }
+
+  function renderBossVictory(){
+    const boss = BOSSES.find(b=>b.id===view.bossId);
+    let badgeHtml = '';
+    if(view.newBadges && view.newBadges.length){
+      badgeHtml = view.newBadges.map(b=>`<div class="badge-unlock">
+        <div class="badge-unlock-icon">${b.icon}</div>
+        <div><div class="badge-unlock-title">Badge Unlocked!</div><div class="badge-unlock-name">${b.name}</div></div>
+      </div>`).join('');
+    }
+    app.innerHTML = `<div class="complete-screen">
+      <div class="badge">${boss.icon}</div>
+      <h2>Boss Defeated!</h2>
+      <p><b>${boss.title}</b> is complete — no scaffolding, all you.</p>
+      ${badgeHtml}
+      <button class="btn primary" id="doneBtn" style="max-width:220px;margin:0 auto;">Back to Boss Battles</button>
+    </div>`;
+    document.getElementById('doneBtn').addEventListener('click', ()=>{ view.newBadges=null; openBossList(); });
   }
 
   // ---------- RENDER: VERB TRAINER (command word glossary) ----------
@@ -2866,6 +3115,9 @@
     if(view.screen==='worldmap') renderWorldMap();
     else if(view.screen==='missions') renderMissions();
     else if(view.screen==='verbtrainer') renderVerbTrainer();
+    else if(view.screen==='bosslist') renderBossList();
+    else if(view.screen==='boss') renderBoss();
+    else if(view.screen==='bossVictory') renderBossVictory();
     else if(view.screen==='planning') renderPlanning();
     else if(view.screen==='level') renderLevel();
     else if(view.screen==='complete') renderComplete();
