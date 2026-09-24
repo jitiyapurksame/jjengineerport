@@ -1899,6 +1899,513 @@
           ]
         }
       ]
+    },
+    {
+      id:'ice-kingdom', icon:'❄️', title:'The Ice Kingdom', worldsub:'Arctic Chemist',
+      desc:'Explain the chemistry of surviving — and exploring — a frozen kingdom.',
+      status:'ready',
+      missions:[
+        {
+          id:'salt-melts-ice', icon:'🧂', title:'Why Does Salt Melt the Path Ice?', diagram:'salt-melts-ice',
+          desc:'Explain why salt melts ice, using Because → This causes → As a result.', equation:'Salt on ice → lower freezing point',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:"Anna spreads salt on the icy palace steps before her journey. Why does the ice start to melt, even though it's still freezing outside?",
+              scenario:'The path to the Ice Kingdom is covered in solid ice, and the air is still well below freezing.',
+              options:['Salt makes the air warmer','Salt lowers the temperature at which water freezes','Salt reacts explosively with ice','Salt absorbs all the sunlight'],
+              correct:1,
+              feedback:'Right — salt lowers the freezing point, so the ice melts even though the air is still cold.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the core science sentence.',
+              words:['Salt','lowers','the','temperature','at','which','water','freezes.'],
+              target:'Salt lowers the temperature at which water freezes.',
+              feedback:'That\'s the key fact, clearly worded.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'Without salt, water freezes at 0°C. With salt mixed in, the water has to get even',
+              prefix:'has to get even ', suffix:' before it freezes.', accept:['colder'], options:['colder','warmer','wetter','drier'],
+              feedback:'Correct — salty water needs a colder temperature to freeze.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Explain the cause using the starter below.',
+              starter:'The ice on the path melts because ',
+              hints:['salt lowers the freezing point of water','the ice can no longer stay frozen at that temperature'],
+              minWords:3,
+              feedback:'Good — you\'ve linked the cause to the effect.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Explain why salt melts ice on a freezing path.',
+              scenario:'Write one sentence about the freezing point, one about what happens to the ice.',
+              hints:['Salt mixes with the surface water and lowers its freezing point.','Because the ice can no longer stay frozen at the current temperature, it starts to melt.'],
+              minWords:10,
+              model:'Salt mixes into the surface water and lowers the temperature at which it can freeze. Because the ice can no longer stay solid at that same temperature, it starts to melt back into liquid water.',
+              feedback:'That\'s a clear scientific explanation — a claim, backed by a reason.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full explanation using the framework.',
+              scenario:'Use Because → This causes → As a result to explain the full science.',
+              framework:[
+                {label:'Because…', placeholder:'e.g. Because salt lowers the freezing point of water,'},
+                {label:'This causes…', placeholder:'e.g. this causes the ice to no longer stay solid at the current temperature.'},
+                {label:'As a result…', placeholder:'e.g. as a result, the ice on the path melts.'}
+              ],
+              model:'Because salt lowers the freezing point of water, this causes the ice to no longer stay solid at the current temperature. As a result, the ice on the path melts, even though the air is still freezing cold.',
+              feedback:'A complete cause-and-effect explanation — this is exactly how a scientist writes it up.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'In a country with very heavy snow, salting the roads stops working below about -10°C. Explain why salt eventually stops melting the ice at very low temperatures.',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['Salt can only lower the freezing point by a limited amount...','Below a certain temperature, even salty water...'],
+              minWords:15,
+              model:'Salt can only lower the freezing point of water by a limited amount, not lower it endlessly. Below a certain temperature, even salty water reaches its own freezing point and turns solid again, so the salt stops being able to melt the ice.',
+              feedback:'You explained the limit of freezing-point depression — that\'s genuine chemistry reasoning, entirely on your own.' }
+          ]
+        },
+        {
+          id:'snow-shelter', icon:'⛄', title:'Why Does a Snow Shelter Keep You Warm?', diagram:'snow-shelter',
+          desc:'Explain why snow insulates, using Because → This causes → As a result.', equation:'Trapped air → slow heat loss',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'Anna builds a small shelter packed with snow to survive a blizzard overnight. Why does the snow actually help keep her warmer, instead of colder?',
+              scenario:'Outside the shelter it is freezing and windy. Inside, it feels much warmer.',
+              options:['Snow produces its own heat','Snow traps pockets of air, which are slow to lose heat','Snow blocks sunlight completely','Snow turns into ice and warms the air'],
+              correct:1,
+              feedback:'Right — snow is full of tiny trapped air pockets, and air is slow to carry heat away, so it insulates.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the core science sentence.',
+              words:['Snow','traps','pockets','of','air','that','are','slow','to','lose','heat.'],
+              target:'Snow traps pockets of air that are slow to lose heat.',
+              feedback:'That\'s the key fact, clearly worded.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'The trapped air pockets inside snow act like a',
+              prefix:'act like a ', suffix:' around the shelter, slowing down heat loss.', accept:['blanket','layer','barrier'], options:['blanket','mirror','sponge','magnet'],
+              feedback:'Correct — the trapped air acts like an insulating blanket.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Explain the cause using the starter below.',
+              starter:'The snow shelter stays warm because ',
+              hints:['snow traps pockets of air','trapped air is slow to lose heat'],
+              minWords:3,
+              feedback:'Good — you\'ve linked the cause to the effect.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Explain why a snow shelter keeps you warm.',
+              scenario:'Write one sentence about the trapped air, one about what it does to heat.',
+              hints:['Snow is full of tiny trapped air pockets.','Trapped air is slow to carry heat away, so it keeps warmth inside the shelter.'],
+              minWords:10,
+              model:'Snow is packed with tiny trapped air pockets between the ice crystals. Trapped air is slow to carry heat away, so it keeps the warmth from your body inside the shelter instead of letting it escape into the wind.',
+              feedback:'That\'s a clear scientific explanation — a claim, backed by a reason.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full explanation using the framework.',
+              scenario:'Use Because → This causes → As a result to explain the full science.',
+              framework:[
+                {label:'Because…', placeholder:'e.g. Because snow is full of tiny trapped air pockets,'},
+                {label:'This causes…', placeholder:'e.g. this causes heat to escape very slowly from inside the shelter.'},
+                {label:'As a result…', placeholder:'e.g. as a result, the inside of the shelter stays much warmer than the wind outside.'}
+              ],
+              model:'Because snow is full of tiny trapped air pockets, this causes heat to escape very slowly from inside the shelter. As a result, the inside of the shelter stays much warmer than the freezing wind outside.',
+              feedback:'A complete cause-and-effect explanation — this is exactly how a scientist writes it up.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Explain why a thin, compacted layer of ice does NOT keep you as warm as a thick layer of loose, fluffy snow, even though both are made of frozen water.',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['Compacted ice has far less trapped air than loose snow...','Air pockets are what slow down heat loss, so...'],
+              minWords:15,
+              model:'Compacted ice has been pressed together, so it has far less trapped air than loose, fluffy snow. Since trapped air pockets are what slow down heat loss, a solid layer of ice lets heat escape much faster than snow does, even though both are frozen water.',
+              feedback:'You compared two materials using the same underlying idea — that\'s real scientific transfer, entirely on your own.' }
+          ]
+        },
+        {
+          id:'breath-fog', icon:'💨', title:'Why Does Your Breath Turn to Fog in the Cold?', diagram:'breath-fog',
+          desc:'Explain why breath fogs in cold air, using Because → This causes → As a result.', equation:'Warm vapor + cold air → tiny droplets',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'Anna breathes out into the freezing Ice Kingdom air and sees a little cloud of fog appear. Why does this happen?',
+              scenario:'Her breath is warm and full of invisible water vapor. The outside air is freezing cold.',
+              options:['Her breath freezes solid instantly','Warm water vapor cools suddenly and condenses into tiny droplets','Cold air pushes smoke out of her lungs','The fog is dust from the ice palace'],
+              correct:1,
+              feedback:'Right — warm, invisible water vapor hits the cold air, cools fast, and condenses into millions of tiny visible droplets.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the core science sentence.',
+              words:['Warm','water','vapor','cools','quickly','and','condenses','into','tiny','droplets.'],
+              target:'Warm water vapor cools quickly and condenses into tiny droplets.',
+              feedback:'That\'s the key fact, clearly worded.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'The tiny water droplets are so small and close together that they scatter light, which is why we can',
+              prefix:'which is why we can ', suffix:' them as fog.', accept:['see'], options:['see','hear','smell','taste'],
+              feedback:'Correct — the droplets scatter light, making them visible as fog.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Explain the cause using the starter below.',
+              starter:'Your breath turns into fog because ',
+              hints:['warm water vapor meets cold air','the vapor cools and condenses into tiny droplets'],
+              minWords:3,
+              feedback:'Good — you\'ve linked the cause to the effect.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Explain why breath turns to fog in cold air.',
+              scenario:'Write one sentence about the water vapor, one about what happens when it meets the cold.',
+              hints:['Your breath contains warm, invisible water vapor.','When it hits the cold air, it cools quickly and condenses into tiny visible droplets.'],
+              minWords:10,
+              model:'Your breath contains warm, invisible water vapor from inside your lungs. When it hits the freezing outside air, it cools very quickly and condenses into millions of tiny visible water droplets, which looks like fog.',
+              feedback:'That\'s a clear scientific explanation — a claim, backed by a reason.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full explanation using the framework.',
+              scenario:'Use Because → This causes → As a result to explain the full science.',
+              framework:[
+                {label:'Because…', placeholder:'e.g. Because your warm breath contains invisible water vapor,'},
+                {label:'This causes…', placeholder:'e.g. this causes the vapor to cool suddenly and condense into tiny droplets when it meets the freezing air.'},
+                {label:'As a result…', placeholder:'e.g. as a result, you see a small cloud of fog in front of your face.'}
+              ],
+              model:'Because your warm breath contains invisible water vapor, this causes the vapor to cool suddenly when it meets the freezing air and condense into tiny droplets. As a result, you see a small cloud of fog in front of your face.',
+              feedback:'A complete cause-and-effect explanation — this is exactly how a scientist writes it up.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:"Explain why you don't see your breath fog on a warm summer day, even though your breath still contains the same amount of water vapor.",
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['Condensation happens when warm vapor meets air that is much colder...','On a warm day, the air temperature is...'],
+              minWords:15,
+              model:'Condensation happens when warm water vapor meets air that is much colder, causing it to cool suddenly and turn into visible droplets. On a warm summer day, the air is close to the same temperature as your breath, so the vapor does not cool quickly enough to condense, and no fog forms.',
+              feedback:'You explained why the same process depends on temperature difference — a genuinely deeper level of reasoning, entirely on your own.' }
+          ]
+        }
+      ]
+    },
+    {
+      id:'mario-rescue', icon:'🍄', title:'The Mushroom Kingdom', worldsub:'Rescue Engineer',
+      desc:'Solve puzzles and explain your method clearly enough for Toad to follow — the Princess is counting on you.',
+      status:'ready',
+      missions:[
+        {
+          id:'warp-pipe-puzzle', icon:'🟢', title:'The Warp Pipe Puzzle', diagram:'warp-pipe',
+          desc:'Explain how you solved the equation, step by step.', equation:'2x − 3 = 11',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'To solve 2x − 3 = 11 and find the right pipe number, what should you do first?',
+              scenario:'Only the pipe number that solves this equation leads to World 4 — the wrong pipe sends you back to World 1.',
+              options:['Divide both sides by 2','Add 3 to both sides','Subtract 3 from both sides','Multiply both sides by 2'],
+              correct:1,
+              feedback:'Right — you undo the −3 first by adding 3 to both sides.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the sentence that describes the first step.',
+              words:['Add','3','to','both','sides.'],
+              target:'Add 3 to both sides.',
+              feedback:'That\'s the sentence — clear and in the right order.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing number.',
+              scenario:'Adding 3 to both sides of 2x − 3 = 11 gives:',
+              prefix:'2x = ', accept:['14'], options:['8','11','14','17'],
+              feedback:'Correct — 11 + 3 = 14, so 2x = 14.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Describe your first step using the starter below.',
+              starter:'First, I ',
+              hints:['added 3 to both sides','divided both sides by 2'],
+              minWords:3,
+              feedback:'Good — that\'s a clear first step, written as a full sentence.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Explain how you solved 2x − 3 = 11.',
+              scenario:'Write two sentences: one for your first step, one for your final answer.',
+              hints:['First, I added 3 to both sides.','Then, I divided both sides by 2.','Therefore, x = 7.'],
+              minWords:10,
+              model:'First, I added 3 to both sides to get 2x = 14. Then, I divided both sides by 2, so x = 7.',
+              feedback:'Nice work — you explained the method, not just the answer.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full explanation using the framework.',
+              scenario:'Use First → Then → Therefore to explain the whole method for 2x − 3 = 11.',
+              framework:[
+                {label:'First…', placeholder:'e.g. First, I added 3 to both sides.'},
+                {label:'Then…', placeholder:'e.g. Then, I divided both sides by 2.'},
+                {label:'Therefore…', placeholder:'e.g. Therefore, x = 7.'}
+              ],
+              model:'First, I added 3 to both sides, which gave 2x = 14. Then, I divided both sides by 2. Therefore, x = 7, which is pipe number 7 — the one leading to World 4.',
+              feedback:'That\'s a complete, structured explanation — Toad can follow every step to the right pipe.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Now explain a new one on your own: 5x + 4 = 29',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['First, I subtracted 4 from both sides.','Then, I divided both sides by 5.','Therefore, x = ...'],
+              minWords:15,
+              model:'First, I subtracted 4 from both sides, which gave 5x = 25. Then, I divided both sides by 5. Therefore, x = 5.',
+              feedback:'You explained a brand-new puzzle completely by yourself. That\'s independent rescue-engineer reasoning.' }
+          ]
+        },
+        {
+          id:'bowser-coin-trap', icon:'🪙', title:"Bowser's Coin Trap", diagram:'coin-trap',
+          desc:'Explain your method for solving a multi-step coin puzzle.', equation:'3 × 8 + 2y = 50',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'Mario has 3 red coins worth 8 points each, and needs exactly 50 points to open the door. The rest must come from mushrooms worth 2 points each. What should you work out first?',
+              scenario:'The equation is 3 × 8 + 2y = 50, where y is the number of mushrooms needed.',
+              options:['3 × 8, to find the red coins\' total value','50 ÷ 2, to find the mushrooms straight away','2 × 50, to find double the total','8 ÷ 3, to find the coin ratio'],
+              correct:0,
+              feedback:'Right — work out the fixed part first: 3 × 8 = 24 points from red coins.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the sentence that describes the first step.',
+              words:['Multiply','3','by','8','to','get','24.'],
+              target:'Multiply 3 by 8 to get 24.',
+              feedback:'That\'s the sentence — clear and in the right order.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing number.',
+              scenario:'Subtracting the red coins\' value from the total: 50 − 24 gives:',
+              prefix:'2y = ', accept:['26'], options:['22','24','26','28'],
+              feedback:'Correct — 50 − 24 = 26, so 2y = 26.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Describe your first step using the starter below.',
+              starter:'First, I ',
+              hints:['multiplied 3 by 8 to find the red coins\' value','subtracted that from 50'],
+              minWords:3,
+              feedback:'Good — that\'s a clear first step, written as a full sentence.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Explain how you found the number of mushrooms Mario needs.',
+              scenario:'Write two sentences: one for your first step, one for your final answer.',
+              hints:['First, I multiplied 3 by 8 to find the red coins\' total value.','Then, I subtracted 24 from 50 and divided by 2.'],
+              minWords:10,
+              model:'First, I multiplied 3 by 8 to find that the red coins are worth 24 points in total. Then, I subtracted 24 from 50 to get 26, and divided by 2, so Mario needs 13 mushrooms.',
+              feedback:'Nice work — you explained the method, not just the answer.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full explanation using the framework.',
+              scenario:'Use First → Then → Therefore to explain the whole method.',
+              framework:[
+                {label:'First…', placeholder:'e.g. First, I multiplied 3 by 8 to find the red coins\' total value.'},
+                {label:'Then…', placeholder:'e.g. Then, I subtracted 24 from the total of 50 and divided by 2.'},
+                {label:'Therefore…', placeholder:'e.g. Therefore, Mario needs 13 mushrooms.'}
+              ],
+              model:'First, I multiplied 3 by 8, which showed the red coins are worth 24 points. Then, I subtracted 24 from the total of 50 to get 26, and divided by 2. Therefore, Mario needs 13 mushrooms to open the door.',
+              feedback:'That\'s a complete, structured explanation — Toad can follow every step to the answer.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Now solve a new one on your own: Mario has 4 blue coins worth 5 points each, and needs 60 points total. The rest comes from stars worth 4 points each. How many stars does he need?',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['First, I multiplied 4 by 5...','Then, I subtracted that from 60 and divided by 4...'],
+              minWords:15,
+              model:'First, I multiplied 4 by 5, which showed the blue coins are worth 20 points. Then, I subtracted 20 from the total of 60 to get 40, and divided by 4. Therefore, Mario needs 10 stars to open the door.',
+              feedback:'You solved a brand-new multi-step puzzle by yourself — exactly the reasoning Bowser\'s trap is designed to test.' }
+          ]
+        },
+        {
+          id:'star-block-pattern', icon:'⭐', title:'The Star Block Sequence', diagram:'star-pattern',
+          desc:'Explain the pattern rule you found, step by step.', equation:'2, 5, 8, 11, ?',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'The floating blocks show the sequence 2, 5, 8, 11, ?. What should you find first to figure out the next number?',
+              scenario:'Toad says each block\'s number follows a hidden rule.',
+              options:['The difference between each number','The sum of all the numbers','The biggest number in the list','Whether the numbers are odd or even'],
+              correct:0,
+              feedback:'Right — finding the difference between terms reveals the pattern rule.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the sentence that describes the first step.',
+              words:['Find','the','difference','between','each','number.'],
+              target:'Find the difference between each number.',
+              feedback:'That\'s the sentence — clear and in the right order.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing number.',
+              scenario:'5 − 2 = 3, 8 − 5 = 3, 11 − 8 = 3. So each block is',
+              prefix:'each block is ', suffix:' more than the one before.', accept:['3'], options:['2','3','4','5'],
+              feedback:'Correct — the pattern adds 3 each time.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Describe your first step using the starter below.',
+              starter:'First, I ',
+              hints:['found the difference between each number','noticed it adds 3 each time'],
+              minWords:3,
+              feedback:'Good — that\'s a clear first step, written as a full sentence.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Explain how you worked out the next number in 2, 5, 8, 11, ?.',
+              scenario:'Write two sentences: one for your first step, one for your final answer.',
+              hints:['First, I found the difference between each pair of numbers.','Then, I saw the pattern always adds 3, so the next number is 14.'],
+              minWords:10,
+              model:'First, I found the difference between each pair of numbers in the sequence. Then, I saw the pattern always adds 3, so the next number after 11 is 14.',
+              feedback:'Nice work — you explained the method, not just the answer.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full explanation using the framework.',
+              scenario:'Use First → Then → Therefore to explain the whole method.',
+              framework:[
+                {label:'First…', placeholder:'e.g. First, I found the difference between each pair of numbers.'},
+                {label:'Then…', placeholder:'e.g. Then, I saw the pattern always adds 3.'},
+                {label:'Therefore…', placeholder:'e.g. Therefore, the next block is 14.'}
+              ],
+              model:'First, I found the difference between each pair of numbers: 5−2=3, 8−5=3, 11−8=3. Then, I saw the pattern always adds 3 to get the next number. Therefore, the next block in the sequence is 14.',
+              feedback:'That\'s a complete, structured explanation — Toad can follow every step of your rule.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Now solve a new one on your own: 30, 26, 22, 18, ?',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['First, I found the difference between each pair of numbers...','Then, I saw the pattern...'],
+              minWords:15,
+              model:'First, I found the difference between each pair of numbers: 26−30=−4, 22−26=−4, 18−22=−4. Then, I saw the pattern always subtracts 4 to get the next number. Therefore, the next block in the sequence is 14.',
+              feedback:'You spotted a decreasing pattern on your own and explained the rule clearly — exactly what Toad needs to cross safely.' }
+          ]
+        }
+      ]
+    },
+    {
+      id:'emotion-hq', icon:'🧠', title:'Headquarters', worldsub:'Body Chemist',
+      desc:'Explain the real chemistry behind what happens in your body when an emotion takes the console.',
+      status:'ready',
+      missions:[
+        {
+          id:'fear-heart-race', icon:'😨', title:'Why Does Your Heart Race When Fear Takes the Console?', diagram:'fear-heart-race',
+          desc:'Explain the chemistry of the fight-or-flight response, using Because → This causes → As a result.', equation:'Adrenaline → faster heartbeat',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'Riley sees a huge dog suddenly run at her, and Fear slams the button. Within seconds her heart is pounding. Why does this happen so fast?',
+              scenario:"Fear's job is to protect the body from danger, instantly.",
+              options:['Her muscles create the fast heartbeat on their own','Fear triggers the release of adrenaline, a chemical that speeds up the heart','Loud barking directly speeds up the heart','Her brain stops working temporarily'],
+              correct:1,
+              feedback:'Right — Fear triggers the release of adrenaline, a chemical messenger that tells the heart to beat faster.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the core science sentence.',
+              words:['Adrenaline','tells','the','heart','to','beat','faster.'],
+              target:'Adrenaline tells the heart to beat faster.',
+              feedback:'That\'s the key fact, clearly worded.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'Adrenaline is carried around the body in the blood, acting like a chemical',
+              prefix:'acting like a chemical ', suffix:'.', accept:['messenger','signal'], options:['messenger','food','fuel','waste'],
+              feedback:'Correct — adrenaline is a chemical messenger, carried in the blood to reach the heart quickly.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Explain the cause using the starter below.',
+              starter:'Your heart races because ',
+              hints:['Fear triggers the release of adrenaline','adrenaline tells the heart to pump faster'],
+              minWords:3,
+              feedback:'Good — you\'ve linked the cause to the effect.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Explain why your heart races when Fear takes the console.',
+              scenario:'Write one sentence about the chemical, one about what it does to the heart.',
+              hints:['Fear triggers the release of a chemical called adrenaline.','Adrenaline travels in the blood and tells the heart to beat faster, ready for danger.'],
+              minWords:10,
+              model:'When Fear takes the console, it triggers the release of a chemical called adrenaline. Adrenaline travels quickly through the blood and tells the heart to beat faster, getting the body ready to react to danger.',
+              feedback:'That\'s a clear scientific explanation — a claim, backed by a reason.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full explanation using the framework.',
+              scenario:'Use Because → This causes → As a result to explain the full science.',
+              framework:[
+                {label:'Because…', placeholder:'e.g. Because Fear triggers the release of adrenaline,'},
+                {label:'This causes…', placeholder:'e.g. this causes the chemical to travel quickly through the blood to the heart.'},
+                {label:'As a result…', placeholder:'e.g. as a result, the heart beats faster to prepare the body for danger.'}
+              ],
+              model:'Because Fear triggers the release of adrenaline, this causes the chemical to travel quickly through the blood to the heart. As a result, the heart beats faster, pumping more blood to the muscles so the body is ready to react.',
+              feedback:'A complete cause-and-effect explanation — this is exactly how a scientist writes it up.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Explain why your heart keeps racing for a few minutes even after the danger (like the big dog) has completely gone.',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:["Adrenaline doesn't disappear from the blood instantly...","It takes time for the body to..."],
+              minWords:15,
+              model:"Adrenaline doesn't disappear from the blood the instant the danger is gone — it takes a few minutes for the body to break it down and clear it out. Until then, the chemical is still telling the heart to beat fast, which is why the racing feeling lingers even after you know you're safe.",
+              feedback:'You explained why a chemical effect outlasts the event that caused it — real body chemistry, entirely on your own.' }
+          ]
+        },
+        {
+          id:'joy-happy-chemicals', icon:'😄', title:'Why Do You Feel Warm and Happy When Joy Takes Over?', diagram:'joy-chemicals',
+          desc:'Explain the chemistry of feeling happy, using Because → This causes → As a result.', equation:'Dopamine → happy feeling',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:'When Riley laughs hard with her friends, Joy lights up the console and she feels warm and happy all over. What is actually causing that feeling?',
+              scenario:"Joy's job is to notice good moments and make them feel rewarding.",
+              options:['Her body temperature genuinely rises','The brain releases a chemical called dopamine, which creates a rewarded, happy feeling','Laughing produces extra oxygen which feels warm','It is only in her imagination, with no real cause'],
+              correct:1,
+              feedback:"Right — the brain releases dopamine, a chemical that creates that warm, rewarded feeling." },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the core science sentence.',
+              words:['The','brain','releases','dopamine,','which','creates','a','happy','feeling.'],
+              target:'The brain releases dopamine, which creates a happy feeling.',
+              feedback:'That\'s the key fact, clearly worded.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:"Dopamine is sometimes nicknamed the brain's own reward chemical, because it makes good moments feel",
+              prefix:'makes good moments feel ', suffix:'.', accept:['rewarding','good','pleasurable'], options:['rewarding','painful','boring','confusing'],
+              feedback:"Correct — dopamine is the brain's reward chemical." },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Explain the cause using the starter below.',
+              starter:'You feel happy because ',
+              hints:['Joy triggers the release of dopamine','dopamine creates a rewarded, pleasurable feeling'],
+              minWords:3,
+              feedback:'Good — you\'ve linked the cause to the effect.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Explain why you feel happy when Joy takes over.',
+              scenario:'Write one sentence about the chemical, one about the feeling it creates.',
+              hints:['Joy triggers the release of a chemical called dopamine in the brain.','Dopamine creates a rewarded, pleasurable feeling, which is why laughing with friends feels so good.'],
+              minWords:10,
+              model:'When Joy takes the console, it triggers the release of a chemical called dopamine in the brain. Dopamine creates a rewarded, pleasurable feeling, which is why laughing with friends can feel so good.',
+              feedback:'That\'s a clear scientific explanation — a claim, backed by a reason.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full explanation using the framework.',
+              scenario:'Use Because → This causes → As a result to explain the full science.',
+              framework:[
+                {label:'Because…', placeholder:'e.g. Because Joy triggers the release of dopamine in the brain,'},
+                {label:'This causes…', placeholder:'e.g. this causes the brain to register the moment as rewarding.'},
+                {label:'As a result…', placeholder:'e.g. as a result, you feel a warm, happy feeling.'}
+              ],
+              model:'Because Joy triggers the release of dopamine in the brain, this causes the brain to register the moment as rewarding and pleasurable. As a result, you feel a warm, happy feeling that makes you want to repeat the experience.',
+              feedback:'A complete cause-and-effect explanation — this is exactly how a scientist writes it up.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Explain why doing the same fun activity over and over eventually feels less exciting than it did the first time.',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:["The brain doesn't release the same amount of dopamine every time...","When something becomes familiar, the reward chemical response..."],
+              minWords:15,
+              model:"The brain doesn't release the same large amount of dopamine every time you repeat a familiar activity — the reward chemical response gets smaller once something is no longer new or surprising. This is why an activity that felt thrilling the first time can feel far less exciting after doing it many times.",
+              feedback:'You explained why the same chemical produces a changing effect over time — genuine reasoning about how the brain adapts, entirely on your own.' }
+          ]
+        },
+        {
+          id:'anger-red-cheeks', icon:'😡', title:'Why Do Your Cheeks Turn Red When Anger Presses the Button?', diagram:'anger-blood-flow',
+          desc:'Explain the chemistry of a hot, red face, using Because → This causes → As a result.', equation:'Adrenaline → blood vessels widen',
+          levels:[
+            { type:'choice', kicker:'Level 1 · Choose',
+              title:"When Anger slams the console down, Riley's face turns red and feels hot. What is actually happening in her skin?",
+              scenario:"Anger's job is to react fast when something feels unfair.",
+              options:['Her skin produces extra red pigment instantly','Adrenaline makes tiny blood vessels near the skin widen, letting more blood flow through','Her blood turns a brighter shade of red','Sweat glands turn the skin red'],
+              correct:1,
+              feedback:'Right — adrenaline makes tiny blood vessels near the skin surface widen, letting more blood flow through, which makes the skin look red and feel hot.' },
+            { type:'build', kicker:'Level 2 · Build',
+              title:'Put the words in order.',
+              scenario:'Build the core science sentence.',
+              words:['Adrenaline','makes','tiny','blood','vessels','widen','near','the','skin.'],
+              target:'Adrenaline makes tiny blood vessels widen near the skin.',
+              feedback:'That\'s the key fact, clearly worded.' },
+            { type:'complete', kicker:'Level 3 · Complete',
+              title:'Fill in the missing word.',
+              scenario:'When more blood flows close to the surface of the skin, the skin looks',
+              prefix:'the skin looks ', suffix:' and feels hot.', accept:['red','flushed'], options:['red','pale','blue','green'],
+              feedback:'Correct — more blood near the surface makes skin look red (or flushed) and feel hot.' },
+            { type:'starter', kicker:'Level 4 · Sentence Starter',
+              title:'Finish the sentence.',
+              scenario:'Explain the cause using the starter below.',
+              starter:'Your cheeks turn red because ',
+              hints:['adrenaline makes blood vessels near the skin widen','more blood flows close to the surface'],
+              minWords:3,
+              feedback:'Good — you\'ve linked the cause to the effect.' },
+            { type:'twoSentence', kicker:'Level 5 · Two Sentences',
+              title:'Explain why your cheeks turn red when Anger takes over.',
+              scenario:'Write one sentence about the chemical, one about what happens to the skin.',
+              hints:['Anger triggers the release of adrenaline, which makes tiny blood vessels near the skin widen.','More blood flows close to the surface of the skin, which makes it look red and feel hot.'],
+              minWords:10,
+              model:'When Anger takes the console, it triggers the release of adrenaline, which makes tiny blood vessels near the skin widen. More blood then flows close to the surface of the skin, which makes it look red and feel hot.',
+              feedback:'That\'s a clear scientific explanation — a claim, backed by a reason.' },
+            { type:'structured', kicker:'Level 6 · Structured Paragraph',
+              title:'Write the full explanation using the framework.',
+              scenario:'Use Because → This causes → As a result to explain the full science.',
+              framework:[
+                {label:'Because…', placeholder:'e.g. Because Anger triggers the release of adrenaline,'},
+                {label:'This causes…', placeholder:'e.g. this causes tiny blood vessels near the skin to widen.'},
+                {label:'As a result…', placeholder:'e.g. as a result, more blood flows near the surface and the skin looks red and feels hot.'}
+              ],
+              model:'Because Anger triggers the release of adrenaline, this causes tiny blood vessels near the skin to widen. As a result, more blood flows close to the surface, which makes the skin look red and feel hot.',
+              feedback:'A complete cause-and-effect explanation — this is exactly how a scientist writes it up.' },
+            { type:'independent', kicker:'Level 7 · Independent',
+              title:'Explain why your cheeks also turn red when you are embarrassed, even though embarrassment and anger feel like very different emotions.',
+              scenario:'Try it yourself first. If you get stuck, a few starting points are there to help.',
+              hints:['Both emotions can trigger the release of adrenaline...','The same physical process happens whenever...'],
+              minWords:15,
+              model:'Both anger and embarrassment can trigger the release of adrenaline in the body, even though the emotions themselves feel very different. The same physical process happens either way — tiny blood vessels near the skin widen and let more blood flow through — so the skin turns red whether the emotion behind it is anger or embarrassment.',
+              feedback:"You connected two different emotions to the same underlying chemical process — that's genuine cross-topic reasoning, entirely on your own." }
+          ]
+        }
+      ]
     }
   ];
 
@@ -2268,7 +2775,129 @@
       <circle cx="225" cy="110" r="5" fill="none" stroke="#efe7d6" stroke-width="1.3"/>
       <circle cx="250" cy="125" r="6" fill="none" stroke="#efe7d6" stroke-width="1.3"/>
       <text x="245" y="168" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">gas bubbles trapped inside</text>
-    </svg><div class="diagram-caption">Yeast makes CO₂ gas bubbles → bubbles get trapped in the sticky dough → dough puffs up.</div></div>`
+    </svg><div class="diagram-caption">Yeast makes CO₂ gas bubbles → bubbles get trapped in the sticky dough → dough puffs up.</div></div>`,
+
+    'salt-melts-ice': `<div class="diagram-box"><svg viewBox="0 0 320 175" style="width:100%;max-width:290px;height:auto;display:block;margin:0 auto;">
+      <text x="80" y="20" text-anchor="middle" fill="#e3b567" font-size="10" font-family="Courier New, monospace">ICE + SALT</text>
+      <rect x="20" y="30" width="120" height="90" rx="6" fill="rgba(127,179,201,0.25)" stroke="#7fb3c9" stroke-width="1.5"/>
+      <circle cx="45" cy="40" r="2.5" fill="#efe7d6"/><circle cx="65" cy="36" r="2.5" fill="#efe7d6"/><circle cx="90" cy="42" r="2.5" fill="#efe7d6"/>
+      <circle cx="115" cy="38" r="2.5" fill="#efe7d6"/><circle cx="55" cy="48" r="2.5" fill="#efe7d6"/><circle cx="105" cy="47" r="2.5" fill="#efe7d6"/>
+      <text x="80" y="135" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">solid ice, salt on top</text>
+      <line x1="150" y1="75" x2="170" y2="75" stroke="#b9c4c8" stroke-width="1.5" marker-end="url(#arrowSalt)"/>
+      <defs><marker id="arrowSalt" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#b9c4c8"/></marker></defs>
+      <text x="235" y="20" text-anchor="middle" fill="#e3b567" font-size="10" font-family="Courier New, monospace">MELTING</text>
+      <rect x="185" y="35" width="90" height="45" rx="6" fill="rgba(127,179,201,0.15)" stroke="#7fb3c9" stroke-width="1.2" stroke-dasharray="4 3"/>
+      <path d="M180 90 Q200 100 215 92 Q230 102 250 93 Q265 101 280 92 L280 118 L180 118 Z" fill="rgba(127,179,201,0.35)" stroke="#7fb3c9" stroke-width="1.3"/>
+      <text x="230" y="135" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">liquid water forms</text>
+    </svg><div class="diagram-caption">Salt lowers the freezing point → ice can't stay solid at that temperature → it melts.</div></div>`,
+
+    'snow-shelter': `<div class="diagram-box"><svg viewBox="0 0 320 175" style="width:100%;max-width:290px;height:auto;display:block;margin:0 auto;">
+      <text x="160" y="18" text-anchor="middle" fill="#e3b567" font-size="10" font-family="Courier New, monospace">SNOW SHELTER</text>
+      <path d="M40 155 Q40 60 160 52 Q280 60 280 155 Z" fill="rgba(200,150,63,0.10)" stroke="#c8963f" stroke-width="2"/>
+      <circle cx="70" cy="120" r="4" fill="none" stroke="#efe7d6" stroke-width="1.2"/><circle cx="90" cy="90" r="4" fill="none" stroke="#efe7d6" stroke-width="1.2"/>
+      <circle cx="120" cy="70" r="4" fill="none" stroke="#efe7d6" stroke-width="1.2"/><circle cx="200" cy="68" r="4" fill="none" stroke="#efe7d6" stroke-width="1.2"/>
+      <circle cx="235" cy="88" r="4" fill="none" stroke="#efe7d6" stroke-width="1.2"/><circle cx="255" cy="118" r="4" fill="none" stroke="#efe7d6" stroke-width="1.2"/>
+      <circle cx="160" cy="120" r="10" fill="#e3b567"/><rect x="150" y="130" width="20" height="22" rx="4" fill="#e3b567"/>
+      <text x="160" y="168" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">warm inside</text>
+      <text x="20" y="45" fill="#7fb3c9" font-size="9" font-family="Courier New, monospace">~ freezing wind ~</text>
+      <line x1="20" y1="55" x2="35" y2="50" stroke="#7fb3c9" stroke-width="1.3"/>
+      <line x1="285" y1="55" x2="300" y2="50" stroke="#7fb3c9" stroke-width="1.3"/>
+      <text x="300" y="45" text-anchor="end" fill="#7fb3c9" font-size="9" font-family="Courier New, monospace">~ blizzard ~</text>
+    </svg><div class="diagram-caption">Trapped air pockets in the snow wall slow down heat loss — inside stays warmer than the wind outside.</div></div>`,
+
+    'breath-fog': `<div class="diagram-box"><svg viewBox="0 0 320 175" style="width:100%;max-width:290px;height:auto;display:block;margin:0 auto;">
+      <text x="60" y="20" text-anchor="middle" fill="#e3b567" font-size="10" font-family="Courier New, monospace">WARM BREATH</text>
+      <ellipse cx="50" cy="90" rx="22" ry="14" fill="rgba(227,181,103,0.3)" stroke="#e3b567" stroke-width="1.5"/>
+      <text x="50" y="94" text-anchor="middle" fill="#e3b567" font-size="8" font-family="Courier New, monospace">mouth</text>
+      <path d="M75 90 Q110 75 140 90" fill="none" stroke="#e3b567" stroke-width="2"/>
+      <line x1="160" y1="35" x2="160" y2="150" stroke="#7fb3c9" stroke-width="1.3" stroke-dasharray="4 3"/>
+      <text x="160" y="25" text-anchor="middle" fill="#7fb3c9" font-size="9" font-family="Courier New, monospace">cold air</text>
+      <text x="240" y="20" text-anchor="middle" fill="#efe7d6" font-size="10" font-family="Courier New, monospace">VISIBLE FOG</text>
+      <circle cx="210" cy="80" r="3" fill="#efe7d6"/><circle cx="225" cy="70" r="3" fill="#efe7d6"/><circle cx="245" cy="85" r="3" fill="#efe7d6"/>
+      <circle cx="230" cy="100" r="3" fill="#efe7d6"/><circle cx="260" cy="72" r="3" fill="#efe7d6"/><circle cx="270" cy="95" r="3" fill="#efe7d6"/>
+      <circle cx="250" cy="55" r="3" fill="#efe7d6"/><circle cx="215" cy="105" r="3" fill="#efe7d6"/>
+      <text x="240" y="140" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">tiny water droplets</text>
+    </svg><div class="diagram-caption">Warm invisible vapor hits cold air → cools fast → condenses into tiny droplets you can see.</div></div>`,
+
+    'warp-pipe': `<div class="diagram-box"><svg viewBox="0 0 320 175" style="width:100%;max-width:290px;height:auto;display:block;margin:0 auto;">
+      <text x="80" y="20" text-anchor="middle" fill="#efe7d6" font-size="9" font-family="Courier New, monospace">World 4 ✓</text>
+      <line x1="80" y1="30" x2="80" y2="58" stroke="#b9c4c8" stroke-width="1.5" marker-end="url(#arrowPipe)"/>
+      <defs><marker id="arrowPipe" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#b9c4c8"/></marker></defs>
+      <ellipse cx="80" cy="65" rx="35" ry="10" fill="rgba(127,179,201,0.3)" stroke="#7fb3c9" stroke-width="2"/>
+      <rect x="45" y="65" width="70" height="75" fill="rgba(127,179,201,0.18)" stroke="#7fb3c9" stroke-width="2"/>
+      <text x="80" y="110" text-anchor="middle" fill="#efe7d6" font-size="11" font-family="Courier New, monospace">x = 7</text>
+      <text x="80" y="155" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">PIPE A</text>
+      <text x="240" y="20" text-anchor="middle" fill="#b9c4c8" font-size="9" font-family="Courier New, monospace">World 1 (back to start)</text>
+      <ellipse cx="240" cy="65" rx="35" ry="10" fill="rgba(16,31,39,0.35)" stroke="#2c4a58" stroke-width="2"/>
+      <rect x="205" y="65" width="70" height="75" fill="rgba(16,31,39,0.25)" stroke="#2c4a58" stroke-width="2"/>
+      <text x="240" y="110" text-anchor="middle" fill="#b9c4c8" font-size="11" font-family="Courier New, monospace">x = 4</text>
+      <text x="240" y="155" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">PIPE B</text>
+    </svg><div class="diagram-caption">Solve the equation for x — the correct pipe is the only one that leads forward.</div></div>`,
+
+    'coin-trap': `<div class="diagram-box"><svg viewBox="0 0 320 155" style="width:100%;max-width:290px;height:auto;display:block;margin:0 auto;">
+      <text x="160" y="18" text-anchor="middle" fill="#e3b567" font-size="10" font-family="Courier New, monospace">DOOR NEEDS 50 POINTS</text>
+      <circle cx="50" cy="60" r="18" fill="rgba(200,150,63,0.3)" stroke="#c8963f" stroke-width="2"/><text x="50" y="65" text-anchor="middle" fill="#efe7d6" font-size="10" font-family="Courier New, monospace">8</text>
+      <circle cx="90" cy="60" r="18" fill="rgba(200,150,63,0.3)" stroke="#c8963f" stroke-width="2"/><text x="90" y="65" text-anchor="middle" fill="#efe7d6" font-size="10" font-family="Courier New, monospace">8</text>
+      <circle cx="130" cy="60" r="18" fill="rgba(200,150,63,0.3)" stroke="#c8963f" stroke-width="2"/><text x="130" y="65" text-anchor="middle" fill="#efe7d6" font-size="10" font-family="Courier New, monospace">8</text>
+      <text x="90" y="95" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">3 red coins = 24 pts</text>
+      <text x="165" y="66" fill="#efe7d6" font-size="16" font-family="Courier New, monospace">+</text>
+      <rect x="195" y="45" width="34" height="34" rx="4" fill="rgba(127,179,201,0.25)" stroke="#7fb3c9" stroke-width="2"/><text x="212" y="67" text-anchor="middle" fill="#efe7d6" font-size="12" font-family="Courier New, monospace">?</text>
+      <rect x="235" y="45" width="34" height="34" rx="4" fill="rgba(127,179,201,0.25)" stroke="#7fb3c9" stroke-width="2"/><text x="252" y="67" text-anchor="middle" fill="#efe7d6" font-size="12" font-family="Courier New, monospace">?</text>
+      <text x="233" y="95" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">mushrooms = 2 pts each</text>
+      <text x="160" y="130" text-anchor="middle" fill="#efe7d6" font-size="9" font-family="Courier New, monospace">3 × 8 + 2y = 50</text>
+    </svg><div class="diagram-caption">Find the fixed value first (the coins), then work out how many mushrooms (y) fill the gap to 50.</div></div>`,
+
+    'star-pattern': `<div class="diagram-box"><svg viewBox="0 0 320 150" style="width:100%;max-width:290px;height:auto;display:block;margin:0 auto;">
+      <rect x="20" y="55" width="40" height="40" rx="4" fill="rgba(227,181,103,0.25)" stroke="#e3b567" stroke-width="2"/><text x="40" y="80" text-anchor="middle" fill="#efe7d6" font-size="13" font-family="Courier New, monospace">2</text>
+      <text x="71" y="50" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">+3</text>
+      <rect x="82" y="55" width="40" height="40" rx="4" fill="rgba(227,181,103,0.25)" stroke="#e3b567" stroke-width="2"/><text x="102" y="80" text-anchor="middle" fill="#efe7d6" font-size="13" font-family="Courier New, monospace">5</text>
+      <text x="133" y="50" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">+3</text>
+      <rect x="144" y="55" width="40" height="40" rx="4" fill="rgba(227,181,103,0.25)" stroke="#e3b567" stroke-width="2"/><text x="164" y="80" text-anchor="middle" fill="#efe7d6" font-size="13" font-family="Courier New, monospace">8</text>
+      <text x="195" y="50" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">+3</text>
+      <rect x="206" y="55" width="40" height="40" rx="4" fill="rgba(227,181,103,0.25)" stroke="#e3b567" stroke-width="2"/><text x="226" y="80" text-anchor="middle" fill="#efe7d6" font-size="13" font-family="Courier New, monospace">11</text>
+      <text x="257" y="50" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">+3</text>
+      <rect x="268" y="55" width="40" height="40" rx="4" fill="rgba(16,31,39,0.3)" stroke="#7fb3c9" stroke-width="2" stroke-dasharray="4 3"/><text x="288" y="80" text-anchor="middle" fill="#7fb3c9" font-size="13" font-family="Courier New, monospace">?</text>
+      <text x="160" y="125" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">Each block is exactly 3 more than the one before.</text>
+    </svg><div class="diagram-caption">Find the difference between each pair, then apply the rule to find the next block.</div></div>`,
+
+    'fear-heart-race': `<div class="diagram-box"><svg viewBox="0 0 320 175" style="width:100%;max-width:290px;height:auto;display:block;margin:0 auto;">
+      <circle cx="60" cy="50" r="24" fill="rgba(127,179,201,0.25)" stroke="#7fb3c9" stroke-width="2"/>
+      <text x="60" y="54" text-anchor="middle" fill="#efe7d6" font-size="8" font-family="Courier New, monospace">BRAIN</text>
+      <circle cx="100" cy="75" r="4" fill="#e3b567"/><circle cx="125" cy="90" r="4" fill="#e3b567"/><circle cx="150" cy="100" r="4" fill="#e3b567"/>
+      <text x="150" y="65" text-anchor="middle" fill="#e3b567" font-size="8" font-family="Courier New, monospace">adrenaline</text>
+      <path d="M82 62 Q110 85 170 108" fill="none" stroke="#b9c4c8" stroke-width="1.3" stroke-dasharray="3 2"/>
+      <path d="M195,115 C195,100 180,90 165,100 C155,107 155,120 165,130 L195,155 L225,130 C235,120 235,107 225,100 C210,90 195,100 195,115 Z" fill="rgba(227,181,103,0.3)" stroke="#e3b567" stroke-width="2"/>
+      <text x="195" y="168" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">HEART</text>
+      <path d="M240,120 L250,120 L255,95 L263,145 L270,110 L278,120 L292,120" fill="none" stroke="#efe7d6" stroke-width="2"/>
+      <text x="265" y="80" text-anchor="middle" fill="#efe7d6" font-size="9" font-family="Courier New, monospace">faster!</text>
+    </svg><div class="diagram-caption">Fear triggers adrenaline → it travels to the heart → the heart beats faster.</div></div>`,
+
+    'joy-chemicals': `<div class="diagram-box"><svg viewBox="0 0 320 175" style="width:100%;max-width:290px;height:auto;display:block;margin:0 auto;">
+      <circle cx="70" cy="45" r="24" fill="rgba(227,181,103,0.25)" stroke="#e3b567" stroke-width="2"/>
+      <text x="70" y="49" text-anchor="middle" fill="#efe7d6" font-size="8" font-family="Courier New, monospace">BRAIN</text>
+      <circle cx="105" cy="70" r="4" fill="#e3b567"/><circle cx="130" cy="85" r="4" fill="#e3b567"/><circle cx="150" cy="100" r="4" fill="#e3b567"/>
+      <text x="150" y="60" text-anchor="middle" fill="#e3b567" font-size="8" font-family="Courier New, monospace">dopamine</text>
+      <path d="M90 58 Q115 78 170 105" fill="none" stroke="#b9c4c8" stroke-width="1.3" stroke-dasharray="3 2"/>
+      <circle cx="215" cy="115" r="45" fill="rgba(227,181,103,0.08)"/>
+      <circle cx="215" cy="115" r="30" fill="rgba(227,181,103,0.18)"/>
+      <circle cx="215" cy="115" r="18" fill="rgba(227,181,103,0.32)" stroke="#e3b567" stroke-width="2"/>
+      <circle cx="208" cy="110" r="2.5" fill="#2c4a58"/><circle cx="222" cy="110" r="2.5" fill="#2c4a58"/>
+      <path d="M205,120 Q215,128 225,120" fill="none" stroke="#2c4a58" stroke-width="2"/>
+      <text x="215" y="168" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">warm, happy feeling</text>
+    </svg><div class="diagram-caption">Joy triggers dopamine → it reaches the brain's reward center → you feel warm and happy.</div></div>`,
+
+    'anger-blood-flow': `<div class="diagram-box"><svg viewBox="0 0 320 175" style="width:100%;max-width:290px;height:auto;display:block;margin:0 auto;">
+      <text x="75" y="20" text-anchor="middle" fill="#b9c4c8" font-size="10" font-family="Courier New, monospace">BEFORE</text>
+      <circle cx="75" cy="95" r="45" fill="rgba(16,31,39,0.15)" stroke="#2c4a58" stroke-width="2"/>
+      <path d="M45 80 Q60 85 55 100 Q50 115 65 120" fill="none" stroke="#7fb3c9" stroke-width="1.3"/>
+      <path d="M95 75 Q105 90 95 105 Q88 118 100 125" fill="none" stroke="#7fb3c9" stroke-width="1.3"/>
+      <text x="75" y="150" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">normal blood flow</text>
+      <text x="245" y="20" text-anchor="middle" fill="#e3b567" font-size="10" font-family="Courier New, monospace">ANGER</text>
+      <circle cx="245" cy="95" r="45" fill="rgba(227,181,103,0.22)" stroke="#e3b567" stroke-width="2"/>
+      <path d="M210 78 Q235 85 225 100 Q215 118 240 122" fill="none" stroke="#e3b567" stroke-width="3"/>
+      <path d="M270 72 Q285 90 270 108 Q258 122 278 128" fill="none" stroke="#e3b567" stroke-width="3"/>
+      <text x="245" y="150" text-anchor="middle" fill="#b9c4c8" font-size="8" font-family="Courier New, monospace">widened vessels → red, hot</text>
+    </svg><div class="diagram-caption">Adrenaline widens the tiny blood vessels near the skin → more blood flows close to the surface → skin looks red and feels hot.</div></div>`
   };
 
   function planSummaryHTML(question, answerText, reasonObj, counterObj, conclusionObj){
@@ -2361,6 +2990,9 @@
     { id:'debate-officer', icon:'🗣️', name:'Debate Officer', desc:'Complete all of Captain\'s Council.', check:()=>worldPct(getWorld('opinion-arena'))===100 },
     { id:'report-writer', icon:'📝', name:'Report Writer', desc:'Complete all of Atlantic Voyages.', check:()=>worldPct(getWorld('essay-builder'))===100 },
     { id:'kitchen-chemist-badge', icon:'🍳', name:'Kitchen Chemist', desc:"Complete all of The Ship's Galley.", check:()=>worldPct(getWorld('kitchen-chemist'))===100 },
+    { id:'ice-kingdom-badge', icon:'❄️', name:'Arctic Chemist', desc:'Complete all of The Ice Kingdom.', check:()=>worldPct(getWorld('ice-kingdom'))===100 },
+    { id:'mario-rescue-badge', icon:'🍄', name:'Rescue Engineer', desc:'Complete all of The Mushroom Kingdom.', check:()=>worldPct(getWorld('mario-rescue'))===100 },
+    { id:'emotion-hq-badge', icon:'🧠', name:'Body Chemist', desc:'Complete all of Headquarters.', check:()=>worldPct(getWorld('emotion-hq'))===100 },
     { id:'independent-writer', icon:'🚢', name:'Independent Writer', desc:'Complete 10 missions across the Academy.', check:()=>totalMissionsDone()>=10 },
     { id:'chief-engineer', icon:'👑', name:'Chief Engineer of the Atlantic', desc:'Complete every mission in every world.', check:()=>totalMissionsDone()>=totalMissionsPossible() },
     { id:'boss-slayer', icon:'🏆', name:'Boss Slayer', desc:'Defeat every Boss Battle.', check:()=>BOSSES.every(b=>state.bosses[b.id] && state.bosses[b.id].done) }
