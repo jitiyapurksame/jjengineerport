@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <title>J.J.'s Engineering Academy</title>
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="default" />
-<meta name="apple-mobile-web-app-title" content="Engineering Academy" />
-<meta name="description" content="Fleet Command — launch pad and progress backup for J.J.'s training apps." />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Engineering Academy">
+<meta name="description" content="Fleet Command — launch pad and progress backup for J.J.&#39;s training apps.">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap');
 
@@ -61,6 +60,40 @@ a { color: inherit; text-decoration: none; }
 .section-label {
   font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
   text-transform: uppercase; color: var(--ink-soft); margin-bottom: 10px;
+}
+
+/* ---- Captain's Wild Card ---- */
+.wild-card {
+  background: var(--teal); color: #fff; border-radius: 10px; padding: 16px; text-align: center;
+  border: 2px dashed var(--amber); box-shadow: 0 3px 12px rgba(14,42,69,0.18);
+}
+.wild-face {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(217,164,65,0.45); border-radius: 10px;
+  padding: 18px 12px; min-height: 140px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 6px;
+}
+.wild-emoji { font-size: 44px; line-height: 1; }
+.wild-name { font-family: var(--mono); font-weight: 700; font-size: 17px; color: #fff; }
+.wild-step { font-size: 13.5px; color: rgba(255,255,255,0.85); line-height: 1.5; max-width: 420px; }
+.wild-face.shuffling .wild-emoji { animation: wild-wobble 0.22s infinite alternate; }
+.wild-face.landed { animation: wild-pop 0.45s ease; border-color: var(--amber); }
+@keyframes wild-wobble { from { transform: rotate(-9deg) scale(1); } to { transform: rotate(9deg) scale(1.12); } }
+@keyframes wild-pop { 0% { transform: scale(0.88); } 60% { transform: scale(1.05); } 100% { transform: scale(1); } }
+.wild-btn {
+  display: block; width: 100%; margin-top: 12px; padding: 14px; border-radius: 8px; border: none;
+  background: var(--amber); color: var(--teal-dark); font-weight: 700; font-size: 16px;
+  cursor: pointer; text-align: center; letter-spacing: 0.01em;
+}
+.wild-btn:active { opacity: 0.9; transform: scale(0.99); }
+.wild-btn.go { background: var(--success); color: #fff; }
+.wild-swap {
+  display: block; width: 100%; margin-top: 10px; padding: 10px; border-radius: 8px; cursor: pointer;
+  background: transparent; border: 2px solid rgba(255,255,255,0.4); color: #fff; font-weight: 600; font-size: 13.5px;
+}
+.wild-note { font-family: var(--mono); font-size: 11px; color: var(--amber); margin-top: 10px; line-height: 1.5; min-height: 16px; }
+.wild-btn[hidden], .wild-swap[hidden], .wild-actions[hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .wild-face.shuffling .wild-emoji, .wild-face.landed { animation: none; }
 }
 
 /* ---- Voyage progress ---- */
@@ -148,9 +181,26 @@ a { color: inherit; text-decoration: none; }
 <div id="app" class="wrap">
 
   <div class="hdr">
-    <div class="hdr-eyebrow">RMS Design Files &middot; Fleet Command</div>
+    <div class="hdr-eyebrow">RMS Design Files · Fleet Command</div>
     <div class="hdr-title">⚓ J.J.'s Engineering Academy</div>
     <div class="hdr-sub">Step 1 beats perfection — pick a training deck and start.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🎴 Captain's Wild Card</div>
+    <div class="wild-card">
+      <div class="wild-face" id="wild-face" aria-live="polite">
+        <div class="wild-emoji" id="wild-emoji">🎴</div>
+        <div class="wild-name" id="wild-name">Can't decide where to start?</div>
+        <div class="wild-step" id="wild-step">Let the Captain pick. One tap, one card, Step 1 only.</div>
+      </div>
+      <button class="wild-btn" id="wild-draw" type="button">🎲 Draw My Wild Card</button>
+      <div class="wild-actions" id="wild-actions" hidden>
+        <a class="wild-btn go" id="wild-go" href="#">Start Step 1 →</a>
+        <button class="wild-swap" id="wild-swap" type="button">🔄 Swap card (1 left)</button>
+      </div>
+      <div class="wild-note" id="wild-note"></div>
+    </div>
   </div>
 
   <div class="section">
@@ -158,7 +208,7 @@ a { color: inherit; text-decoration: none; }
     <div class="voyage-card">
       <div class="voyage-row">
         <span>COMBINED FIXES LOGGED</span>
-        <span class="num" id="voyage-num">0 / 0</span>
+        <span class="num" id="voyage-num">0 / 353</span>
       </div>
       <div class="voyage-track"><div class="voyage-fill" id="voyage-fill" style="width:0%"></div></div>
     </div>
@@ -179,7 +229,7 @@ a { color: inherit; text-decoration: none; }
       <div class="log-btn-row">
         <button class="log-btn primary" id="btn-export">⬇ Export Progress</button>
         <label class="log-btn" for="file-import">⬆ Import Progress</label>
-        <input type="file" id="file-import" accept="application/json,.json" />
+        <input type="file" id="file-import" accept="application/json,.json">
       </div>
       <div class="log-meta" id="log-meta">No backup exported yet this session.</div>
       <div class="log-status" id="log-status"></div>
@@ -203,16 +253,16 @@ a { color: inherit; text-decoration: none; }
     to read across apps until it's online. Backup keys used: <code>writing-academy-v1</code>,
     <code>step1-bridge-progress-v1</code>, <code>number-sense-sketchbook-v1</code>, and
     <code>jj-drafting-room-v1</code>.
-    <br /><br />
+    <br><br>
     The Number Theory Sketchbook and Combinatorics Sketchbook are hosted separately at
     <code>numbertheorysketchbook.vercel.app</code> and <code>combinatoricssketchbook.vercel.app</code>,
     so their progress isn't included in the Voyage Progress bar or in this page's export/import
     backup — they each keep their own save data on their own site.
-    <br /><br />
-    KVIS Proving Ground is a pilot in progress (Rivet Count module built and working) and doesn't
-    have a hosted URL yet — its card is a placeholder so you can see where it'll sit once it's
-    deployed. Swap its <code>href</code> in this file for the real URL when that's ready, and it'll
-    behave exactly like the other separately-hosted decks.
+    <br><br>
+    KVIS Proving Ground (ASEAN/SBS, KVIS &amp; GAT prep) is hosted separately at
+    <code>kvis-proving-ground.vercel.app</code> and is still growing — the Rivet Count pilot module is
+    live and more topics are landing in phases. Like the other separately-hosted decks, it keeps its
+    own save data on its own site.
   </div>
 
 </div>
@@ -227,6 +277,7 @@ a { color: inherit; text-decoration: none; }
       href: "writing-academy.html",
       emoji: "🖋️",
       name: "S.S. Wordcraft — Writing Academy",
+      step1: "Open World 1 and write just ONE sentence. A rough draft is a blueprint sketch, and sketches are allowed to be messy.",
       desc: "11 worlds · 36 missions · climb the Writing Ladder rung by rung",
       total: 252,
       countDone: function (data) {
@@ -249,6 +300,7 @@ a { color: inherit; text-decoration: none; }
       href: "jj-math-decoder.html",
       emoji: "⚙️",
       name: "Math Decoder",
+      step1: "Fix just ONE thing on the ship. One rivet in place counts as progress.",
       desc: "9 visual tools · 27 themed fixes across the ship",
       total: 27,
       countDone: function (data) {
@@ -262,6 +314,7 @@ a { color: inherit; text-decoration: none; }
       href: "number-sense-sketchbook.html",
       emoji: "✏️",
       name: "Number Sense Sketchbook",
+      step1: "Open the first chapter and try ONE example. Run a test, see what happens.",
       desc: "5 chapters · 28 strategy log entries",
       total: 28,
       countDone: function (data) {
@@ -275,6 +328,7 @@ a { color: inherit; text-decoration: none; }
       href: "drafting-room.html",
       emoji: "📐",
       name: "The Drafting Room",
+      step1: "Open one blueprint folder and sketch the first model. Rough lines are fine, engineers revise.",
       desc: "7 blueprint folders · sketch, table, graph & explain scientific models",
       total: 46,
       countDone: function (data) {
@@ -293,20 +347,23 @@ a { color: inherit; text-decoration: none; }
       href: "https://numbertheorysketchbook.vercel.app/",
       emoji: "⚓",
       name: "Number Theory Sketchbook",
+      step1: "Open the first compartment and do ONE problem. Check one part before checking the whole ship.",
       desc: "15 compartments · Chief Engineer training manual — primes, factors, multiples & more"
     },
     {
       href: "https://combinatoricssketchbook.vercel.app/",
       emoji: "🧮",
       name: "Combinatorics Sketchbook",
+      step1: "Open the first chapter and solve ONE counting puzzle. Count slowly, count your way.",
       desc: "Counting, arrangements & choices — a training manual for combinatorics"
     },
     {
-      href: "#",
+      href: "https://kvis-proving-ground.vercel.app/",
       emoji: "⚓",
       name: "KVIS Proving Ground",
+      step1: "Run the Rivet Count pilot, first problem only. Sea trials start with one test.",
       desc: "Sea Trials Bridge — ASEAN/SBS, KVIS & GAT prep. Pilot module (Rivet Count) built; more topics landing in phases.",
-      comingSoon: true
+      btn: "Open Proving Ground ↗"
     }
   ];
 
@@ -378,7 +435,7 @@ a { color: inherit; text-decoration: none; }
       var badgeText = app.comingSoon ? "Coming soon &middot; not deployed yet" : "Hosted separately &middot; new tab";
       var btnHtml = app.comingSoon
         ? '<span class="mission-btn" style="opacity:0.55; cursor:default;">Coming Soon</span>'
-        : '<a class="mission-btn" href="' + app.href + '" target="_blank" rel="noopener">Open Sketchbook ↗</a>';
+        : '<a class="mission-btn" href="' + app.href + '" target="_blank" rel="noopener">' + (app.btn || "Open Sketchbook ↗") + '</a>';
 
       card.innerHTML =
         '<div class="mission-top">' +
@@ -537,11 +594,115 @@ a { color: inherit; text-decoration: none; }
     renderMissions();
   });
 
+  // ---- Captain's Wild Card ----
+  (function () {
+    var LAST_KEY = "jj-wild-card-last-v1";
+    var face = document.getElementById("wild-face");
+    var emojiEl = document.getElementById("wild-emoji");
+    var nameEl = document.getElementById("wild-name");
+    var stepEl = document.getElementById("wild-step");
+    var drawBtn = document.getElementById("wild-draw");
+    var actions = document.getElementById("wild-actions");
+    var goBtn = document.getElementById("wild-go");
+    var swapBtn = document.getElementById("wild-swap");
+    var noteEl = document.getElementById("wild-note");
+
+    var CHEERS = [
+      "Systems check: green. Just do Step 1.",
+      "Engine start = ONE turn of the key.",
+      "Prototype first, polish later.",
+      "Rough draft = working blueprint.",
+      "5 minutes of testing beats 0 minutes of planning."
+    ];
+
+    var swapsLeft = 1;
+    var current = null;
+    var busy = false;
+
+    function allDecks() {
+      var list = [];
+      APPS.forEach(function (a) {
+        list.push({ name: a.name, emoji: a.emoji, href: a.href, step1: a.step1, external: false });
+      });
+      EXTERNAL_APPS.forEach(function (a) {
+        if (a.comingSoon) return;
+        list.push({ name: a.name, emoji: a.emoji, href: a.href, step1: a.step1, external: true });
+      });
+      return list;
+    }
+    function getLast() { try { return localStorage.getItem(LAST_KEY); } catch (e) { return null; } }
+    function setLast(v) { try { localStorage.setItem(LAST_KEY, v); } catch (e) {} }
+
+    function pickDeck(excludeName) {
+      var decks = allDecks();
+      var pool = decks.filter(function (d) { return d.name !== excludeName; });
+      if (!pool.length) pool = decks;
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    function land(deck) {
+      current = deck;
+      face.classList.remove("shuffling");
+      emojiEl.textContent = deck.emoji;
+      nameEl.textContent = deck.name;
+      stepEl.textContent = "Step 1: " + deck.step1;
+      goBtn.setAttribute("href", deck.href);
+      if (deck.external) {
+        goBtn.setAttribute("target", "_blank");
+        goBtn.setAttribute("rel", "noopener");
+      } else {
+        goBtn.removeAttribute("target");
+        goBtn.removeAttribute("rel");
+      }
+      swapBtn.hidden = swapsLeft <= 0;
+      actions.hidden = false;
+      noteEl.textContent = swapsLeft > 0
+        ? "Not feeling it? You get 1 swap."
+        : "Card locked in. " + CHEERS[Math.floor(Math.random() * CHEERS.length)];
+      face.classList.remove("landed");
+      void face.offsetWidth;
+      face.classList.add("landed");
+      setLast(deck.name);
+      busy = false;
+    }
+
+    function draw(excludeName) {
+      if (busy) return;
+      busy = true;
+      drawBtn.hidden = true;
+      actions.hidden = true;
+      noteEl.textContent = "";
+      var target = pickDeck(excludeName);
+      var decks = allDecks();
+      var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var ticks = reduce ? 0 : 12;
+      var i = 0;
+      face.classList.add("shuffling");
+      (function tick() {
+        if (i >= ticks) { land(target); return; }
+        var d = decks[Math.floor(Math.random() * decks.length)];
+        emojiEl.textContent = d.emoji;
+        nameEl.textContent = d.name;
+        stepEl.textContent = "Shuffling the deck…";
+        i++;
+        setTimeout(tick, 50 + i * 10);
+      })();
+    }
+
+    drawBtn.addEventListener("click", function () { draw(getLast()); });
+    swapBtn.addEventListener("click", function () {
+      if (busy || swapsLeft <= 0 || !current) return;
+      swapsLeft--;
+      draw(current.name);
+    });
+  })();
+
   renderMissions();
   if (!storageOk) {
     showStatus("Storage isn't accessible in this context, so live progress and backups may not work. Host these files together online (Netlify Drop or GitHub Pages) for full functionality.", "warn");
   }
 })();
 </script>
-</body>
-</html>
+
+
+</body></html>
