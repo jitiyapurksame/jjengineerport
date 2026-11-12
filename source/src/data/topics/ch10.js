@@ -15,7 +15,18 @@ export const ch10 = {
      "🔵",
      "⚪"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "visual": {
+     "kind": "strip",
+     "cells": [
+      "🔴",
+      "🔵",
+      "🔴",
+      "🔵",
+      "🔴"
+     ],
+     "unit": 2
+    }
    },
    "note": "The pattern repeats every 2 markers: red, blue, red, blue... After red comes blue."
   },
@@ -29,7 +40,21 @@ export const ch10 = {
       "🔧",
       "⭐"
      ],
-     "correctIndex": 1
+     "correctIndex": 1,
+     "visual": {
+      "kind": "strip",
+      "cells": [
+       "⚙️",
+       "⚙️",
+       "🔧",
+       "⚙️",
+       "⚙️",
+       "🔧",
+       "⚙️",
+       "⚙️"
+      ],
+      "unit": 3
+     }
     },
     "solve": {
      "prompt": "The pattern repeats every 3 caps. What comes next?",
@@ -47,10 +72,23 @@ export const ch10 = {
       "🟨",
       "🟩"
      ],
-     "correctIndex": 1
+     "correctIndex": 1,
+     "visual": {
+      "kind": "strip",
+      "cells": [
+       "🟨",
+       "🟩",
+       "🟩",
+       "🟨",
+       "🟩",
+       "🟩",
+       "🟨"
+      ],
+      "unit": 3
+     }
     },
     "solve": {
-     "prompt": "The pattern repeats every 3 blocks. What comes next?",
+     "prompt": "BOSS ROUND: The pattern repeats every 3 blocks. What comes next?",
      "accepted": [
       "🟩",
       "green"
@@ -81,7 +119,21 @@ export const ch10 = {
       "🟦",
       "🟨"
      ],
-     "correctIndex": 1
+     "correctIndex": 1,
+     "visual": {
+      "kind": "strip",
+      "cells": [
+       "🟦",
+       "🟦",
+       "🟨",
+       "🟦",
+       "🟦",
+       "🟨",
+       "🟦",
+       "🟦"
+      ],
+      "unit": 3
+     }
     },
     "caption": "Test it: the unit 🟦🟦🟨 repeats — after two 🟦's, a 🟨 always follows."
    }

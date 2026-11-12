@@ -90,7 +90,18 @@ export const ch11 = {
      "10+2",
      "13+1"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "visual": {
+     "kind": "scale",
+     "left": [
+      8,
+      5
+     ],
+     "right": [
+      null
+     ],
+     "tilt": "level"
+    }
    },
    "note": "8 + 5 = 13. 9 + 4 also equals 13, so it balances the scale."
   },
@@ -104,7 +115,18 @@ export const ch11 = {
       "10+5",
       "6+8"
      ],
-     "correctIndex": 0
+     "correctIndex": 0,
+     "visual": {
+      "kind": "scale",
+      "left": [
+       6,
+       9
+      ],
+      "right": [
+       null
+      ],
+      "tilt": "level"
+     }
     },
     "solve": {
      "prompt": "What number does 6+9 equal (that both sides must match)?",
@@ -122,10 +144,21 @@ export const ch11 = {
       "15+5",
       "11+7"
      ],
-     "correctIndex": 0
+     "correctIndex": 0,
+     "visual": {
+      "kind": "scale",
+      "left": [
+       12,
+       7
+      ],
+      "right": [
+       null
+      ],
+      "tilt": "level"
+     }
     },
     "solve": {
-     "prompt": "What number does 12+7 equal?",
+     "prompt": "BOSS ROUND: What number does 12+7 equal?",
      "accepted": [
       "19"
      ]
@@ -155,7 +188,18 @@ export const ch11 = {
       "Yes",
       "No"
      ],
-     "correctIndex": 0
+     "correctIndex": 0,
+     "visual": {
+      "kind": "scale",
+      "left": [
+       14
+      ],
+      "right": [
+       6,
+       8
+      ],
+      "tilt": "level"
+     }
     },
     "caption": "Test it: 6+8=14, so the scale balances both ways, no matter which side you write first."
    }
@@ -299,7 +343,23 @@ export const ch11 = {
      "Right side",
      "Equal"
     ],
-    "correctIndex": 1
+    "correctIndex": 1,
+    "visual": {
+     "kind": "boxbars",
+     "n": 4,
+     "rows": [
+      {
+       "label": "Left: 2×n+1",
+       "k": 2,
+       "extra": 1
+      },
+      {
+       "label": "Right: 3×n−2",
+       "k": 3,
+       "extra": -2
+      }
+     ]
+    }
    },
    "note": "2×4+1=9 and 3×4−2=10. Since 10 > 9, the right side is bigger."
   },
@@ -313,7 +373,23 @@ export const ch11 = {
       "Right side",
       "Equal"
      ],
-     "correctIndex": 1
+     "correctIndex": 1,
+     "visual": {
+      "kind": "boxbars",
+      "n": 3,
+      "rows": [
+       {
+        "label": "Left: 5×n",
+        "k": 5,
+        "extra": 0
+       },
+       {
+        "label": "Right: 3×n+8",
+        "k": 3,
+        "extra": 8
+       }
+      ]
+     }
     },
     "solve": {
      "prompt": "What is 3×n+8 at n=3?",
@@ -331,10 +407,26 @@ export const ch11 = {
       "Right side",
       "Equal"
      ],
-     "correctIndex": 1
+     "correctIndex": 1,
+     "visual": {
+      "kind": "boxbars",
+      "n": 6,
+      "rows": [
+       {
+        "label": "Left: 4×n−5",
+        "k": 4,
+        "extra": -5
+       },
+       {
+        "label": "Right: 2×n+10",
+        "k": 2,
+        "extra": 10
+       }
+      ]
+     }
     },
     "solve": {
-     "prompt": "What is 2×n+10 at n=6?",
+     "prompt": "BOSS ROUND: What is 2×n+10 at n=6?",
      "accepted": [
       "22"
      ]
@@ -365,7 +457,23 @@ export const ch11 = {
       "Right side",
       "Equal"
      ],
-     "correctIndex": 1
+     "correctIndex": 1,
+     "visual": {
+      "kind": "boxbars",
+      "n": 2,
+      "rows": [
+       {
+        "label": "Left: 6×n",
+        "k": 6,
+        "extra": 0
+       },
+       {
+        "label": "Right: 4×n+5",
+        "k": 4,
+        "extra": 5
+       }
+      ]
+     }
     },
     "caption": "Test it: at n=2, 6n=12 and 4n+5=13 — the right side edges ahead."
    }
@@ -386,7 +494,24 @@ export const ch11 = {
      "b−5=20",
      "5×b=20"
     ],
-    "correctIndex": 0
+    "correctIndex": 0,
+    "visual": {
+     "kind": "bar",
+     "whole": 20,
+     "label": "20 total",
+     "segs": [
+      {
+       "v": 15,
+       "text": "?",
+       "name": "b bolts"
+      },
+      {
+       "v": 5,
+       "text": "5",
+       "name": "added"
+      }
+     ]
+    }
    },
    "note": "'Some bolts plus 5 more equals 20' translates directly to b + 5 = 20."
   },
@@ -400,7 +525,24 @@ export const ch11 = {
       "f+30=45",
       "30−f=45"
      ],
-     "correctIndex": 0
+     "correctIndex": 0,
+     "visual": {
+      "kind": "bar",
+      "whole": 75,
+      "label": "f = ?",
+      "segs": [
+       {
+        "v": 45,
+        "text": "45",
+        "name": "left in tank"
+       },
+       {
+        "v": 30,
+        "text": "30",
+        "name": "pumped out"
+       }
+      ]
+     }
     },
     "solve": {
      "prompt": "Solve for f: how much fuel was there originally?",
@@ -418,10 +560,28 @@ export const ch11 = {
       "s×3=40",
       "s−3=40"
      ],
-     "correctIndex": 0
+     "correctIndex": 0,
+     "visual": {
+      "kind": "bar",
+      "whole": 40,
+      "label": "40 mL",
+      "segs": [
+       {
+        "v": 10,
+        "text": "s",
+        "name": "1st batch"
+       },
+       {
+        "v": 30,
+        "text": "s",
+        "name": "3 × s (2nd batch)",
+        "parts": 3
+       }
+      ]
+     }
     },
     "solve": {
-     "prompt": "Solve for s: what was the original amount?",
+     "prompt": "BOSS ROUND: Solve for s: what was the original amount?",
      "accepted": [
       "10"
      ]
@@ -452,7 +612,24 @@ export const ch11 = {
       "12−n=30",
       "n−12=30"
      ],
-     "correctIndex": 0
+     "correctIndex": 0,
+     "visual": {
+      "kind": "bar",
+      "whole": 30,
+      "label": "30",
+      "segs": [
+       {
+        "v": 18,
+        "text": "?",
+        "name": "n"
+       },
+       {
+        "v": 12,
+        "text": "12",
+        "name": "12 more"
+       }
+      ]
+     }
     },
     "caption": "Test it: 'more than' means add — n+12=30, so n=18."
    }

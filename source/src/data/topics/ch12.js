@@ -1,4 +1,4 @@
-// Chapter 12 — Visual Strategies Capstone
+// Chapter 12 — Visual Strategies Capstone (bar models)
 export const ch12 = {
  "bm1": {
   "id": "bm1",
@@ -83,39 +83,50 @@ export const ch12 = {
   "blurb": "Two bars side by side — the gap between them is the difference, found by counting up.",
   "worked": {
    "model": {
-    "type": "jumpline",
-    "min": 0,
-    "max": 55,
-    "step": 1,
-    "start": 28,
-    "jumps": [
-     {
-      "delta": 2
+    "type": "chain",
+    "barCompare": {
+     "a": {
+      "label": "Cargo Hold A",
+      "value": 28
      },
+     "b": {
+      "label": "Coal Bunker B",
+      "value": 50
+     }
+    },
+    "steps": [
      {
-      "delta": 15
-     },
-     {
-      "delta": 5
+      "label": "Longer bar − shorter bar = the gap:",
+      "left": "50",
+      "op": "−",
+      "right": "28",
+      "answer": "22"
      }
     ]
    },
-   "note": "Cargo Hold A holds 28 tonnes, Coal Bunker B holds 50 tonnes. Count up from 28 to 50 to find the gap: 22 tonnes more."
+   "note": "Hold A carries 28 tonnes, Bunker B carries 50. Line the bars up: the dashed piece is the gap. 50 − 28 = 22 tonnes more."
   },
   "items": [
    {
     "model": {
-     "type": "jumpline",
-     "min": 0,
-     "max": 65,
-     "step": 1,
-     "start": 34,
-     "jumps": [
-      {
-       "delta": 6
+     "type": "chain",
+     "barCompare": {
+      "a": {
+       "label": "Deck A",
+       "value": 34
       },
+      "b": {
+       "label": "Deck B",
+       "value": 60
+      }
+     },
+     "steps": [
       {
-       "delta": 20
+       "label": "Longer bar − shorter bar = the gap:",
+       "left": "60",
+       "op": "−",
+       "right": "34",
+       "answer": "26"
       }
      ]
     },
@@ -128,20 +139,24 @@ export const ch12 = {
    },
    {
     "model": {
-     "type": "jumpline",
-     "min": 0,
-     "max": 55,
-     "step": 1,
-     "start": 19,
-     "jumps": [
-      {
-       "delta": 1
+     "type": "chain",
+     "barCompare": {
+      "a": {
+       "label": "Flask A (mL)",
+       "value": 19
       },
+      "b": {
+       "label": "Flask B (mL)",
+       "value": 52
+      }
+     },
+     "steps": [
       {
-       "delta": 30
-      },
-      {
-       "delta": 2
+       "label": "Longer bar − shorter bar = the gap:",
+       "left": "52",
+       "op": "−",
+       "right": "19",
+       "answer": "33"
       }
      ]
     },
@@ -170,21 +185,28 @@ export const ch12 = {
    "text": "A comparison bar model makes subtraction visible — instead of computing an abstract 65−40, you can literally see the leftover chunk that makes Bar B longer than Bar A. It's the exact same counting-up strategy from Chapter 2's Difference Strategy, just drawn as two bars instead of a number line.",
    "demo": {
     "model": {
-     "type": "jumpline",
-     "min": 0,
-     "max": 40,
-     "step": 1,
-     "start": 17,
-     "jumps": [
-      {
-       "delta": 3
+     "type": "chain",
+     "barCompare": {
+      "a": {
+       "label": "Short bar",
+       "value": 17
       },
+      "b": {
+       "label": "Long bar",
+       "value": 35
+      }
+     },
+     "steps": [
       {
-       "delta": 15
+       "label": "Longer bar − shorter bar = the gap:",
+       "left": "35",
+       "op": "−",
+       "right": "17",
+       "answer": "18"
       }
      ]
     },
-    "caption": "Test it: from 17 to 35 is a gap of 18 — the leftover chunk on the longer bar."
+    "caption": "Test it: 35 − 17 = 18. The dashed piece IS the difference — you can see it before you calculate it."
    }
   }
  },
@@ -212,7 +234,23 @@ export const ch12 = {
       "right": "2",
       "answer": "28"
      }
-    ]
+    ],
+    "barSplit": {
+     "whole": 90,
+     "segs": [
+      {
+       "v": 34,
+       "text": "34",
+       "name": "Crew"
+      },
+      {
+       "v": 56,
+       "text": "?",
+       "name": "Rest",
+       "parts": 2
+      }
+     ]
+    }
    },
    "note": "90 total crew and passengers, 34 are crew. The rest (56) splits evenly between two lifeboats: 28 each."
   },
@@ -235,7 +273,23 @@ export const ch12 = {
        "right": "2",
        "answer": "24"
       }
-     ]
+     ],
+     "barSplit": {
+      "whole": 70,
+      "segs": [
+       {
+        "v": 22,
+        "text": "22",
+        "name": "Officers"
+       },
+       {
+        "v": 48,
+        "text": "?",
+        "name": "Rest",
+        "parts": 2
+       }
+      ]
+     }
     },
     "solve": {
      "prompt": "70 total, 22 are officers. The rest splits evenly between 2 shifts. How many per shift?",
@@ -262,7 +316,23 @@ export const ch12 = {
        "right": "3",
        "answer": "22"
       }
-     ]
+     ],
+     "barSplit": {
+      "whole": 100,
+      "segs": [
+       {
+        "v": 34,
+        "text": "34",
+        "name": "Blocks"
+       },
+       {
+        "v": 66,
+        "text": "?",
+        "name": "Rest",
+        "parts": 3
+       }
+      ]
+     }
     },
     "solve": {
      "prompt": "BOSS ROUND: 100 total coins, 34 in blocks. The rest splits evenly among 3 pipes. How many per pipe?",
@@ -305,7 +375,23 @@ export const ch12 = {
        "right": "2",
        "answer": "21"
       }
-     ]
+     ],
+     "barSplit": {
+      "whole": 60,
+      "segs": [
+       {
+        "v": 18,
+        "text": "18",
+        "name": "Known"
+       },
+       {
+        "v": 42,
+        "text": "?",
+        "name": "Rest",
+        "parts": 2
+       }
+      ]
+     }
     },
     "caption": "Test it: 60 total, 18 known, rest is 42 — split in half for 21 each."
    }
@@ -349,7 +435,29 @@ export const ch12 = {
       "right": "3",
       "answer": "90"
      }
-    ]
+    ],
+    "barSplit": {
+     "whole": 200,
+     "segs": [
+      {
+       "v": 50,
+       "text": "25%",
+       "name": "Machinery"
+      },
+      {
+       "v": 90,
+       "text": "?",
+       "name": "Deck A",
+       "parts": 3
+      },
+      {
+       "v": 60,
+       "text": "?",
+       "name": "Deck B",
+       "parts": 2
+      }
+     ]
+    }
    },
    "note": "The ship's manifest lists 200 crates. 25% are machinery (50). The rest (150) splits 3:2 between Deck A and Deck B — 5 total parts, 30 each. Deck A's 3 parts = 90 crates."
   },
@@ -386,7 +494,29 @@ export const ch12 = {
        "right": "2",
        "answer": "144"
       }
-     ]
+     ],
+     "barSplit": {
+      "whole": 240,
+      "segs": [
+       {
+        "v": 24,
+        "text": "10%",
+        "name": "Machinery"
+       },
+       {
+        "v": 144,
+        "text": "?",
+        "name": "Deck A",
+        "parts": 2
+       },
+       {
+        "v": 72,
+        "text": "?",
+        "name": "Deck B",
+        "parts": 1
+       }
+      ]
+     }
     },
     "solve": {
      "prompt": "240 crates total. 10% are machinery. The rest splits 2:1 between Deck A and Deck B. How many crates on Deck A?",
@@ -427,7 +557,29 @@ export const ch12 = {
        "right": "3",
        "answer": "300"
       }
-     ]
+     ],
+     "barSplit": {
+      "whole": 500,
+      "segs": [
+       {
+        "v": 100,
+        "text": "20%",
+        "name": "Water"
+       },
+       {
+        "v": 300,
+        "text": "?",
+        "name": "Main",
+        "parts": 3
+       },
+       {
+        "v": 100,
+        "text": "?",
+        "name": "Catalyst",
+        "parts": 1
+       }
+      ]
+     }
     },
     "solve": {
      "prompt": "BOSS ROUND: 500 mL of mixture. 20% is water. The rest splits 3:1 between the main solution and a catalyst. How many mL is the main solution?",
@@ -484,7 +636,29 @@ export const ch12 = {
        "right": "3",
        "answer": "90"
       }
-     ]
+     ],
+     "barSplit": {
+      "whole": 160,
+      "segs": [
+       {
+        "v": 40,
+        "text": "25%",
+        "name": "Removed"
+       },
+       {
+        "v": 90,
+        "text": "?",
+        "name": "3 parts",
+        "parts": 3
+       },
+       {
+        "v": 30,
+        "text": "?",
+        "name": "1 part",
+        "parts": 1
+       }
+      ]
+     }
     },
     "caption": "Test it: 160 total, 25% removed (40), rest is 120, split 3:1 → the 3-part side is 90. Four familiar moves, one big problem."
    }

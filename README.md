@@ -1,12 +1,9 @@
 # Number Sense Sketchbook
+- `number-sense-sketchbook.html` — the finished app (this is what the website serves).
+- `source/` — editable source. To rebuild: `cd source && npm install && bash build.sh`, then copy `dist/number-sense-sketchbook.html` over the main file.
 
-- `number-sense-sketchbook.html` — the finished app. This is the file the website serves. Nothing to build.
-- `source/` — the editable source code (only needed when changing the app).
-
-## To change the app later (on a computer with Node.js)
-1. `cd source`
-2. `npm install`
-3. `bash build.sh` (checks the maths, then builds `dist/number-sense-sketchbook.html`)
-4. Copy that file over the one in the main folder, then commit and push.
-
-Topic content lives in `source/src/data/topics/ch01.js` … `ch12.js`.
+## Changelog
+- v1.4: Concrete pictures for Repeating Patterns (tile strip), Balance & Equality (balance scale), Comparing Expressions (box bars), Translating Word Problems (equation bars).
+- v1.3: New Chapter 1 topic "Number Webs". 60 topics total.
+- v1.2: Chapter 12 bar models.
+- v1.1: Hint ladder, "Show me", Rule-stage reveal, 44px touch targets, reduced motion, finish message + reset, BOSS ROUND labels.

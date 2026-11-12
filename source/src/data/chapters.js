@@ -8,6 +8,7 @@ export const CHAPTERS = [
   "desc": "See how numbers connect",
   "topics": [
    "nb1",
+  "nw1",
    "fn1",
    "cm1",
    "nd1",

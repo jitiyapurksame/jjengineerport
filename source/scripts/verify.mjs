@@ -16,6 +16,8 @@ function checkModel(id, tag, m, accepted) {
     if (accepted && last && !accepted.map(norm).includes(norm(last.answer))) bad.push(`${id} ${tag}: last step ${last.answer} not in accepted ${accepted}`);
   }
   if (m.type === 'bondweb' && m.mode !== 'neardouble' && m.a + m.b !== m.whole) bad.push(`${id} ${tag}: bond ${m.a}+${m.b}!=${m.whole}`);
+  if (m.barSplit && m.barSplit.segs.reduce((a, s) => a + s.v, 0) !== m.barSplit.whole) bad.push(`${id} ${tag}: barSplit segments don't add to whole`);
+  if (m.type === 'numweb') for (const [a, b] of m.pairs) { if (a != null && b != null && a + b !== m.whole) bad.push(`${id} ${tag}: web pair ${a}+${b}!=${m.whole}`); if (a == null && b == null) bad.push(`${id} ${tag}: pair with no known end`); }
   if (m.type === 'scale' && m.original * m.factor !== m.scaled) bad.push(`${id} ${tag}: scale mismatch`);
   if (m.type === 'factfamily' && m.a * m.b !== m.product) bad.push(`${id} ${tag}: fact family mismatch`);
   if (m.type === 'fracequiv' && (m.a * m.d) % m.b !== 0) bad.push(`${id} ${tag}: fracequiv not whole`);

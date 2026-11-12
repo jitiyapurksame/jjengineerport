@@ -913,16 +913,16 @@ function ze({
  readOnly: t,
  onDone: n
 }) {
- let [r, o] = (0, W.useState)(() => e.map(() => t ? "x" : "")), [l, i] = (0, W.useState)(() => e.map(() => t)), [a, s] = (0, W.useState)(null);
+ let [r, o] = (0, W.useState)(() => e.map(() => t ? "x" : "")), [l, i] = (0, W.useState)(() => e.map(() => t)), [a, s] = (0, W.useState)(null), [wr, setWr] = (0, W.useState)({});
  (0, W.useEffect)(() => {
-  o(e.map(() => t ? "x" : "")), i(e.map(() => t)), s(null)
+  o(e.map(() => t ? "x" : "")), i(e.map(() => t)), s(null), setWr({})
  }, [e, t]);
 
  function u(m, f) {
   if (ia(f, [String(e[m].answer)])) {
    let g = [...l];
    g[m] = !0, i(g), s(null), g.every(Boolean) && n && n()
-  } else s(m), setTimeout(() => s(null), 500)
+  } else s(m), setWr(x => ({...x, [m]: (x[m] || 0) + 1})), setTimeout(() => s(null), 500)
  }
  return (0, d.jsx)("div", {
   className: "sk-steprows",
@@ -957,7 +957,7 @@ function ze({
      className: "sk-steprow-check",
      onClick: () => u(f, r[f]),
      children: "\u2713"
-    }), l[f] && (0, d.jsx)("span", {
+    }), !l[f] && (wr[f] || 0) >= 2 && (0, d.jsx)("button", {className: "sk-showme", onClick: () => u(f, String(e[f].answer)), children: "\u{1F440} Show me"}), l[f] && (0, d.jsx)("span", {
      className: "sk-steprow-tick",
      children: "\u2713"
     })]
@@ -1128,9 +1128,141 @@ function je(e) {
     type: "chain",
     steps: e.steps
    });
+  case "numweb": {
+   const rows = [];
+   for (const [a, b] of e.pairs) if (a == null || b == null) {
+    const known = a == null ? b : a;
+    rows.push({prompt: `${e.whole} = ${known} + ?`, answer: e.whole - known, label: null});
+   }
+   return rows
+  }
   default:
    return []
  }
+}
+
+
+// ---- Chapter 12 bar-model pictures ----
+function Bc({ a, b }) {
+  const max = Math.max(a.value, b.value), W = 264;
+  const row = (x, k) => (
+    <div className="sk-bc-row" key={k}>
+      <div className="sk-bc-name">{x.label}</div>
+      <div className="sk-bc-line">
+        <div className="sk-bc-bar" style={{ width: x.value / max * W }}>{x.value}</div>
+        {x.value < max && <div className="sk-bc-gap" style={{ width: (max - x.value) / max * W }}>?</div>}
+      </div>
+    </div>
+  );
+  return <div className="sk-bc">{row(a, 'a')}{row(b, 'b')}</div>;
+}
+function Bs({ whole, segs, label }) {
+  const W = 264;
+  return (
+    <div className="sk-bs">
+      <div className="sk-barmodel-brace" style={{ width: W }}><span className="sk-barmodel-whole">{'\u26F4\uFE0F '}{label ?? whole}</span></div>
+      <div className="sk-bs-bar" style={{ width: W }}>
+        {segs.map((s, i) => (
+          <div key={i} className={'sk-bs-seg ' + (/^(\?|[a-z])$/i.test(s.text) ? 'sk-bs-unk' : 'sk-bs-known')} style={{ width: s.v / whole * W }}>
+            <div className="sk-bs-cells">{Array.from({ length: s.parts || 1 }).map((_, j) => <span key={j} className="sk-bs-cell">{s.text}</span>)}</div>
+            <div className="sk-bs-name">{s.name}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+
+// ---- Number Web (hub + partner pairs) ----
+function Nw({ model, done }) {
+  const { whole, pairs } = model, n = pairs.length, cx = 150, cy = 125, R = 92;
+  const cols = ['var(--sky)', 'var(--amber-dark)', 'var(--success)', 'var(--coral)', 'var(--teal)'];
+  const node = (v, other, x, y, c, k) => {
+    const miss = v == null, open = miss && !done;
+    return (
+      <g key={k}>
+        <circle cx={x} cy={y} r={17} fill={open ? 'var(--nudge-bg)' : c} stroke={open ? 'var(--coral)' : 'none'} strokeWidth="2" strokeDasharray={open ? '4 3' : undefined} />
+        <text x={x} y={y + 5} textAnchor="middle" fontSize="14" fontWeight="800" fill={open ? 'var(--coral)' : '#fff'}>{miss ? (done ? whole - other : '?') : v}</text>
+      </g>
+    );
+  };
+  return (
+    <div className="sk-nw">
+      <svg viewBox="0 0 300 250" width="100%" role="img" aria-label={'Number web of ' + whole}>
+        {pairs.map(([a, b], i) => {
+          const th = -Math.PI / 2 + i * Math.PI / n, x1 = cx + R * Math.cos(th), y1 = cy + R * Math.sin(th), x2 = cx - R * Math.cos(th), y2 = cy - R * Math.sin(th), c = cols[i % cols.length];
+          return <g key={i}><line x1={x1} y1={y1} x2={x2} y2={y2} stroke={c} strokeWidth="2" opacity=".55" />{node(a, b, x1, y1, c, 'a')}{node(b, a, x2, y2, c, 'b')}</g>;
+        })}
+        <circle cx={cx} cy={cy} r={28} fill="var(--teal)" />
+        <text x={cx} y={cy + 7} textAnchor="middle" fontSize="20" fontWeight="800" fill="#fff">{whole}</text>
+      </svg>
+    </div>
+  );
+}
+
+
+// ---- Concrete pictures: pattern strip, balance scale, box bars ----
+function Pstrip({ cells, unit }) {
+  return (
+    <div className="sk-strip">
+      <div className="sk-strip-row">
+        {cells.map((c, i) => <span key={i} className={'sk-strip-tile' + (i < unit ? ' sk-strip-unit' : '')}>{c}</span>)}
+        <span className="sk-strip-tile sk-strip-q">?</span>
+      </div>
+      <div className="sk-strip-cap">{'\u{1F7E7}'} gold frame = the repeat unit ({unit} tiles)</div>
+    </div>
+  );
+}
+function Scale({ left, right, tilt }) {
+  const dyL = tilt === 'left' ? 12 : tilt === 'right' ? -12 : 0, dyR = -dyL;
+  const pan = (cx, cy, vals, fill) => {
+    const num = vals.filter(v => v != null), S = num.reduce((a, v) => a + v, 0), q = vals.length - num.length;
+    const k = Math.min(5, Math.max(2, (112 - (vals.length - 1) * 3 - q * 34) / Math.max(S, 1)));
+    let x = cx - (num.reduce((a, v) => a + Math.max(22, v * k), 0) + q * 34 + (vals.length - 1) * 3) / 2;
+    return (
+      <g>
+        <line x1={cx} y1={cy} x2={cx - 60} y2={cy + 34} stroke="var(--ink-soft)" /><line x1={cx} y1={cy} x2={cx + 60} y2={cy + 34} stroke="var(--ink-soft)" />
+        {vals.map((v, i) => { const w = v == null ? 34 : Math.max(22, v * k), bx = x; x += w + 3;
+          return <g key={i}><rect x={bx} y={cy + 8} width={w} height={26} rx="5" fill={v == null ? 'var(--nudge-bg)' : fill} stroke={v == null ? 'var(--coral)' : 'none'} strokeDasharray={v == null ? '4 3' : undefined} strokeWidth="2" />
+            <text x={bx + w / 2} y={cy + 26} textAnchor="middle" fontSize="13" fontWeight="800" fill={v == null ? 'var(--coral)' : '#fff'}>{v == null ? '?' : v}</text></g>; })}
+        <rect x={cx - 62} y={cy + 34} width="124" height="7" rx="3" fill="var(--teal)" />
+      </g>
+    );
+  };
+  return (
+    <div className="sk-scale"><svg viewBox="0 0 300 170" width="100%" role="img" aria-label="Balance scale">
+      <polygon points="150,48 128,160 172,160" fill="var(--ink-soft)" opacity=".35" />
+      <line x1="75" y1={48 + dyL} x2="225" y2={48 + dyR} stroke="var(--teal)" strokeWidth="5" strokeLinecap="round" />
+      <circle cx="150" cy="48" r="6" fill="var(--amber)" />
+      {pan(75, 48 + dyL, left, 'var(--sky)')}{pan(225, 48 + dyR, right, 'var(--amber-dark)')}
+    </svg></div>
+  );
+}
+function BoxBars({ n, rows }) {
+  const mx = Math.max(...rows.map(r => r.k * n + Math.max(r.extra, 0))), pu = 250 / mx;
+  return (
+    <div className="sk-bxb">
+      <div className="sk-bxb-n">n = {n}</div>
+      {rows.map((r, ri) => (
+        <div key={ri} className="sk-bxb-row">
+          <div className="sk-bc-name">{r.label}</div>
+          <div className="sk-bxb-bar">
+            {Array.from({ length: r.k }).map((_, i) => <span key={i} className={'sk-bxb-box sk-bxb-' + (ri ? 'b' : 'a')} style={{ width: n * pu }}>{n}</span>)}
+            {r.extra > 0 && <span className="sk-bxb-extra" style={{ width: r.extra * pu }}>+{r.extra}</span>}
+            {r.extra < 0 && <span className="sk-bxb-cut" style={{ width: -r.extra * pu, left: (r.k * n + r.extra) * pu }}>{'\u2212'}{-r.extra}</span>}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+function Vz({ v }) {
+  if (v.kind === 'strip') return <Pstrip cells={v.cells} unit={v.unit} />;
+  if (v.kind === 'scale') return <Scale left={v.left} right={v.right} tilt={v.tilt} />;
+  if (v.kind === 'boxbars') return <BoxBars n={v.n} rows={v.rows} />;
+  if (v.kind === 'bar') return <Bs whole={v.whole} label={v.label} segs={v.segs} />;
+  return null;
 }
 
 function Fo({
@@ -1187,7 +1319,7 @@ function Fo({
     why: e.percentGrid.why
    }), e.ratioVisual && (0, d.jsx)(Qc, {
     model: e.ratioVisual
-   }), e.areaParts && (0, d.jsx)(dr, {
+   }), e.barCompare && (0, d.jsx)(Bc, {a: e.barCompare.a, b: e.barCompare.b}), e.barSplit && (0, d.jsx)(Bs, {whole: e.barSplit.whole, segs: e.barSplit.segs}), e.areaParts && (0, d.jsx)(dr, {
     whole: e.areaParts.reduce((i, a) => i + a, 0),
     parts: e.areaParts.map((i, a) => ({
      value: i,
@@ -1280,11 +1412,11 @@ function Fo({
    })]
   })
  }
- if (e.type === "judgechoice") return (0, d.jsx)(Wh, {
-  model: e,
-  readOnly: t,
-  onDone: n
- });
+ if (e.type === "numweb") {
+  let l = je(e);
+  return (0, d.jsxs)("div", {children: [(0, d.jsx)(Nw, {model: e, done: r || t}), (0, d.jsx)(ze, {rows: l, readOnly: t, onDone: () => {o(!0), n && n()}})]})
+ }
+ if (e.type === "judgechoice") return (0, d.jsxs)("div", {children: [e.visual && (0, d.jsx)(Vz, {v: e.visual}), (0, d.jsx)(Wh, {model: e, readOnly: t, onDone: n})]});
  if (e.type === "fracequiv") {
   let l = je(e),
    i = t || r ? Math.round(e.a * e.d / e.b) : null;
@@ -1414,7 +1546,8 @@ function aa() {
    onBack: n.screen === "topic" ? () => i(Ft[n.topicId].chapter) : l
   }), n.screen === "home" && (0, w.jsx)(em, {
    progress: e,
-   onOpenChapter: i
+   onOpenChapter: i,
+   onReset: () => t({xp: 0, topicsDone: {}})
   }), n.screen === "chapter" && (0, w.jsx)(tm, {
    chapterId: n.chapterId,
    progress: e,
@@ -1470,8 +1603,10 @@ function Jh({
 
 function em({
  progress: e,
- onOpenChapter: t
+ onOpenChapter: t,
+ onReset: rs
 }) {
+ const dn = Object.keys(e.topicsDone).length, tot = Object.keys(Ft).length;
  return (0, w.jsxs)("div", {
   className: "sk-screen sk-home",
   children: [(0, w.jsxs)("div", {
@@ -1517,8 +1652,8 @@ function em({
    })
   }), (0, w.jsx)("div", {
    className: "sk-more-note",
-   children: "More chapters (Patterns, Algebraic Thinking & more) are on the way!"
-  })]
+   children: dn >= tot ? "\u{1F3C6} All " + tot + " topics complete \u2014 Admiral-level engineering!" : dn + " of " + tot + " topics done. Step 1 is the hardest part \u2014 pick any chapter and start!"
+  }), dn > 0 && (0, w.jsx)("button", {className: "sk-reset-btn", onClick: () => window.confirm("Reset all progress?") && rs(), children: "Reset progress"})]
  })
 }
 
@@ -1703,7 +1838,7 @@ function rm({
  showHint: o,
  onHint: l
 }) {
- let [i, a] = (0, K.useState)(!1), [s, u] = (0, K.useState)(""), [m, f] = (0, K.useState)(!1), [g, b] = (0, K.useState)(!1), v = e.decimalHint ? Kc(t.model) : null, S = Xc(t.model);
+ let [i, a] = (0, K.useState)(!1), [s, u] = (0, K.useState)(""), [m, f] = (0, K.useState)(!1), [g, b] = (0, K.useState)(!1), [hl, setHl] = (0, K.useState)(0), v = e.decimalHint ? Kc(t.model) : null, S = Xc(t.model);
 
  function j() {
   ia(s, t.solve.accepted) ? (b(!0), setTimeout(r, 850)) : (f(!0), setTimeout(() => f(!1), 500))
@@ -1745,13 +1880,7 @@ function rm({
      children: g ? "\u2713 Yes!" : "Check"
     })]
    })]
-  }), !g && !o && (0, w.jsx)("button", {
-   className: "sk-hint-btn",
-   onClick: l,
-   children: "\u{1F4E1} Radio for a hint?"
-  }), o && !g && (0, w.jsxs)("div", {
-   className: "sk-hint-box",
-   children: [e.blurb, v && (0, w.jsx)(Yc, {
+  }), !g && hl < 3 && (0, w.jsx)("button", {className: "sk-hint-btn", onClick: () => setHl(hl + 1), children: "\u{1F4E1} " + (hl === 0 ? "Radio for a hint?" : hl === 1 ? "Need a bigger clue?" : "Show me the answer")}), hl >= 1 && !g && (0, w.jsxs)("div", {className: "sk-hint-box", children: [e.blurb, hl >= 2 && (0, w.jsx)("div", {className: "sk-hint-step", children: (() => {let rw = je(t.model); return rw.length ? "\u{1F527} Step 1: " + rw[0].prompt + " ?" : "\u{1F527} Step 1: look at the picture \u2014 what piece is missing?"})()}), hl >= 3 && (0, w.jsx)("div", {className: "sk-hint-answer", children: "\u2705 The answer is " + t.solve.accepted[0] + ". Type it in and keep going \u2014 starting is the win!"}), v && (0, w.jsx)(Yc, {
     from: v.from,
     places: v.places,
     direction: v.direction
@@ -1766,10 +1895,10 @@ function om({
 }) {
  let n = e.generalRule,
   [r, o] = (0, K.useState)(null),
-  [l, i] = (0, K.useState)(!1);
+  [l, i] = (0, K.useState)(!1), wcR = (0, K.useRef)(0);
 
  function a(s) {
-  r === null && (s === n.check.correctIndex ? o(s) : (i(!0), setTimeout(() => i(!1), 500)))
+  r === null && (s === n.check.correctIndex ? o(s) : (i(!0), setTimeout(() => i(!1), 500), ++wcR.current >= 2 && setTimeout(() => o(n.check.correctIndex), 700)))
  }
  return (0, w.jsxs)("div", {
   className: "sk-screen sk-topic-view",

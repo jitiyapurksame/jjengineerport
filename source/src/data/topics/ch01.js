@@ -522,5 +522,144 @@ export const ch01 = {
     "caption": "Test it: 0.83 is only 0.17 from 1, but 0.33 from 0.5 — 1 wins easily."
    }
   }
+ },
+ "nw1": {
+  "id": "nw1",
+  "chapter": "ch1",
+  "strategy": "Number Webs",
+  "emoji": "🕸️",
+  "blurb": "Every number has a whole web of partner pairs — like a ship's wiring diagram: one hub, many connections, all adding to the same total.",
+  "worked": {
+   "model": {
+    "type": "numweb",
+    "whole": 10,
+    "pairs": [
+     [
+      1,
+      9
+     ],
+     [
+      2,
+      8
+     ],
+     [
+      3,
+      7
+     ],
+     [
+      4,
+      6
+     ],
+     [
+      5,
+      5
+     ]
+    ]
+   },
+   "note": "The boiler room has 10 valves. Every line through the hub is a pair: 3 open + 7 closed, 4 + 6, 5 + 5. One hub, five partner pairs. Spot the pattern: one side goes up, the other comes down."
+  },
+  "items": [
+   {
+    "model": {
+     "type": "numweb",
+     "whole": 10,
+     "pairs": [
+      [
+       2,
+       8
+      ],
+      [
+       3,
+       null
+      ],
+      [
+       6,
+       null
+      ],
+      [
+       9,
+       1
+      ]
+     ]
+    },
+    "solve": {
+     "prompt": "10 coins hide in a Mario pipe room. 6 are in the first pipe. How many are in the second pipe?",
+     "accepted": [
+      "4"
+     ]
+    }
+   },
+   {
+    "model": {
+     "type": "numweb",
+     "whole": 20,
+     "pairs": [
+      [
+       5,
+       15
+      ],
+      [
+       8,
+       null
+      ],
+      [
+       12,
+       null
+      ],
+      [
+       17,
+       3
+      ]
+     ]
+    },
+    "solve": {
+     "prompt": "BOSS ROUND: 20 mL of acid must be split between two flasks. Flask A gets 12 mL. How many mL go in Flask B?",
+     "accepted": [
+      "8"
+     ]
+    }
+   }
+  ],
+  "generalRule": {
+   "statement": "SPEC SHEET: Every pair on a number web adds up to the SAME hub number. Know the hub and one partner? partner = hub − the part you know.",
+   "check": {
+    "prompt": "A web has the hub 12. One end of a pair is 5. What is the other end?",
+    "options": [
+     "17",
+     "7",
+     "60"
+    ],
+    "correctIndex": 1,
+    "explain": "Hub − known part: 12 − 5 = 7. Every pair on this web adds to 12."
+   }
+  },
+  "why": {
+   "text": "A web works because every line is a promise: both ends must add up to the hub. If the left end goes up by 1, the right end must go down by 1, or the total would change. Different pairs are just different ways to cut the same number.",
+   "demo": {
+    "model": {
+     "type": "numweb",
+     "whole": 8,
+     "pairs": [
+      [
+       1,
+       7
+      ],
+      [
+       2,
+       6
+      ],
+      [
+       3,
+       5
+      ],
+      [
+       4,
+       4
+      ]
+     ]
+    },
+    "caption": "Test it: left side 1 → 2 → 3 → 4, right side 7 → 6 → 5 → 4. Up 1, down 1 — the total stays 8."
+   }
+  }
  }
 };
