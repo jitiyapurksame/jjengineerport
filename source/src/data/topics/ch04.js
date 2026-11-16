@@ -69,6 +69,20 @@ export const ch04 = {
     },
     "caption": "Test it: 16 shared into 4 groups = 4 each, since 4 × 4 = 16, so 16 ÷ 4 = 4."
    }
+  },
+  "warmup": {
+   "model": {
+    "type": "array",
+    "rows": 3,
+    "cols": 4,
+    "missing": "cols"
+   },
+   "solve": {
+    "prompt": "Share 12 coins equally among 3 players. How many each?",
+    "accepted": [
+     "4"
+    ]
+   }
   }
  },
  "gp1": {
@@ -193,6 +207,35 @@ export const ch04 = {
      ]
     },
     "caption": "Test it: 18 split into loads of 6 takes 3 jumps back to 0, so 18 ÷ 6 = 3."
+   }
+  },
+  "warmup": {
+   "model": {
+    "type": "jumpline",
+    "min": 0,
+    "max": 8,
+    "step": 2,
+    "start": 8,
+    "jumps": [
+     {
+      "delta": -2
+     },
+     {
+      "delta": -2
+     },
+     {
+      "delta": -2
+     },
+     {
+      "delta": -2
+     }
+    ]
+   },
+   "solve": {
+    "prompt": "How many loads of 2 crates fit in 8?",
+    "accepted": [
+     "4"
+    ]
    }
   }
  },
@@ -401,6 +444,54 @@ export const ch04 = {
     },
     "caption": "Test it: 108 ÷ 9 = 12, found in chunks of 10 and 2."
    }
+  },
+  "warmup": {
+   "model": {
+    "type": "chain",
+    "steps": [
+     {
+      "label": "Take a friendly chunk:",
+      "left": "3",
+      "op": "×",
+      "right": "10",
+      "answer": "30"
+     },
+     {
+      "label": "Subtract it:",
+      "left": "36",
+      "op": "−",
+      "right": "30",
+      "answer": "6"
+     },
+     {
+      "label": "Take another chunk:",
+      "left": "3",
+      "op": "×",
+      "right": "2",
+      "answer": "6"
+     },
+     {
+      "label": "Subtract it:",
+      "left": "6",
+      "op": "−",
+      "right": "6",
+      "answer": "0"
+     },
+     {
+      "label": "Add up the chunks:",
+      "left": "10",
+      "op": "+",
+      "right": "2",
+      "answer": "12"
+     }
+    ]
+   },
+   "solve": {
+    "prompt": "Use partial quotients: 36 mL split into 3 mL doses?",
+    "accepted": [
+     "12"
+    ]
+   }
   }
  },
  "ff1": {
@@ -475,6 +566,21 @@ export const ch04 = {
      "askFact": "mult1"
     },
     "caption": "Test it: 5, 6, and 30 connect four ways: 5×6=30, 6×5=30, 30÷5=6, 30÷6=5."
+   }
+  },
+  "warmup": {
+   "model": {
+    "type": "factfamily",
+    "a": 3,
+    "b": 4,
+    "product": 12,
+    "askFact": "mult2"
+   },
+   "solve": {
+    "prompt": "What is 4 × 3?",
+    "accepted": [
+     "12"
+    ]
    }
   }
  },
@@ -570,6 +676,26 @@ export const ch04 = {
      ]
     },
     "caption": "Test it: 8 × 5 = 40, so 40 ÷ 8 = 5 — same fact, opposite direction."
+   }
+  },
+  "warmup": {
+   "model": {
+    "type": "chain",
+    "steps": [
+     {
+      "label": "Think: what times 4 makes 20?",
+      "left": "20",
+      "op": "÷",
+      "right": "4",
+      "answer": "5"
+     }
+    ]
+   },
+   "solve": {
+    "prompt": "What is 20 ÷ 4?",
+    "accepted": [
+     "5"
+    ]
    }
   }
  }

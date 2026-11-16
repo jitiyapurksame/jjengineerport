@@ -112,6 +112,30 @@ export const ch06 = {
     },
     "caption": "Test it: 3/10 = 0.3, much closer to 0 than to 1/2."
    }
+  },
+  "warmup": {
+   "model": {
+    "type": "choice",
+    "number": 0.9,
+    "numberLabel": "9/10",
+    "options": [
+     0,
+     0.5,
+     1
+    ],
+    "optionLabels": [
+     "0",
+     "1/2",
+     "1"
+    ],
+    "correctIndex": 2
+   },
+   "solve": {
+    "prompt": "A flask is filled to 9/10. Is that closest to 0, 1/2, or 1?",
+    "accepted": [
+     "1"
+    ]
+   }
   }
  },
  "fnl1": {
@@ -212,6 +236,27 @@ export const ch06 = {
     },
     "caption": "Test it: 2 steps out of 5 equal parts = 2/5."
    }
+  },
+  "warmup": {
+   "model": {
+    "type": "jumpline",
+    "fracDen": 4,
+    "min": 0,
+    "max": 4,
+    "step": 1,
+    "start": 0,
+    "jumps": [
+     {
+      "delta": 3
+     }
+    ]
+   },
+   "solve": {
+    "prompt": "Mark 3 equal sections along a 4-section deck plan. What fraction is that?",
+    "accepted": [
+     "3/4"
+    ]
+   }
   }
  },
  "feq1": {
@@ -282,6 +327,20 @@ export const ch06 = {
      "d": 8
     },
     "caption": "Test it: 1/4 and 2/8 shade the exact same amount — just cut into more pieces."
+   }
+  },
+  "warmup": {
+   "model": {
+    "type": "fracequiv",
+    "a": 1,
+    "b": 2,
+    "d": 4
+   },
+   "solve": {
+    "prompt": "Mario's power bar: 1/2 = ?/4. What's the missing numerator?",
+    "accepted": [
+     "2"
+    ]
    }
   }
  },
@@ -377,6 +436,26 @@ export const ch06 = {
      "correct": "a"
     },
     "caption": "Test it: 1/2 covers more of the bar than 2/5 — you can see it directly."
+   }
+  },
+  "warmup": {
+   "model": {
+    "type": "fraccompare",
+    "a": {
+     "num": 1,
+     "den": 2
+    },
+    "b": {
+     "num": 1,
+     "den": 4
+    },
+    "correct": "a"
+   },
+   "solve": {
+    "prompt": "Which fuel tank has more: 1/2 full or 1/4 full?",
+    "accepted": [
+     "1/2"
+    ]
    }
   }
  },
@@ -503,6 +582,34 @@ export const ch06 = {
      ]
     },
     "caption": "Test it: 3/5 → 0.6 → 60%."
+   }
+  },
+  "warmup": {
+   "model": {
+    "type": "chain",
+    "steps": [
+     {
+      "label": "Divide to get a decimal:",
+      "left": "1",
+      "op": "÷",
+      "right": "2",
+      "answer": "0.5"
+     },
+     {
+      "label": "Multiply by 100 for percent:",
+      "left": "0.5",
+      "op": "×",
+      "right": "100",
+      "answer": "50"
+     }
+    ]
+   },
+   "solve": {
+    "prompt": "What percent concentration is 1/2?",
+    "accepted": [
+     "50",
+     "50%"
+    ]
    }
   }
  }

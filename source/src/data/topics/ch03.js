@@ -69,6 +69,20 @@ export const ch03 = {
     },
     "caption": "Test it: 5 rows of 3 = 15, counted in one multiplication instead of fifteen taps."
    }
+  },
+  "warmup": {
+   "model": {
+    "type": "array",
+    "rows": 3,
+    "cols": 4,
+    "missing": "product"
+   },
+   "solve": {
+    "prompt": "3 rows of 4 Mario bricks — what is the total?",
+    "accepted": [
+     "12"
+    ]
+   }
   }
  },
  "am1": {
@@ -236,6 +250,44 @@ export const ch03 = {
     },
     "caption": "Test it: 24 × 3 = (20×3) + (4×3) = 60 + 12 = 72."
    }
+  },
+  "warmup": {
+   "model": {
+    "type": "chain",
+    "areaParts": [
+     60,
+     6
+    ],
+    "steps": [
+     {
+      "label": "Multiply the tens:",
+      "left": "20",
+      "op": "×",
+      "right": "3",
+      "answer": "60"
+     },
+     {
+      "label": "Multiply the ones:",
+      "left": "2",
+      "op": "×",
+      "right": "3",
+      "answer": "6"
+     },
+     {
+      "label": "Add the parts:",
+      "left": "60",
+      "op": "+",
+      "right": "6",
+      "answer": "66"
+     }
+    ]
+   },
+   "solve": {
+    "prompt": "Use the area model: 22 mL in each of 3 tubes?",
+    "accepted": [
+     "66"
+    ]
+   }
   }
  },
  "nlm1": {
@@ -367,6 +419,32 @@ export const ch03 = {
     },
     "caption": "Test it: 4 jumps of 4 = 16, same as 4 × 4."
    }
+  },
+  "warmup": {
+   "model": {
+    "type": "jumpline",
+    "min": 0,
+    "max": 10,
+    "step": 2,
+    "start": 0,
+    "jumps": [
+     {
+      "delta": 2
+     },
+     {
+      "delta": 2
+     },
+     {
+      "delta": 2
+     }
+    ]
+   },
+   "solve": {
+    "prompt": "Skip-count: 3 jumps of 2 coins?",
+    "accepted": [
+     "6"
+    ]
+   }
   }
  },
  "gr1": {
@@ -433,6 +511,19 @@ export const ch03 = {
      "each": 4
     },
     "caption": "Test it: 5 groups of 4 = 20, one multiplication instead of five additions."
+   }
+  },
+  "warmup": {
+   "model": {
+    "type": "groups",
+    "groups": 4,
+    "each": 3
+   },
+   "solve": {
+    "prompt": "4 warp pipes with 3 coins in each — how many coins in total?",
+    "accepted": [
+     "12"
+    ]
    }
   }
  },
@@ -504,6 +595,20 @@ export const ch03 = {
      "scaled": 20
     },
     "caption": "Test it: 4 mL scaled ×5 = 20 mL."
+   }
+  },
+  "warmup": {
+   "model": {
+    "type": "scale",
+    "original": 4,
+    "factor": 2,
+    "scaled": 8
+   },
+   "solve": {
+    "prompt": "Scale 4 mL by ×2. What do you get?",
+    "accepted": [
+     "8"
+    ]
    }
   }
  },
@@ -679,6 +784,47 @@ export const ch03 = {
      ]
     },
     "caption": "Test it: 3 anchors need 2 chains. 9 anchors (×3) need 6 chains (×3)."
+   }
+  },
+  "warmup": {
+   "model": {
+    "type": "chain",
+    "ratioVisual": {
+     "topVals": [
+      1,
+      3
+     ],
+     "bottomVals": [
+      4,
+      12
+     ],
+     "missingIndex": 1,
+     "side": "bottom",
+     "topLabel": "Anchors",
+     "bottomLabel": "Lifebuoys"
+    },
+    "steps": [
+     {
+      "label": "Find the scale factor:",
+      "left": "3",
+      "op": "÷",
+      "right": "1",
+      "answer": "3"
+     },
+     {
+      "label": "Scale the lifebuoys:",
+      "left": "4",
+      "op": "×",
+      "right": "3",
+      "answer": "12"
+     }
+    ]
+   },
+   "solve": {
+    "prompt": "1 anchor needs 4 lifebuoys. With 3 anchors, how many lifebuoys?",
+    "accepted": [
+     "12"
+    ]
    }
   }
  }

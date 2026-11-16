@@ -53,7 +53,9 @@ function Ih({
  function C(x) {
   if (t || s >= a.length) return;
   let T = x.currentTarget.getBoundingClientRect(),
-   I = x.clientX - T.left,
+   sc = T.width > 0 && T.height > 0 ? Math.min(T.width / v, T.height / S) : 1,
+   ox = T.width > 0 ? (T.width - v * sc) / 2 : 0,
+   I = (x.clientX - T.left - ox) / sc,
    L = r + (I - j) / (v - j * 2) * (o - r);
   if (Math.round(L / l) * l === N) {
    let Bt = s + 1;
@@ -1711,6 +1713,7 @@ function tm({
 }
 var Mo = {
  model: "\u{1F4D0} VISUAL MODEL \u2014 BLUEPRINT",
+ warmup: "\u{1F525} WARM-UP \u2014 SYSTEMS CHECK",
  strategy: "\u2699\uFE0F MENTAL STRATEGY \u2014 ENGINE ROOM",
  rule: "\u{1F4CF} GENERAL RULE \u2014 SPEC SHEET",
  why: "\u{1F52C} WHY IT WORKS \u2014 TEST BENCH",
@@ -1718,9 +1721,9 @@ var Mo = {
 };
 
 function ed(e) {
- let t = ["model", "strategy", "rule", "why", "challenge"],
+ let t = ["model", "warmup", "strategy", "rule", "why", "challenge"],
   n = e && e.skipStages || [];
- return t.filter(r => !n.includes(r))
+ return t.filter(r => !n.includes(r) && (r !== "warmup" || (e && e.warmup)))
 }
 
 function nm({
@@ -1761,11 +1764,11 @@ function nm({
    children: "Logged! Let's set sail \u2192"
   })]
  });
- if (i === "strategy" || i === "challenge") {
+ if (i === "warmup" || i === "strategy" || i === "challenge") {
   let v = i === "strategy" ? 0 : 1;
   return (0, w.jsx)(rm, {
    topic: o,
-   item: o.items[v],
+   item: i === "warmup" ? o.warmup : o.items[v],
    stepLabel: Mo[i],
    showHint: s,
    onHint: () => u(!0),

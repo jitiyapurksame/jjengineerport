@@ -73,6 +73,21 @@ export const ch01 = {
     },
     "caption": "Test it: 4 + 5 = 9, so 9 − 4 = 5 and 9 − 5 = 4. The rivet holds from every direction."
    }
+  },
+  "warmup": {
+   "model": {
+    "type": "bondweb",
+    "whole": 8,
+    "a": 3,
+    "b": 5,
+    "missing": "b"
+   },
+   "solve": {
+    "prompt": "8 life jackets sit in two lockers. 3 are in the first locker. How many are in the second?",
+    "accepted": [
+     "5"
+    ]
+   }
   }
  },
  "fn1": {
@@ -162,6 +177,24 @@ export const ch01 = {
      "unit": "ten"
     },
     "caption": "Test it: 82 is only 2 away from 80, but 8 away from 90 — 80 wins easily."
+   }
+  },
+  "warmup": {
+   "model": {
+    "type": "choice",
+    "number": 24,
+    "options": [
+     20,
+     30
+    ],
+    "correctIndex": 0,
+    "unit": "ten"
+   },
+   "solve": {
+    "prompt": "24 coins collected — which flagpole (20 or 30) is your score closest to?",
+    "accepted": [
+     "20"
+    ]
    }
   }
  },
@@ -258,6 +291,26 @@ export const ch01 = {
     },
     "caption": "Test it: 24 mL needs 6 more to reach the 30 mL mark — same gap, different beaker."
    }
+  },
+  "warmup": {
+   "model": {
+    "type": "jumpline",
+    "min": 0,
+    "max": 10,
+    "step": 1,
+    "start": 6,
+    "jumps": [
+     {
+      "delta": 4
+     }
+    ]
+   },
+   "solve": {
+    "prompt": "A test tube holds 6 mL. The experiment needs exactly 10 mL. How many more mL do you add?",
+    "accepted": [
+     "4"
+    ]
+   }
   }
  },
  "nd1": {
@@ -340,6 +393,23 @@ export const ch01 = {
      "missing": null
     },
     "caption": "Test it: 11 + 12 = double 11 (22) + 1 = 23. Same trick, bigger rivets."
+   }
+  },
+  "warmup": {
+   "model": {
+    "type": "bondweb",
+    "mode": "neardouble",
+    "small": 5,
+    "big": 6,
+    "doubleVal": 10,
+    "adjust": 1,
+    "missing": "sum"
+   },
+   "solve": {
+    "prompt": "Two ship engines make 5 and 6 units of power. Use near doubles: what is the total?",
+    "accepted": [
+     "11"
+    ]
    }
   }
  },
@@ -432,6 +502,25 @@ export const ch01 = {
     },
     "caption": "Test it: 19 + 26 → 20 + 25 = 45. Same total, friendlier numbers."
    }
+  },
+  "warmup": {
+   "model": {
+    "type": "compensate",
+    "a": {
+     "start": 19,
+     "delta": 1
+    },
+    "b": {
+     "start": 34,
+     "delta": -1
+    }
+   },
+   "solve": {
+    "prompt": "Tank A holds 19 L and Tank B holds 34 L. Use compensation: what is the total?",
+    "accepted": [
+     "53"
+    ]
+   }
   }
  },
  "bn1": {
@@ -520,6 +609,24 @@ export const ch01 = {
      "unit": "benchmarkFrac"
     },
     "caption": "Test it: 0.83 is only 0.17 from 1, but 0.33 from 0.5 — 1 wins easily."
+   }
+  },
+  "warmup": {
+   "model": {
+    "type": "choice",
+    "number": 48,
+    "options": [
+     50,
+     100
+    ],
+    "correctIndex": 0,
+    "unit": "benchmark"
+   },
+   "solve": {
+    "prompt": "Coin count 48 — is it closer to the 50-flag or the 100-flag?",
+    "accepted": [
+     "50"
+    ]
    }
   }
  },
@@ -659,6 +766,32 @@ export const ch01 = {
      ]
     },
     "caption": "Test it: left side 1 → 2 → 3 → 4, right side 7 → 6 → 5 → 4. Up 1, down 1 — the total stays 8."
+   }
+  },
+  "warmup": {
+   "model": {
+    "type": "numweb",
+    "whole": 6,
+    "pairs": [
+     [
+      1,
+      5
+     ],
+     [
+      2,
+      null
+     ],
+     [
+      3,
+      3
+     ]
+    ]
+   },
+   "solve": {
+    "prompt": "A Mario warp room has 6 stars. 2 are on the left ledge. How many are on the right ledge?",
+    "accepted": [
+     "4"
+    ]
    }
   }
  }

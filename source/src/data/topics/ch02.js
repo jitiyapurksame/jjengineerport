@@ -149,6 +149,34 @@ export const ch02 = {
     },
     "caption": "Test it: 300 + 70 + 7 = 377 — same trick, different decks."
    }
+  },
+  "warmup": {
+   "model": {
+    "type": "columnsum",
+    "numberA": 32,
+    "numberB": 41,
+    "columns": [
+     {
+      "place": "tens",
+      "a": 30,
+      "b": 40,
+      "sum": 70
+     },
+     {
+      "place": "ones",
+      "a": 2,
+      "b": 1,
+      "sum": 3
+     }
+    ],
+    "total": 73
+   },
+   "solve": {
+    "prompt": "Boiler A burned 32 kg of coal, Boiler B burned 41 kg. Add left to right: what is the total?",
+    "accepted": [
+     "73"
+    ]
+   }
   }
  },
  "cs1": {
@@ -243,6 +271,26 @@ export const ch02 = {
      }
     },
     "caption": "Test it: 74 − 30 = 44, but we only needed 74 − 29, so add 1 back: 45."
+   }
+  },
+  "warmup": {
+   "model": {
+    "type": "compensate",
+    "op": "-",
+    "a": {
+     "start": 45,
+     "delta": -20,
+     "label": "subtract 20"
+    },
+    "fix": {
+     "delta": 1
+    }
+   },
+   "solve": {
+    "prompt": "A flask holds 45 mL. Drain 19 mL using compensation: what is left?",
+    "accepted": [
+     "26"
+    ]
    }
   }
  },
@@ -371,6 +419,34 @@ export const ch02 = {
     },
     "caption": "Test it: 80 + 12 = 92 — same trick, different coin pile."
    }
+  },
+  "warmup": {
+   "model": {
+    "type": "columnsum",
+    "numberA": 34,
+    "numberB": 25,
+    "columns": [
+     {
+      "place": "tens",
+      "a": 30,
+      "b": 20,
+      "sum": 50
+     },
+     {
+      "place": "ones",
+      "a": 4,
+      "b": 5,
+      "sum": 9
+     }
+    ],
+    "total": 59
+   },
+   "solve": {
+    "prompt": "Partition and add: 34 coins plus 25 coins?",
+    "accepted": [
+     "59"
+    ]
+   }
   }
  },
  "bt1": {
@@ -477,6 +553,29 @@ export const ch02 = {
      ]
     },
     "caption": "Test it: 7 + 3 = 10, then + 2 = 12 — same trick, matches 7 + 5 = 12."
+   }
+  },
+  "warmup": {
+   "model": {
+    "type": "jumpline",
+    "min": 0,
+    "max": 20,
+    "step": 1,
+    "start": 8,
+    "jumps": [
+     {
+      "delta": 2
+     },
+     {
+      "delta": 3
+     }
+    ]
+   },
+   "solve": {
+    "prompt": "Bridge through 10: 8 crates plus 5 more?",
+    "accepted": [
+     "13"
+    ]
    }
   }
  },
@@ -601,6 +700,33 @@ export const ch02 = {
     },
     "caption": "Test it: 6 × 19 = (6 × 20) − 6 = 120 − 6 = 114."
    }
+  },
+  "warmup": {
+   "model": {
+    "type": "chain",
+    "steps": [
+     {
+      "label": "First, use the friendly number:",
+      "left": "5",
+      "op": "×",
+      "right": "20",
+      "answer": "100"
+     },
+     {
+      "label": "Now take away the extra:",
+      "left": "100",
+      "op": "−",
+      "right": "5",
+      "answer": "95"
+     }
+    ]
+   },
+   "solve": {
+    "prompt": "Use friendly numbers: 5 mL in each of 19 tubes?",
+    "accepted": [
+     "95"
+    ]
+   }
   }
  },
  "dh1": {
@@ -699,6 +825,27 @@ export const ch02 = {
      "preNote": "8 × 5 → half 8 is 4, double 5 is 10."
     },
     "caption": "Test it: 8 × 5 = 4 × 10 = 40 — same area, friendlier shape."
+   }
+  },
+  "warmup": {
+   "model": {
+    "type": "chain",
+    "steps": [
+     {
+      "label": "Halve one, double the other:",
+      "left": "6",
+      "op": "×",
+      "right": "10",
+      "answer": "60"
+     }
+    ],
+    "preNote": "12 × 5 → half 12 is 6, double 5 is 10."
+   },
+   "solve": {
+    "prompt": "Double and halve: 12 rows of 5 blocks?",
+    "accepted": [
+     "60"
+    ]
    }
   }
  },
@@ -818,6 +965,32 @@ export const ch02 = {
      ]
     },
     "caption": "Test it: from 14 to 37, jumps of 1 + 20 + 2 = 23 — matches 37 − 14 exactly."
+   }
+  },
+  "warmup": {
+   "model": {
+    "type": "jumpline",
+    "min": 15,
+    "max": 45,
+    "step": 1,
+    "start": 18,
+    "jumps": [
+     {
+      "delta": 2
+     },
+     {
+      "delta": 20
+     },
+     {
+      "delta": 3
+     }
+    ]
+   },
+   "solve": {
+    "prompt": "Count up the difference: how far from mark 18 to checkpoint 43?",
+    "accepted": [
+     "25"
+    ]
    }
   }
  }

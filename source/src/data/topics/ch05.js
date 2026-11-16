@@ -93,6 +93,26 @@ export const ch05 = {
     },
     "caption": "Test it: 7128 + 1872 ≈ 7000 + 1000 = 8000 — a fast, close ballpark."
    }
+  },
+  "warmup": {
+   "model": {
+    "type": "chain",
+    "steps": [
+     {
+      "label": "Keep just the leading digits:",
+      "left": "3000",
+      "op": "+",
+      "right": "1000",
+      "answer": "4000"
+     }
+    ]
+   },
+   "solve": {
+    "prompt": "Estimate 3200 + 1400 passengers using front-end digits.",
+    "accepted": [
+     "4000"
+    ]
+   }
   }
  },
  "rd1": {
@@ -180,6 +200,24 @@ export const ch05 = {
      "unit": "hundred"
     },
     "caption": "Test it: 458 is closer to 500 than 400, since the tens digit (5) is already past halfway."
+   }
+  },
+  "warmup": {
+   "model": {
+    "type": "choice",
+    "number": 24,
+    "options": [
+     20,
+     30
+    ],
+    "correctIndex": 0,
+    "unit": "ten"
+   },
+   "solve": {
+    "prompt": "Mario grabbed 24 coins. Round 24 to the nearest ten.",
+    "accepted": [
+     "20"
+    ]
    }
   }
  },
@@ -276,6 +314,26 @@ export const ch05 = {
     },
     "caption": "Test it: 79 ÷ 9 ≈ 81 ÷ 9 = 9 — a friendly, evenly-dividing pair."
    }
+  },
+  "warmup": {
+   "model": {
+    "type": "chain",
+    "steps": [
+     {
+      "label": "Use compatible numbers:",
+      "left": "20",
+      "op": "÷",
+      "right": "5",
+      "answer": "4"
+     }
+    ]
+   },
+   "solve": {
+    "prompt": "Estimate 19 mL split into 5 mL doses using compatible numbers.",
+    "accepted": [
+     "4"
+    ]
+   }
   }
  },
  "rs1": {
@@ -364,6 +422,24 @@ export const ch05 = {
      "correctIndex": 2
     },
     "caption": "Test it: 52 × 3 ≈ 50 × 3 = 150, so 1500 is ten times too high — a red flag."
+   }
+  },
+  "warmup": {
+   "model": {
+    "type": "judgechoice",
+    "statement": "A crate holds 21 tins. Someone claims 4 crates hold about 80 tins. Is that reasonable?",
+    "options": [
+     "Too low",
+     "About right",
+     "Too high"
+    ],
+    "correctIndex": 1
+   },
+   "solve": {
+    "prompt": "Quickly estimate 4 crates of 21 tins (round 21 to 20).",
+    "accepted": [
+     "80"
+    ]
    }
   }
  }
