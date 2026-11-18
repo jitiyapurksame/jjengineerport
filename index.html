@@ -208,7 +208,7 @@ a { color: inherit; text-decoration: none; }
     <div class="voyage-card">
       <div class="voyage-row">
         <span>COMBINED FIXES LOGGED</span>
-        <span class="num" id="voyage-num">0 / 353</span>
+        <span class="num" id="voyage-num">0 / 385</span>
       </div>
       <div class="voyage-track"><div class="voyage-fill" id="voyage-fill" style="width:0%"></div></div>
     </div>
@@ -260,8 +260,8 @@ a { color: inherit; text-decoration: none; }
     backup — they each keep their own save data on their own site.
     <br><br>
     KVIS Proving Ground (ASEAN/SBS, KVIS &amp; GAT prep) is hosted separately at
-    <code>kvis-proving-ground.vercel.app</code> and is still growing — all 8 teaching missions are
-    live and more practice is landing in phases. Like the other separately-hosted decks, it keeps its
+    <code>kvis-proving-ground.vercel.app</code> and is still growing — all 8 teaching missions, the Shipyard,
+    the Mock Exam Arena and the Self-Intro Bay essay practice are live, and more is landing in phases. Like the other separately-hosted decks, it keeps its
     own save data on its own site.
   </div>
 
@@ -281,10 +281,11 @@ a { color: inherit; text-decoration: none; }
       desc: "11 worlds · 36 missions · climb the Writing Ladder rung by rung",
       total: 252,
       countDone: function (data) {
-        if (!data || !data.worlds) return 0;
+        if (!data || !data.worlds || typeof data.worlds !== "object") return 0;
         var n = 0;
         Object.keys(data.worlds).forEach(function (worldId) {
           var missions = data.worlds[worldId];
+          if (!missions || typeof missions !== "object") return;
           Object.keys(missions).forEach(function (missionId) {
             var m = missions[missionId];
             if (m && typeof m.levelIndex === "number") n += m.levelIndex;
@@ -304,7 +305,7 @@ a { color: inherit; text-decoration: none; }
       desc: "9 visual tools · 27 themed fixes across the ship",
       total: 27,
       countDone: function (data) {
-        return data && data.stamps ? Object.keys(data.stamps).length : 0;
+        return data && data.stamps && typeof data.stamps === "object" ? Object.keys(data.stamps).length : 0;
       },
       xp: function (data) { return data && typeof data.xp === "number" ? data.xp : 0; },
       unit: "fixes"
@@ -315,13 +316,13 @@ a { color: inherit; text-decoration: none; }
       emoji: "✏️",
       name: "Number Sense Sketchbook",
       step1: "Open the first chapter and try ONE example. Run a test, see what happens.",
-      desc: "5 chapters · 28 strategy log entries",
-      total: 28,
+      desc: "12 chapters · 60 topics · see numbers, pick a strategy, prove why it works",
+      total: 60,
       countDone: function (data) {
-        return data && data.topicsDone ? Object.keys(data.topicsDone).length : 0;
+        return data && data.topicsDone && typeof data.topicsDone === "object" ? Object.keys(data.topicsDone).length : 0;
       },
       xp: function (data) { return data && typeof data.xp === "number" ? data.xp : 0; },
-      unit: "entries"
+      unit: "topics"
     },
     {
       key: "jj-drafting-room-v1",
@@ -332,9 +333,9 @@ a { color: inherit; text-decoration: none; }
       desc: "7 blueprint folders · sketch, table, graph & explain scientific models",
       total: 46,
       countDone: function (data) {
-        if (!data || !data.models) return 0;
+        if (!data || !data.models || typeof data.models !== "object") return 0;
         var n = 0;
-        Object.keys(data.models).forEach(function (id) { if (data.models[id].complete) n++; });
+        Object.keys(data.models).forEach(function (id) { if (data.models[id] && data.models[id].complete) n++; });
         return n;
       },
       xp: function (data) { return data && typeof data.totalXp === "number" ? data.totalXp : 0; },
@@ -362,23 +363,36 @@ a { color: inherit; text-decoration: none; }
       emoji: "⚓",
       name: "KVIS Proving Ground",
       step1: "Open the Chart Table, pick ONE mission, do the first step only. Sea trials start with one test.",
-      desc: "Sea Trials Bridge — ASEAN/SBS, KVIS & GAT prep. 8 missions live (Titanic & Mario); more practice landing in phases.",
+      desc: "Sea Trials Bridge — ASEAN/SBS, KVIS & GAT prep. 8 missions, a Shipyard to build your liner, Mock Exam Arena & Self-Intro essay practice (Titanic & Mario).",
       btn: "Open Proving Ground ↗"
     }
   ];
 
   var storageOk = true;
   function safeGet(key) {
+    var raw = null;
     try {
-      var raw = localStorage.getItem(key);
-      return raw ? JSON.parse(raw) : null;
+      raw = localStorage.getItem(key);
     } catch (e) {
-      storageOk = false;
+      storageOk = false;          // storage itself is blocked (e.g. file://)
       return null;
     }
+    if (!raw) return null;
+    try {
+      return JSON.parse(raw);
+    } catch (e) {
+      return null;                // unreadable save: treat as "not started", NOT as "storage blocked"
+    }
   }
-  function safeSet(key, obj) {
-    localStorage.setItem(key, JSON.stringify(obj));
+
+  // Never let one app's odd save data break the whole hub.
+  function readStats(app, data) {
+    var done = 0, xp = 0;
+    try { done = Number(app.countDone(data)); } catch (e) { done = 0; }
+    try { xp = Number(app.xp(data)); } catch (e) { xp = 0; }
+    if (!isFinite(done) || done < 0) done = 0;
+    if (!isFinite(xp) || xp < 0) xp = 0;
+    return { done: Math.min(done, app.total), xp: xp };
   }
 
   function levelFromXp(xp) {
@@ -392,8 +406,9 @@ a { color: inherit; text-decoration: none; }
 
     APPS.forEach(function (app) {
       var data = safeGet(app.key);
-      var done = app.countDone(data);
-      var xp = app.xp(data);
+      var stats = readStats(app, data);
+      var done = stats.done;
+      var xp = stats.xp;
       totalDone += done;
       totalAll += app.total;
 
@@ -499,7 +514,7 @@ a { color: inherit; text-decoration: none; }
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
 
     document.getElementById("log-meta").textContent = "Last exported: " + d.toLocaleString();
     showStatus("Backup downloaded. Keep it somewhere safe (Files, email, cloud drive).", "ok");
@@ -522,34 +537,49 @@ a { color: inherit; text-decoration: none; }
         e.target.value = "";
         return;
       }
-      if (!parsed || typeof parsed !== "object" || !parsed.data) {
+      if (!parsed || typeof parsed !== "object" || !parsed.data || typeof parsed.data !== "object") {
         showStatus("That doesn't look like an Academy backup file.", "err");
         e.target.value = "";
         return;
       }
 
       var rows = [];
-      var anyKnown = false;
+      var warnRows = [];
+      var skipped = 0;
+      var clean = { data: {}, exportedAt: parsed.exportedAt };
       APPS.forEach(function (app) {
         var raw = parsed.data[app.key];
         if (!raw) return;
-        anyKnown = true;
-        var parsedInner;
+        if (typeof raw !== "string") { try { raw = JSON.stringify(raw); } catch (err) { raw = ""; } }
+        var parsedInner = null;
         try { parsedInner = JSON.parse(raw); } catch (err) { parsedInner = null; }
-        var done = app.countDone(parsedInner);
-        var xp = app.xp(parsedInner);
+        if (!parsedInner || typeof parsedInner !== "object") { skipped++; return; }
+        clean.data[app.key] = raw;
+        var st = readStats(app, parsedInner);
         rows.push(
           '<div class="preview-row">' + app.emoji + ' <strong>' + app.name + '</strong> — ' +
-          'Level ' + levelFromXp(xp) + ', ' + xp + ' XP, ' + done + '/' + app.total + ' ' + app.unit +
+          'Level ' + levelFromXp(st.xp) + ', ' + st.xp + ' XP, ' + st.done + '/' + app.total + ' ' + app.unit +
           '</div>'
         );
+        var now = readStats(app, safeGet(app.key));
+        if (now.xp > st.xp) {
+          warnRows.push(
+            '<div class="preview-row" style="color:var(--nudge-ink);">⚠ This device already has more progress in <strong>' +
+            app.name + '</strong> (' + now.xp + ' XP vs ' + st.xp + ' XP in the backup). Restoring will replace it.</div>'
+          );
+        }
       });
 
-      if (!anyKnown) {
-        showStatus("This backup file doesn't contain progress for either app.", "err");
+      if (!rows.length) {
+        showStatus("This backup file doesn't contain readable progress for any of the training decks.", "err");
         e.target.value = "";
         return;
       }
+      rows = rows.concat(warnRows);
+      if (skipped) {
+        rows.push('<div class="preview-row">Skipped ' + skipped + ' unreadable entr' + (skipped === 1 ? 'y' : 'ies') + '.</div>');
+      }
+      parsed = clean;
 
       var whenText = parsed.exportedAt ? new Date(parsed.exportedAt).toLocaleString() : "unknown date";
       rows.unshift('<div class="preview-row">Exported: ' + whenText + '</div>');
@@ -569,25 +599,25 @@ a { color: inherit; text-decoration: none; }
 
   document.getElementById("btn-confirm-import").addEventListener("click", function () {
     if (!pendingBundle) return;
-    var restoredAny = false;
+    var restored = 0, failed = 0;
     APPS.forEach(function (app) {
       var raw = pendingBundle.data[app.key];
-      if (raw) {
-        try {
-          localStorage.setItem(app.key, raw);
-          restoredAny = true;
-        } catch (err) {
-          storageOk = false;
-        }
+      if (!raw) return;
+      try {
+        localStorage.setItem(app.key, raw);
+        restored++;
+      } catch (err) {
+        failed++;
+        storageOk = false;
       }
     });
     document.getElementById("preview-box").classList.remove("show");
     pendingBundle = null;
 
-    if (restoredAny && storageOk) {
+    if (restored && !failed) {
       showStatus("Progress restored! Open a training deck to see it in action.", "ok");
-    } else if (!storageOk) {
-      showStatus("Couldn't write to storage in this context. Try opening this hub from a hosted URL (Netlify/GitHub Pages) instead of a local file.", "err");
+    } else if (failed) {
+      showStatus("Couldn't write to storage in this context. Try opening this hub from a hosted URL (Vercel/Netlify/GitHub Pages) instead of a local file.", "err");
     } else {
       showStatus("Nothing was restored.", "warn");
     }
@@ -643,6 +673,7 @@ a { color: inherit; text-decoration: none; }
     function land(deck) {
       current = deck;
       face.classList.remove("shuffling");
+      face.setAttribute("aria-busy", "false");
       emojiEl.textContent = deck.emoji;
       nameEl.textContent = deck.name;
       stepEl.textContent = "Step 1: " + deck.step1;
@@ -678,6 +709,7 @@ a { color: inherit; text-decoration: none; }
       var ticks = reduce ? 0 : 12;
       var i = 0;
       face.classList.add("shuffling");
+      face.setAttribute("aria-busy", "true");
       (function tick() {
         if (i >= ticks) { land(target); return; }
         var d = decks[Math.floor(Math.random() * decks.length)];
