@@ -146,12 +146,19 @@ a { color: inherit; text-decoration: none; }
 .log-title { font-family: var(--mono); font-weight: 700; font-size: 15px; color: var(--teal); }
 .log-desc { font-size: 12.5px; color: var(--ink-soft); margin-top: 4px; line-height: 1.5; }
 .log-btn-row { display: flex; gap: 10px; margin-top: 14px; }
+.log-link {
+  background: none; border: none; padding: 0 2px; min-height: 44px; margin-top: 4px; cursor: pointer;
+  color: var(--ink-soft); font-size: 12.5px; text-decoration: underline;
+}
+.log-link[hidden] { display: none; }
 .log-btn {
   flex: 1; padding: 11px; border-radius: 8px; font-weight: 700; font-size: 13.5px; cursor: pointer;
   border: 2px solid var(--teal); background: transparent; color: var(--teal); text-align: center;
 }
 .log-btn.primary { background: var(--teal); color: #fff; }
-.log-btn input[type=file] { display: none; }
+/* the real file picker stays in the page (so the label still opens it on iPad) but is invisible */
+.log-btn-row input[type=file] { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; pointer-events: none; }
+.log-btn-row { position: relative; }
 .log-meta { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); margin-top: 10px; }
 .log-status { margin-top: 10px; padding: 10px 12px; border-radius: 8px; font-size: 12.5px; display: none; }
 .log-status.show { display: block; }
@@ -219,6 +226,46 @@ a { color: inherit; text-decoration: none; }
 .ship-chip.done { background: rgba(63,163,122,0.22); border-color: rgba(63,163,122,0.6); }
 .ship-chip small { display: block; color: rgba(255,255,255,0.7); font-family: var(--mono); font-size: 11px; }
 
+/* ---- Phase 2: ship preview, visits, nudge, fleet ---- */
+.ship-svg .hs-preview { opacity: 1; animation: hs-pulse 1.3s ease-in-out infinite alternate; }
+.ship-svg .hs-preview * { stroke: #FFD27A; stroke-width: 1.4; }
+@keyframes hs-pulse { from { opacity: 0.5; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .ship-svg .hs-preview { animation: none; opacity: 0.85; } }
+.ship-pick-label { font-family: var(--mono); font-size: 11.5px; color: var(--amber); margin: 14px 0 8px; }
+.ship-decks { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ship-deck-btn {
+  min-height: 44px; padding: 8px 10px; border-radius: 8px; cursor: pointer; text-align: left;
+  background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.25); color: #fff; font-size: 13px; font-weight: 600;
+}
+.ship-deck-btn small { display: block; font-family: var(--mono); font-weight: 400; font-size: 10.5px; color: rgba(255,255,255,0.7); }
+.ship-deck-btn[aria-pressed="true"] { border-color: var(--amber); background: rgba(217,164,65,0.22); }
+.ship-goal { font-size: 13.5px; line-height: 1.55; color: rgba(255,255,255,0.92); margin: 12px 0 0; min-height: 42px; }
+.ship-goal strong { color: var(--amber); }
+.mission-visits { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); padding: 0 2px; }
+.nudge-card {
+  background: var(--nudge-bg); color: var(--nudge-ink); border-radius: 10px; padding: 14px 16px;
+  border: 2px dashed var(--amber-dark); line-height: 1.5; font-size: 13.5px;
+}
+.nudge-card strong { color: var(--ink); }
+.nudge-actions { display: flex; gap: 10px; margin-top: 12px; }
+.nudge-go {
+  flex: 1; min-height: 44px; display: flex; align-items: center; justify-content: center; text-align: center;
+  background: var(--teal); color: #fff; font-weight: 700; font-size: 14px; border-radius: 8px; padding: 8px 12px;
+}
+.nudge-skip {
+  min-height: 44px; padding: 0 14px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;
+  background: transparent; border: 2px solid var(--amber-dark); color: var(--nudge-ink);
+}
+.fleet { display: flex; flex-direction: column; gap: 12px; }
+.fleet-card {
+  display: flex; gap: 12px; align-items: center; background: var(--card); border-radius: 10px; padding: 12px;
+  box-shadow: 0 2px 10px rgba(14,42,69,0.10); border: 1px solid rgba(14,42,69,0.10); min-height: 44px;
+}
+.fleet-ship { width: 112px; flex-shrink: 0; height: auto; background: var(--bg); border-radius: 8px; border: 1px dashed var(--amber-dark); }
+.fleet-name { font-family: var(--mono); font-weight: 700; font-size: 14px; color: var(--teal); }
+.fleet-sub { font-size: 12px; color: var(--ink-soft); margin-top: 3px; line-height: 1.45; }
+.fleet-card .mission-visits { margin-top: 6px; display: block; }
+
 /* ---- Footer note ---- */
 .foot-note {
   margin: 18px 16px 0; font-size: 11.5px; color: var(--ink-soft); text-align: center; line-height: 1.6;
@@ -263,9 +310,19 @@ a { color: inherit; text-decoration: none; }
     </div>
   </div>
 
+  <div class="section" id="nudge-section" hidden>
+    <div class="section-label">🧭 Captain’s Nudge</div>
+    <div class="nudge-card" id="nudge"></div>
+  </div>
+
   <div class="section">
     <div class="section-label">🚢 Shipyard — Your Flagship</div>
     <div class="ship-card" id="shipyard"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">⚓ The Fleet</div>
+    <div class="fleet" id="fleet"></div>
   </div>
 
   <div class="section">
@@ -279,12 +336,14 @@ a { color: inherit; text-decoration: none; }
       <div class="log-desc">
         Progress is saved on this device only. Export a backup before switching devices,
         clearing browser data, or reinstalling — then import it back whenever you need to.
+        On iPad, Export opens the share sheet: choose “Save to Files”.
       </div>
       <div class="log-btn-row">
         <button class="log-btn primary" id="btn-export">⬇ Export Progress</button>
         <label class="log-btn" for="file-import">⬆ Import Progress</label>
         <input type="file" id="file-import" accept="application/json,.json">
       </div>
+      <button class="log-link" id="btn-download" type="button" hidden>Prefer a plain download? Tap here.</button>
       <div class="log-meta" id="log-meta">No backup exported yet this session.</div>
       <div class="log-status" id="log-status"></div>
 
@@ -402,6 +461,7 @@ a { color: inherit; text-decoration: none; }
       href: "https://numbertheorysketchbook.vercel.app/",
       emoji: "⚓",
       name: "Number Theory Sketchbook",
+      ship: "cargo", fleetNote: "Dry dock — her ship is still a blueprint. Design coming later.",
       step1: "Open the first compartment and do ONE problem. Check one part before checking the whole ship.",
       desc: "15 compartments · Chief Engineer training manual — primes, factors, multiples & more"
     },
@@ -409,6 +469,7 @@ a { color: inherit; text-decoration: none; }
       href: "https://combinatoricssketchbook.vercel.app/",
       emoji: "🧮",
       name: "Combinatorics Sketchbook",
+      ship: "clipper", fleetNote: "Dry dock — her ship is still a blueprint. Design coming later.",
       step1: "Open the first chapter and solve ONE counting puzzle. Count slowly, count your way.",
       desc: "Counting, arrangements & choices — a training manual for combinatorics"
     },
@@ -416,6 +477,7 @@ a { color: inherit; text-decoration: none; }
       href: "https://kvis-proving-ground.vercel.app/",
       emoji: "⚓",
       name: "KVIS Proving Ground",
+      ship: "liner", fleetNote: "Her ship is built in the KVIS Shipyard. Tap to visit her.",
       step1: "Open the Chart Table, pick ONE mission, do the first step only. Sea trials start with one test.",
       desc: "Sea Trials Bridge — ASEAN/SBS, KVIS & GAT prep. 8 missions, a Shipyard to build your liner, Mock Exam Arena & Self-Intro essay practice (Titanic & Mario).",
       btn: "Open Proving Ground ↗"
@@ -479,6 +541,12 @@ a { color: inherit; text-decoration: none; }
   }
 
   // half 0 = first half of the deck (lights up by 50%), half 1 = second half (50% to 100%)
+  var SHIP_SHORT = {
+    "number-sense-sketchbook-v1": "Number Sense",
+    "step1-bridge-progress-v1": "Math Decoder",
+    "jj-drafting-room-v1": "Drafting Room",
+    "writing-academy-v1": "Writing"
+  };
   var SHIP_PARTS = [
     { id: "keel",   name: "Keel",         deck: "number-sense-sketchbook-v1", half: 0 },
     { id: "hull",   name: "Hull Plates",  deck: "number-sense-sketchbook-v1", half: 1 },
@@ -528,8 +596,88 @@ a { color: inherit; text-decoration: none; }
       '<path class="m2" d="M411,5 L442,10 L411,16 Z"/><circle class="m3" cx="409.5" cy="24" r="4"/>'
   };
 
-  function shipSvg(progressById) {
-    var built = "", outline = "";
+  // ---- Visits: counts taps on launch links made from this hub (the decks themselves are not tracked) ----
+  var VISIT_KEY = "jj-hub-visits-v1";
+  var memVisits = {};
+  var UNIT_ONE = { rungs: "rung", fixes: "fix", topics: "topic", models: "model" };
+  function unitWord(unit, n) { return n === 1 && UNIT_ONE[unit] ? UNIT_ONE[unit] : unit; }
+
+  function deckList() {
+    var list = [];
+    APPS.forEach(function (a) { list.push({ key: a.key, name: a.name, emoji: a.emoji, href: a.href, step1: a.step1, external: false }); });
+    EXTERNAL_APPS.forEach(function (a) {
+      if (!a.comingSoon) list.push({ key: a.href, name: a.name, emoji: a.emoji, href: a.href, step1: a.step1, external: true });
+    });
+    return list;
+  }
+  function getVisits() {
+    var raw = null;
+    try { raw = localStorage.getItem(VISIT_KEY); } catch (e) { return memVisits; }
+    if (!raw) return memVisits;
+    try {
+      var o = JSON.parse(raw);
+      return o && typeof o === "object" && !Array.isArray(o) ? o : {};
+    } catch (e) { return {}; }
+  }
+  function visitInfo(key) {
+    var e = getVisits()[key];
+    var count = e && typeof e.count === "number" && isFinite(e.count) && e.count > 0 ? Math.floor(e.count) : 0;
+    var last = e && typeof e.last === "string" ? Date.parse(e.last) : NaN;
+    return { count: count, last: isFinite(last) ? last : null };
+  }
+  function recordVisit(key) {
+    var known = deckList().some(function (d) { return d.key === key; });
+    if (!known) return;
+    var v = getVisits();
+    var info = visitInfo(key);
+    v[key] = { count: info.count + 1, last: new Date().toISOString() };
+    memVisits = v;
+    try { localStorage.setItem(VISIT_KEY, JSON.stringify(v)); } catch (e) {}
+  }
+  function daysSince(ts) { return Math.max(0, Math.floor((Date.now() - ts) / 86400000)); }
+  function agoText(days) { return days === 0 ? "today" : days === 1 ? "yesterday" : days + " days ago"; }
+  function visitsText(key) {
+    var v = visitInfo(key);
+    if (!v.count) return "Not opened from here yet";
+    return "👣 Opened from here " + v.count + (v.count === 1 ? " time" : " times") + (v.last !== null ? " · last " + agoText(daysSince(v.last)) : "");
+  }
+  function visitsHtml(key) { return '<div class="mission-visits">' + visitsText(key) + '</div>'; }
+
+  // ---- Captain's nudge: friendly pointer at the quietest deck. No streaks, nothing to lose. ----
+  var nudgeDismissed = false;
+  function renderNudge() {
+    var section = document.getElementById("nudge-section");
+    var el = document.getElementById("nudge");
+    if (!section || !el) return;
+    var decks = deckList();
+    var infos = decks.map(function (d) { return { deck: d, v: visitInfo(d.key) }; });
+    var anyVisit = infos.some(function (i) { return i.v.count > 0; });
+    if (nudgeDismissed || !anyVisit) { section.hidden = true; return; }
+    var quiet = infos[0];
+    infos.forEach(function (i) {
+      var t = i.v.last === null ? 0 : i.v.last;
+      var qt = quiet.v.last === null ? 0 : quiet.v.last;
+      if (t < qt) quiet = i;
+    });
+    var d = quiet.deck, msg;
+    if (quiet.v.last === null) {
+      msg = d.emoji + " <strong>" + escHtml(d.name) + "</strong> is waiting for its first visit.";
+    } else {
+      var days = daysSince(quiet.v.last);
+      if (days < 3) { section.hidden = true; return; }
+      msg = d.emoji + " <strong>" + escHtml(d.name) + "</strong> has been quiet for " + days + " days.";
+    }
+    el.innerHTML = msg + '<br>Step 1: ' + escHtml(d.step1) +
+      '<div class="nudge-actions"><a class="nudge-go" data-deck="' + d.key + '" href="' + d.href + '"' +
+      (d.external ? ' target="_blank" rel="noopener"' : '') + '>Open ' + escHtml(d.name) + ' →</a>' +
+      '<button class="nudge-skip" id="nudge-skip" type="button">Not now</button></div>';
+    section.hidden = false;
+    el.querySelector("#nudge-skip").addEventListener("click", function () { nudgeDismissed = true; section.hidden = true; });
+  }
+
+  // ---- Flagship drawing, with an optional "if you finish this deck" preview ----
+  function shipSvg(progressById, previewIds) {
+    var built = "", outline = "", preview = "";
     SHIP_PARTS.forEach(function (p) {
       var f = progressById[p.id] || 0;
       // any progress at all shows clearly: Step 1 earns a visible piece straight away
@@ -537,14 +685,19 @@ a { color: inherit; text-decoration: none; }
       built += '<g class="hs-built" data-part="' + p.id + '" style="opacity:' + op + '">' + SHIP_SHAPES[p.id] + '</g>';
       outline += '<g class="hs-outline">' + SHIP_SHAPES[p.id] + '</g>';
     });
+    (previewIds || []).forEach(function (id) {
+      preview += '<g class="hs-built hs-preview" data-preview="' + id + '">' + SHIP_SHAPES[id] + '</g>';
+    });
     var sea = '<path d="M0,172 Q40,164 80,172 T160,172 T240,172 T320,172 T400,172 T480,172 T560,172 T640,172 L640,225 L0,225 Z" fill="#2a6a9c" opacity="0.4"/>';
     return '<svg class="ship-svg" viewBox="0 0 620 225" role="img" aria-label="Your flagship under construction">' +
-      '<rect width="620" height="172" fill="#0b2237" opacity="0.5"/>' + built + sea + outline + '</svg>';
+      '<rect width="620" height="172" fill="#0b2237" opacity="0.5"/>' + built + preview + sea + outline + '</svg>';
   }
 
-  function renderShipyard(deckFrac) {
+  var selectedDeck = null;       // which deck's pieces are being previewed
+  function renderShipyard(deckFrac, deckDone) {
     var el = document.getElementById("shipyard");
     if (!el) return;
+    deckDone = deckDone || {};
     var items = SHIP_PARTS.map(function (p) {
       var f = Number(deckFrac[p.deck]);
       if (!isFinite(f) || f < 0) f = 0;
@@ -563,18 +716,54 @@ a { color: inherit; text-decoration: none; }
     var next = items.filter(function (it) { return it.progress > 0 && it.progress < 1; })[0] ||
                items.filter(function (it) { return it.progress === 0; })[0];
 
+    // one entry per deck (two parts each), in ship order
+    var decks = [];
+    items.forEach(function (it) {
+      var d = decks.filter(function (x) { return x.key === it.part.deck; })[0];
+      if (!d) {
+        var total = it.app.total, done = Math.min(total, Math.max(0, Number(deckDone[it.part.deck]) || 0));
+        d = { key: it.part.deck, app: it.app, total: total, done: done, unit: it.app.unit, parts: [] };
+        decks.push(d);
+      }
+      d.parts.push(it);
+    });
+
+    function goalHtml() {
+      var d = decks.filter(function (x) { return x.key === selectedDeck; })[0];
+      if (!d) return 'Tap a deck below to preview the pieces it builds.';
+      var a = d.parts[0], b = d.parts[1];
+      var after = Math.round(((sum + (2 - a.progress - b.progress)) / SHIP_PARTS.length) * 100);
+      if (d.done >= d.total) return '✅ <strong>' + escHtml(d.app.name) + '</strong> is complete — the ' + a.part.name + ' and the ' + b.part.name + ' are built!';
+      var half = Math.ceil(d.total / 2), line = '<strong>' + escHtml(d.app.name) + '</strong> builds the ' + a.part.name + ' and the ' + b.part.name +
+        '. You\u2019re at ' + d.done + ' of ' + d.total + ' ' + d.unit + '. ';
+      if (d.done < half) {
+        var n = half - d.done;
+        line += n + ' more ' + unitWord(d.unit, n) + ' lights the ' + a.part.name + '. ';
+      } else {
+        var m = d.total - d.done;
+        line += 'The ' + a.part.name + ' is built! ' + m + ' more ' + unitWord(d.unit, m) + ' lights the ' + b.part.name + '. ';
+      }
+      return line + 'Finish it all and the ship goes from ' + pct + '% to ' + after + '%.';
+    }
+
     var html =
       '<div class="ship-eyebrow">Flagship of the Fleet</div>' +
       '<h2 class="ship-name" id="ship-name"></h2>' +
       '<div class="ship-nameform"><input id="ship-name-input" type="text" maxlength="24" autocomplete="off" placeholder="Name your ship…" aria-label="Ship name">' +
       '<button id="ship-name-btn" type="button">Name her</button></div>' +
-      shipSvg(progressById) +
+      '<div id="ship-art"></div>' +
       '<div class="ship-meter" aria-label="Build progress"><div class="ship-meter-fill" style="width:' + pct + '%"></div></div>' +
-      '<p class="ship-meter-text">' + certified + ' of ' + SHIP_PARTS.length + ' parts certified — ship ' + pct + '% built. Every step you do adds a piece.</p>';
+      '<p class="ship-meter-text">' + certified + ' of ' + SHIP_PARTS.length + ' parts certified — ship ' + pct + '% built. Every step you do adds a piece.</p>' +
+      '<div class="ship-pick-label">PREVIEW A DECK</div><div class="ship-decks" id="ship-decks">';
+    decks.forEach(function (d) {
+      html += '<button class="ship-deck-btn" type="button" data-deck-pick="' + d.key + '" aria-pressed="false">' +
+        d.app.emoji + ' ' + escHtml(SHIP_SHORT[d.key]) + '<small>' + d.done + '/' + d.total + ' ' + d.unit + '</small></button>';
+    });
+    html += '</div><p class="ship-goal" id="ship-goal"></p>';
 
     if (next) {
       var started = next.progress > 0;
-      html += '<a class="ship-next" id="ship-next" href="' + next.app.href + '">' +
+      html += '<a class="ship-next" id="ship-next" data-deck="' + next.app.key + '" href="' + next.app.href + '">' +
         (started ? 'Keep building: ' : 'Start here: ') + next.part.name + ' → ' + escHtml(next.app.name) + '</a>';
     } else {
       html += '<div class="ship-launch" id="ship-launch">🎉 ALL SYSTEMS GO! <span id="ship-launch-name"></span> is ready to launch.</div>';
@@ -583,12 +772,30 @@ a { color: inherit; text-decoration: none; }
     html += '<details class="ship-parts"><summary>See all ' + SHIP_PARTS.length + ' parts</summary><div class="ship-chips">';
     items.forEach(function (it) {
       var done = it.progress >= 1;
-      html += '<a class="ship-chip' + (done ? ' done' : '') + '" href="' + it.app.href + '">' +
+      var vc = visitInfo(it.app.key).count;
+      html += '<a class="ship-chip' + (done ? ' done' : '') + '" data-deck="' + it.app.key + '" href="' + it.app.href + '">' +
         (done ? '✅ ' : '🔧 ') + it.part.name + ' — ' + Math.round(it.progress * 100) + '%' +
-        '<small>built by ' + escHtml(it.app.name) + '</small></a>';
+        '<small>built by ' + escHtml(it.app.name) + ' · ' + vc + (vc === 1 ? ' visit' : ' visits') + ' from here</small></a>';
     });
     html += '</div></details>';
     el.innerHTML = html;
+
+    function paint() {
+      var d = decks.filter(function (x) { return x.key === selectedDeck; })[0];
+      el.querySelector("#ship-art").innerHTML = shipSvg(progressById, d ? d.parts.map(function (p) { return p.part.id; }) : []);
+      el.querySelector("#ship-goal").innerHTML = goalHtml();
+      [].forEach.call(el.querySelectorAll("[data-deck-pick]"), function (btn) {
+        btn.setAttribute("aria-pressed", btn.getAttribute("data-deck-pick") === selectedDeck ? "true" : "false");
+      });
+    }
+    [].forEach.call(el.querySelectorAll("[data-deck-pick]"), function (btn) {
+      btn.addEventListener("click", function () {
+        var k = btn.getAttribute("data-deck-pick");
+        selectedDeck = selectedDeck === k ? null : k;
+        paint();
+      });
+    });
+    paint();
 
     function title() { var n = getShipName(); return "RMS " + (n ? n : "Flagship"); }
     el.querySelector("#ship-name").textContent = title();
@@ -606,11 +813,35 @@ a { color: inherit; text-decoration: none; }
     input.addEventListener("keydown", function (e) { if (e.key === "Enter") save(); });
   }
 
+  // ---- The Fleet: ships for the decks hosted elsewhere (KVIS has its own ship; the others are in dry dock) ----
+  var FLEET_ART = {
+    liner:
+      '<path d="M14,52 L186,52 Q176,64 160,66 L30,66 Q18,62 14,52 Z"/><rect x="40" y="40" width="120" height="12"/><rect x="62" y="30" width="76" height="10"/>' +
+      '<rect x="70" y="12" width="12" height="18"/><rect x="90" y="12" width="12" height="18"/><rect x="110" y="12" width="12" height="18"/><rect x="130" y="12" width="12" height="18"/>',
+    cargo:
+      '<path d="M12,50 L188,50 Q180,64 166,66 L28,66 Q16,62 12,50 Z"/><rect x="30" y="32" width="34" height="18"/><rect x="40" y="20" width="10" height="12"/>' +
+      '<rect x="78" y="40" width="22" height="10"/><rect x="104" y="40" width="22" height="10"/><path d="M146,50 L146,18 L176,36"/>',
+    clipper:
+      '<path d="M20,56 L180,56 Q170,68 150,70 L40,70 Q26,66 20,56 Z"/><path d="M65,56 L65,10 M100,56 L100,6 M135,56 L135,10"/>' +
+      '<path d="M65,14 L65,52 L90,52 Z M100,10 L100,52 L128,52 Z M135,14 L135,52 L158,52 Z"/>'
+  };
+  function renderFleet() {
+    var el = document.getElementById("fleet");
+    if (!el) return;
+    el.innerHTML = EXTERNAL_APPS.filter(function (a) { return !a.comingSoon; }).map(function (app) {
+      return '<a class="fleet-card" data-deck="' + app.href + '" href="' + app.href + '" target="_blank" rel="noopener">' +
+        '<svg class="fleet-ship" viewBox="0 0 200 90" role="img" aria-label="Ship silhouette" fill="none" stroke="#B3822C" stroke-width="1.6" stroke-dasharray="5 4">' +
+        (FLEET_ART[app.ship] || FLEET_ART.liner) + '<path d="M0,68 Q25,62 50,68 T100,68 T150,68 T200,68" stroke-dasharray="0" stroke="#0E2A45" opacity="0.35"/></svg>' +
+        '<div><div class="fleet-name">' + app.emoji + ' ' + escHtml(app.name) + '</div>' +
+        '<div class="fleet-sub">' + escHtml(app.fleetNote || "") + '</div>' + visitsHtml(app.href) + '</div></a>';
+    }).join("");
+  }
+
   function renderMissions() {
     var container = document.getElementById("missions");
     container.innerHTML = "";
     var totalDone = 0, totalAll = 0;
-    var deckFrac = {};
+    var deckFrac = {}, deckDone = {};
 
     APPS.forEach(function (app) {
       var data = safeGet(app.key);
@@ -620,6 +851,7 @@ a { color: inherit; text-decoration: none; }
       totalDone += done;
       totalAll += app.total;
       deckFrac[app.key] = app.total ? done / app.total : 0;
+      deckDone[app.key] = done;
 
       var card = document.createElement("div");
       card.className = "mission-card";
@@ -646,7 +878,8 @@ a { color: inherit; text-decoration: none; }
           '</div>' +
         '</div>' +
         statsHtml +
-        '<a class="mission-btn" href="' + app.href + '">Launch Mission →</a>';
+        visitsHtml(app.key) +
+        '<a class="mission-btn" data-deck="' + app.key + '" href="' + app.href + '">Launch Mission →</a>';
 
       container.appendChild(card);
     });
@@ -659,7 +892,7 @@ a { color: inherit; text-decoration: none; }
       var badgeText = app.comingSoon ? "Coming soon &middot; not deployed yet" : "Hosted separately &middot; new tab";
       var btnHtml = app.comingSoon
         ? '<span class="mission-btn" style="opacity:0.55; cursor:default;">Coming Soon</span>'
-        : '<a class="mission-btn" href="' + app.href + '" target="_blank" rel="noopener">' + (app.btn || "Open Sketchbook ↗") + '</a>';
+        : '<a class="mission-btn" data-deck="' + app.href + '" href="' + app.href + '" target="_blank" rel="noopener">' + (app.btn || "Open Sketchbook ↗") + '</a>';
 
       card.innerHTML =
         '<div class="mission-top">' +
@@ -672,6 +905,7 @@ a { color: inherit; text-decoration: none; }
         '<div class="mission-stats is-empty">' +
           '<span class="mission-external-badge">' + badgeText + '</span>' +
         '</div>' +
+        visitsHtml(app.href) +
         btnHtml;
       container.appendChild(card);
     });
@@ -679,7 +913,9 @@ a { color: inherit; text-decoration: none; }
     document.getElementById("voyage-num").textContent = totalDone + " / " + totalAll;
     var pct = totalAll ? Math.round((totalDone / totalAll) * 100) : 0;
     document.getElementById("voyage-fill").style.width = pct + "%";
-    renderShipyard(deckFrac);
+    renderNudge();
+    renderShipyard(deckFrac, deckDone);
+    renderFleet();
   }
 
   function showStatus(msg, kind) {
@@ -693,8 +929,8 @@ a { color: inherit; text-decoration: none; }
   }
 
   // ---- Export ----
-  document.getElementById("btn-export").addEventListener("click", function () {
-    hideStatus();
+  // Builds the backup text, or returns null (and says why) when there is nothing to save.
+  function buildBackup() {
     var bundle = {
       app: "jj-engineering-academy-backup",
       version: 1,
@@ -717,24 +953,77 @@ a { color: inherit; text-decoration: none; }
 
     if (!foundAny) {
       showStatus("Nothing to export yet — no progress found on this device. Open a training deck first.", "warn");
-      return;
+      return null;
     }
 
-    var blob = new Blob([JSON.stringify(bundle, null, 2)], { type: "application/json" });
-    var url = URL.createObjectURL(blob);
     var d = new Date();
     var stamp = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    return { text: JSON.stringify(bundle, null, 2), fileName: "jj-academy-progress-" + stamp + ".json", when: d };
+  }
+
+  function markExported(when) {
+    document.getElementById("log-meta").textContent = "Last exported: " + when.toLocaleString();
+  }
+
+  // Classic download (desktop, and the fallback when the share sheet isn't available).
+  function downloadBackup(b) {
+    var blob = new Blob([b.text], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
     var a = document.createElement("a");
     a.href = url;
-    a.download = "jj-academy-progress-" + stamp + ".json";
+    a.download = b.fileName;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
-
-    document.getElementById("log-meta").textContent = "Last exported: " + d.toLocaleString();
+    markExported(b.when);
     showStatus("Backup downloaded. Keep it somewhere safe (Files, email, cloud drive).", "ok");
+  }
+
+  // Share sheet is used only on touch devices (iPad / phone), where plain downloads can be flaky.
+  function makeBackupFile(b) {
+    try { return new File([b.text], b.fileName, { type: "application/json" }); } catch (e) { return null; }
+  }
+  function canShareFile(file) {
+    try {
+      return !!(file && navigator.share && navigator.canShare && navigator.maxTouchPoints > 0 &&
+                navigator.canShare({ files: [file] }));
+    } catch (e) { return false; }
+  }
+
+  document.getElementById("btn-export").addEventListener("click", function () {
+    hideStatus();
+    var b = buildBackup();
+    if (!b) return;
+    var file = makeBackupFile(b);
+    if (!canShareFile(file)) { downloadBackup(b); return; }
+
+    // navigator.share must be called straight from the tap, so nothing async happens before it.
+    navigator.share({ files: [file], title: "J.J.\u2019s Academy backup" }).then(function () {
+      markExported(b.when);
+      showStatus("Backup shared. Make sure you chose a safe place (Save to Files, email, or a cloud drive).", "ok");
+    }).catch(function (err) {
+      if (err && err.name === "AbortError") {
+        showStatus("Share cancelled \u2014 no backup was saved. Tap Export Progress again whenever you\u2019re ready.", "warn");
+      } else {
+        downloadBackup(b);          // share failed for another reason: fall back to a normal download
+      }
+    });
   });
+
+  // Small "download instead" link, shown only where the share sheet is in use.
+  (function () {
+    var link = document.getElementById("btn-download");
+    var probe = null;
+    try { probe = new File(["{}"], "probe.json", { type: "application/json" }); } catch (e) {}
+    if (!canShareFile(probe)) return;
+    link.hidden = false;
+    link.addEventListener("click", function () {
+      hideStatus();
+      var b = buildBackup();
+      if (b) downloadBackup(b);
+    });
+  })();
 
   // ---- Import ----
   var pendingBundle = null;
@@ -883,11 +1172,11 @@ a { color: inherit; text-decoration: none; }
     function allDecks() {
       var list = [];
       APPS.forEach(function (a) {
-        list.push({ name: a.name, emoji: a.emoji, href: a.href, step1: a.step1, external: false });
+        list.push({ key: a.key, name: a.name, emoji: a.emoji, href: a.href, step1: a.step1, external: false });
       });
       EXTERNAL_APPS.forEach(function (a) {
         if (a.comingSoon) return;
-        list.push({ name: a.name, emoji: a.emoji, href: a.href, step1: a.step1, external: true });
+        list.push({ key: a.href, name: a.name, emoji: a.emoji, href: a.href, step1: a.step1, external: true });
       });
       return list;
     }
@@ -909,6 +1198,7 @@ a { color: inherit; text-decoration: none; }
       nameEl.textContent = deck.name;
       stepEl.textContent = "Step 1: " + deck.step1;
       goBtn.setAttribute("href", deck.href);
+      goBtn.setAttribute("data-deck", deck.key);
       if (deck.external) {
         goBtn.setAttribute("target", "_blank");
         goBtn.setAttribute("rel", "noopener");
@@ -959,6 +1249,16 @@ a { color: inherit; text-decoration: none; }
       draw(current.name);
     });
   })();
+
+  // Count launches made from the hub. Links that open a new tab refresh the hub a moment later;
+  // same-tab links leave the page, so nothing is redrawn under the tap.
+  document.addEventListener("click", function (e) {
+    var t = e.target;
+    var a = t && t.closest ? t.closest("a[data-deck]") : null;
+    if (!a) return;
+    recordVisit(a.getAttribute("data-deck"));
+    if (a.getAttribute("target") === "_blank") setTimeout(renderMissions, 400);
+  }, true);
 
   renderMissions();
   if (!storageOk) {
