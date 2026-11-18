@@ -170,6 +170,55 @@ a { color: inherit; text-decoration: none; }
 .preview-row:first-of-type { border-top: none; }
 .preview-actions { display: flex; gap: 10px; margin-top: 12px; }
 
+/* ---- Shipyard (flagship built from the on-site decks) ---- */
+.ship-card {
+  background: var(--teal); color: #fff; border-radius: 10px; padding: 16px;
+  border: 2px dashed var(--amber); box-shadow: 0 3px 12px rgba(14,42,69,0.18);
+}
+.ship-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--amber); }
+.ship-name { font-family: var(--mono); font-weight: 700; font-size: 20px; margin: 6px 0 10px; word-break: break-word; }
+.ship-nameform { display: flex; gap: 8px; margin-bottom: 12px; }
+.ship-nameform input {
+  flex: 1; min-width: 0; min-height: 44px; padding: 8px 12px; border-radius: 8px; font-size: 15px;
+  border: 2px solid rgba(255,255,255,0.35); background: rgba(255,255,255,0.08); color: #fff;
+}
+.ship-nameform input::placeholder { color: rgba(255,255,255,0.55); }
+.ship-nameform button {
+  min-height: 44px; padding: 0 16px; border-radius: 8px; border: none; cursor: pointer;
+  background: var(--amber); color: var(--teal-dark); font-weight: 700; font-size: 14px;
+}
+.ship-svg { width: 100%; height: auto; display: block; border-radius: 8px; }
+.ship-svg .hs-built .k1 { fill: #8A5A18; } .ship-svg .hs-built .k2 { fill: #D9A441; }
+.ship-svg .hs-built .h1 { fill: #B9C6D1; } .ship-svg .hs-built .h2 { fill: #C1503A; } .ship-svg .hs-built .h3 { fill: #5B6B78; }
+.ship-svg .hs-built .e0 { fill: #16293A; stroke: #D9A441; stroke-width: 1.5; } .ship-svg .hs-built .e1 { fill: #D9A441; }
+.ship-svg .hs-built .p1 { fill: #D9A441; } .ship-svg .hs-built .p2 { fill: #8A5A18; }
+.ship-svg .hs-built .d1 { fill: #F1ECDD; } .ship-svg .hs-built .d2 { fill: #0E2A45; }
+.ship-svg .hs-built .f1 { fill: #C1503A; } .ship-svg .hs-built .f2 { fill: #16293A; } .ship-svg .hs-built .f3 { fill: #D9A441; }
+.ship-svg .hs-built .b1 { fill: #F1ECDD; } .ship-svg .hs-built .b2 { fill: #C1503A; } .ship-svg .hs-built .b3 { fill: #0E2A45; }
+.ship-svg .hs-built .m1 { fill: #F1ECDD; } .ship-svg .hs-built .m2 { fill: #C1503A; } .ship-svg .hs-built .m3 { fill: #D9A441; }
+.ship-svg .hs-outline * { fill: none; stroke: #D9A441; stroke-width: 1; stroke-dasharray: 4 3; opacity: 0.7; }
+.ship-meter { height: 10px; background: rgba(255,255,255,0.18); border-radius: 6px; overflow: hidden; margin-top: 12px; }
+.ship-meter-fill { height: 100%; background: linear-gradient(90deg, var(--amber), #fff); border-radius: 6px; transition: width .4s ease; }
+.ship-meter-text { font-family: var(--mono); font-size: 11.5px; color: var(--amber); margin: 8px 0 0; line-height: 1.5; }
+.ship-next {
+  display: block; margin-top: 12px; padding: 14px; border-radius: 8px; text-align: center;
+  background: var(--success); color: #fff; font-weight: 700; font-size: 15px;
+}
+.ship-next:active { opacity: 0.9; transform: scale(0.99); }
+.ship-launch {
+  margin-top: 12px; padding: 12px; border-radius: 8px; text-align: center; font-weight: 700;
+  background: var(--success-bg); color: #1e5c40;
+}
+.ship-parts { margin-top: 12px; }
+.ship-parts summary { cursor: pointer; font-family: var(--mono); font-size: 12px; color: var(--amber); padding: 10px 0; min-height: 44px; }
+.ship-chips { display: flex; flex-direction: column; gap: 8px; }
+.ship-chip {
+  display: block; padding: 10px 12px; border-radius: 8px; font-size: 13px; line-height: 1.4;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(217,164,65,0.35); color: #fff;
+}
+.ship-chip.done { background: rgba(63,163,122,0.22); border-color: rgba(63,163,122,0.6); }
+.ship-chip small { display: block; color: rgba(255,255,255,0.7); font-family: var(--mono); font-size: 11px; }
+
 /* ---- Footer note ---- */
 .foot-note {
   margin: 18px 16px 0; font-size: 11.5px; color: var(--ink-soft); text-align: center; line-height: 1.6;
@@ -215,6 +264,11 @@ a { color: inherit; text-decoration: none; }
   </div>
 
   <div class="section">
+    <div class="section-label">🚢 Shipyard — Your Flagship</div>
+    <div class="ship-card" id="shipyard"></div>
+  </div>
+
+  <div class="section">
     <div class="section-label">🛠️ Training Decks</div>
     <div class="missions" id="missions"></div>
   </div>
@@ -252,7 +306,7 @@ a { color: inherit; text-decoration: none; }
     Files/AirDrop, each app still saves its own progress normally — this hub just may not be able
     to read across apps until it's online. Backup keys used: <code>writing-academy-v1</code>,
     <code>step1-bridge-progress-v1</code>, <code>number-sense-sketchbook-v1</code>, and
-    <code>jj-drafting-room-v1</code>.
+    <code>jj-drafting-room-v1</code>. The ship's name (<code>jj-hub-ship-v1</code>) is saved in the backup too.
     <br><br>
     The Number Theory Sketchbook and Combinatorics Sketchbook are hosted separately at
     <code>numbertheorysketchbook.vercel.app</code> and <code>combinatoricssketchbook.vercel.app</code>,
@@ -399,10 +453,164 @@ a { color: inherit; text-decoration: none; }
     return Math.floor(xp / 100) + 1;
   }
 
+  // ---- Shipyard: a flagship built from the four on-site decks (2 parts per deck) ----
+  var SHIP_KEY = "jj-hub-ship-v1";
+  var EXTRA_KEYS = [SHIP_KEY];          // hub-owned data that rides along in the backup file
+  var memShipName = "";
+
+  function escHtml(t) {
+    return String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  function cleanShipName(t) {
+    return String(t == null ? "" : t).replace(/[<>]/g, "").replace(/\s+/g, " ").trim().slice(0, 24);
+  }
+  function getShipName() {
+    var raw = null;
+    try { raw = localStorage.getItem(SHIP_KEY); } catch (e) { return memShipName; }
+    if (!raw) return memShipName;
+    try {
+      var obj = JSON.parse(raw);
+      return obj && typeof obj.name === "string" ? cleanShipName(obj.name) : "";
+    } catch (e) { return ""; }
+  }
+  function setShipName(name) {
+    memShipName = name;
+    try { localStorage.setItem(SHIP_KEY, JSON.stringify({ name: name })); } catch (e) {}
+  }
+
+  // half 0 = first half of the deck (lights up by 50%), half 1 = second half (50% to 100%)
+  var SHIP_PARTS = [
+    { id: "keel",   name: "Keel",         deck: "number-sense-sketchbook-v1", half: 0 },
+    { id: "hull",   name: "Hull Plates",  deck: "number-sense-sketchbook-v1", half: 1 },
+    { id: "engine", name: "Engine Room",  deck: "step1-bridge-progress-v1",   half: 0 },
+    { id: "prop",   name: "Propeller",    deck: "step1-bridge-progress-v1",   half: 1 },
+    { id: "decks",  name: "Passenger Decks", deck: "jj-drafting-room-v1",     half: 0 },
+    { id: "funnels", name: "Funnels",     deck: "jj-drafting-room-v1",        half: 1 },
+    { id: "bridge", name: "Bridge",       deck: "writing-academy-v1",         half: 0 },
+    { id: "mast",   name: "Signal Mast",  deck: "writing-academy-v1",         half: 1 }
+  ];
+
+  function repeatShapes(n, fn) { var out = ""; for (var i = 0; i < n; i++) out += fn(i); return out; }
+
+  var SHIP_SHAPES = {
+    keel:
+      '<path class="k1" d="M112,172 L520,172 L506,184 Q484,191 462,191 L160,191 Q130,191 112,172 Z"/>' +
+      '<rect class="k2" x="150" y="186" width="320" height="4" rx="2"/>',
+    hull:
+      '<path class="h1" d="M92,124 L548,124 Q532,158 504,172 L112,172 Q96,152 92,124 Z"/>' +
+      '<rect class="h2" x="94" y="132" width="452" height="4"/>' +
+      repeatShapes(15, function (i) { return '<circle class="h3" cx="' + (122 + i * 28) + '" cy="160" r="2.4"/>'; }),
+    engine:
+      '<rect class="e0" x="168" y="138" width="130" height="28" rx="4"/>' +
+      '<circle class="e1" cx="196" cy="152" r="10"/><circle class="e0" cx="196" cy="152" r="4"/>' +
+      '<rect class="e1" x="224" y="142" width="10" height="20"/><rect class="e1" x="244" y="142" width="10" height="20"/><rect class="e1" x="264" y="142" width="10" height="20"/>',
+    prop:
+      '<rect class="p1" x="90" y="169" width="16" height="6"/>' +
+      '<path class="p1" d="M84,150 Q96,161 84,172 Q76,161 84,150 Z"/>' +
+      '<path class="p1" d="M84,172 Q96,183 84,194 Q76,183 84,172 Z"/>' +
+      '<circle class="p2" cx="84" cy="172" r="4"/>' +
+      '<path class="p2" d="M100,172 L110,172 L110,194 L102,194 Z"/>',
+    decks:
+      '<rect class="d1" x="140" y="104" width="340" height="20" rx="2"/>' +
+      '<rect class="d1" x="180" y="84" width="250" height="20" rx="2"/>' +
+      '<rect class="d1" x="230" y="66" width="150" height="18" rx="2"/>' +
+      repeatShapes(17, function (i) { return '<rect class="d2" x="' + (152 + i * 19) + '" y="111" width="8" height="6" rx="1"/>'; }) +
+      repeatShapes(13, function (i) { return '<rect class="d2" x="' + (192 + i * 19) + '" y="91" width="8" height="6" rx="1"/>'; }) +
+      repeatShapes(7,  function (i) { return '<rect class="d2" x="' + (242 + i * 19) + '" y="72" width="8" height="6" rx="1"/>'; }),
+    funnels:
+      '<path class="f1" d="M250,66 L254,28 L282,28 L286,66 Z"/><rect class="f2" x="252" y="23" width="32" height="6" rx="1"/><rect class="f3" x="251" y="40" width="34" height="5"/>' +
+      '<path class="f1" d="M302,66 L306,28 L334,28 L338,66 Z"/><rect class="f2" x="304" y="23" width="32" height="6" rx="1"/><rect class="f3" x="303" y="40" width="34" height="5"/>',
+    bridge:
+      '<rect class="b1" x="388" y="48" width="44" height="36"/><rect class="b2" x="384" y="43" width="52" height="5"/>' +
+      '<rect class="b3" x="394" y="56" width="32" height="8" rx="1"/><rect class="b3" x="394" y="70" width="32" height="6" rx="1"/>',
+    mast:
+      '<rect class="m1" x="408" y="4" width="3" height="39"/><rect class="m1" x="398" y="13" width="23" height="2"/>' +
+      '<path class="m2" d="M411,5 L442,10 L411,16 Z"/><circle class="m3" cx="409.5" cy="24" r="4"/>'
+  };
+
+  function shipSvg(progressById) {
+    var built = "", outline = "";
+    SHIP_PARTS.forEach(function (p) {
+      var f = progressById[p.id] || 0;
+      // any progress at all shows clearly: Step 1 earns a visible piece straight away
+      var op = f <= 0 ? 0 : Math.max(0.45, 0.25 + 0.75 * f).toFixed(2);
+      built += '<g class="hs-built" data-part="' + p.id + '" style="opacity:' + op + '">' + SHIP_SHAPES[p.id] + '</g>';
+      outline += '<g class="hs-outline">' + SHIP_SHAPES[p.id] + '</g>';
+    });
+    var sea = '<path d="M0,172 Q40,164 80,172 T160,172 T240,172 T320,172 T400,172 T480,172 T560,172 T640,172 L640,225 L0,225 Z" fill="#2a6a9c" opacity="0.4"/>';
+    return '<svg class="ship-svg" viewBox="0 0 620 225" role="img" aria-label="Your flagship under construction">' +
+      '<rect width="620" height="172" fill="#0b2237" opacity="0.5"/>' + built + sea + outline + '</svg>';
+  }
+
+  function renderShipyard(deckFrac) {
+    var el = document.getElementById("shipyard");
+    if (!el) return;
+    var items = SHIP_PARTS.map(function (p) {
+      var f = Number(deckFrac[p.deck]);
+      if (!isFinite(f) || f < 0) f = 0;
+      if (f > 1) f = 1;
+      var pr = p.half === 0 ? Math.min(1, f / 0.5) : Math.max(0, Math.min(1, (f - 0.5) / 0.5));
+      var app = APPS.filter(function (a) { return a.key === p.deck; })[0];
+      return { part: p, progress: pr, app: app };
+    });
+    var progressById = {}, certified = 0, sum = 0;
+    items.forEach(function (it) {
+      progressById[it.part.id] = it.progress;
+      sum += it.progress;
+      if (it.progress >= 1) certified++;
+    });
+    var pct = Math.round((sum / SHIP_PARTS.length) * 100);
+    var next = items.filter(function (it) { return it.progress > 0 && it.progress < 1; })[0] ||
+               items.filter(function (it) { return it.progress === 0; })[0];
+
+    var html =
+      '<div class="ship-eyebrow">Flagship of the Fleet</div>' +
+      '<h2 class="ship-name" id="ship-name"></h2>' +
+      '<div class="ship-nameform"><input id="ship-name-input" type="text" maxlength="24" autocomplete="off" placeholder="Name your ship…" aria-label="Ship name">' +
+      '<button id="ship-name-btn" type="button">Name her</button></div>' +
+      shipSvg(progressById) +
+      '<div class="ship-meter" aria-label="Build progress"><div class="ship-meter-fill" style="width:' + pct + '%"></div></div>' +
+      '<p class="ship-meter-text">' + certified + ' of ' + SHIP_PARTS.length + ' parts certified — ship ' + pct + '% built. Every step you do adds a piece.</p>';
+
+    if (next) {
+      var started = next.progress > 0;
+      html += '<a class="ship-next" id="ship-next" href="' + next.app.href + '">' +
+        (started ? 'Keep building: ' : 'Start here: ') + next.part.name + ' → ' + escHtml(next.app.name) + '</a>';
+    } else {
+      html += '<div class="ship-launch" id="ship-launch">🎉 ALL SYSTEMS GO! <span id="ship-launch-name"></span> is ready to launch.</div>';
+    }
+
+    html += '<details class="ship-parts"><summary>See all ' + SHIP_PARTS.length + ' parts</summary><div class="ship-chips">';
+    items.forEach(function (it) {
+      var done = it.progress >= 1;
+      html += '<a class="ship-chip' + (done ? ' done' : '') + '" href="' + it.app.href + '">' +
+        (done ? '✅ ' : '🔧 ') + it.part.name + ' — ' + Math.round(it.progress * 100) + '%' +
+        '<small>built by ' + escHtml(it.app.name) + '</small></a>';
+    });
+    html += '</div></details>';
+    el.innerHTML = html;
+
+    function title() { var n = getShipName(); return "RMS " + (n ? n : "Flagship"); }
+    el.querySelector("#ship-name").textContent = title();
+    var ln = el.querySelector("#ship-launch-name");
+    if (ln) ln.textContent = title();
+    var input = el.querySelector("#ship-name-input");
+    input.value = getShipName();
+    function save() {
+      setShipName(cleanShipName(input.value));
+      input.value = getShipName();
+      el.querySelector("#ship-name").textContent = title();
+      if (ln) ln.textContent = title();
+    }
+    el.querySelector("#ship-name-btn").addEventListener("click", save);
+    input.addEventListener("keydown", function (e) { if (e.key === "Enter") save(); });
+  }
+
   function renderMissions() {
     var container = document.getElementById("missions");
     container.innerHTML = "";
     var totalDone = 0, totalAll = 0;
+    var deckFrac = {};
 
     APPS.forEach(function (app) {
       var data = safeGet(app.key);
@@ -411,6 +619,7 @@ a { color: inherit; text-decoration: none; }
       var xp = stats.xp;
       totalDone += done;
       totalAll += app.total;
+      deckFrac[app.key] = app.total ? done / app.total : 0;
 
       var card = document.createElement("div");
       card.className = "mission-card";
@@ -470,6 +679,7 @@ a { color: inherit; text-decoration: none; }
     document.getElementById("voyage-num").textContent = totalDone + " / " + totalAll;
     var pct = totalAll ? Math.round((totalDone / totalAll) * 100) : 0;
     document.getElementById("voyage-fill").style.width = pct + "%";
+    renderShipyard(deckFrac);
   }
 
   function showStatus(msg, kind) {
@@ -497,6 +707,12 @@ a { color: inherit; text-decoration: none; }
       try { raw = localStorage.getItem(app.key); } catch (e) { storageOk = false; }
       bundle.data[app.key] = raw || null;
       if (raw) foundAny = true;
+    });
+
+    EXTRA_KEYS.forEach(function (key) {
+      var raw = null;
+      try { raw = localStorage.getItem(key); } catch (e) { storageOk = false; }
+      bundle.data[key] = raw || null;
     });
 
     if (!foundAny) {
@@ -575,6 +791,16 @@ a { color: inherit; text-decoration: none; }
         e.target.value = "";
         return;
       }
+      EXTRA_KEYS.forEach(function (key) {
+        var raw = parsed.data[key];
+        if (!raw) return;
+        var obj = null;
+        try { obj = typeof raw === "string" ? JSON.parse(raw) : raw; } catch (err) { obj = null; }
+        if (!obj || typeof obj !== "object" || typeof obj.name !== "string") return;
+        var nm = cleanShipName(obj.name);
+        clean.data[key] = JSON.stringify({ name: nm });
+        if (nm) rows.push('<div class="preview-row">🚢 Ship name: <strong>RMS ' + escHtml(nm) + '</strong></div>');
+      });
       rows = rows.concat(warnRows);
       if (skipped) {
         rows.push('<div class="preview-row">Skipped ' + skipped + ' unreadable entr' + (skipped === 1 ? 'y' : 'ies') + '.</div>');
@@ -610,6 +836,11 @@ a { color: inherit; text-decoration: none; }
         failed++;
         storageOk = false;
       }
+    });
+    EXTRA_KEYS.forEach(function (key) {
+      var raw = pendingBundle.data[key];
+      if (!raw) return;
+      try { localStorage.setItem(key, raw); } catch (err) { failed++; storageOk = false; }
     });
     document.getElementById("preview-box").classList.remove("show");
     pendingBundle = null;
