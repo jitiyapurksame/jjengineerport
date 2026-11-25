@@ -470,7 +470,7 @@ a { color: inherit; text-decoration: none; }
       href: "https://combinatoricssketchbook.vercel.app/",
       emoji: "🧮",
       name: "Combinatorics Sketchbook",
-      ship: "clipper", fleetNote: "Fast clipper, own ship design still on the drawing board. Tap to visit her.",
+      ship: "clipper", fleetNote: "Her ship, the Clipper Combinator, is built chapter by chapter in the sketchbook. Tap to visit her.",
       step1: "Open the first chapter and solve ONE counting puzzle. Count slowly, count your way.",
       desc: "12 chapters · 4 Boss Battles · Master Map — counting, arrangements & choices, with hints on every question and its own Ship's Log backup"
     },
@@ -823,8 +823,10 @@ a { color: inherit; text-decoration: none; }
       '<path d="M12,50 L188,50 Q180,64 166,66 L28,66 Q16,62 12,50 Z"/><rect x="30" y="32" width="34" height="18"/><rect x="40" y="20" width="10" height="12"/>' +
       '<rect x="78" y="40" width="22" height="10"/><rect x="104" y="40" width="22" height="10"/><path d="M146,50 L146,18 L176,36"/>',
     clipper:
-      '<path d="M20,56 L180,56 Q170,68 150,70 L40,70 Q26,66 20,56 Z"/><path d="M65,56 L65,10 M100,56 L100,6 M135,56 L135,10"/>' +
-      '<path d="M65,14 L65,52 L90,52 Z M100,10 L100,52 L128,52 Z M135,14 L135,52 L158,52 Z"/>'
+      '<path d="M12,58 L38,58 L38,52 L152,52 Q176,52 190,42 L192,46 Q182,66 156,72 L34,74 Q16,72 12,58 Z"/>' +
+      '<path d="M16,46 L38,46 L38,58 M26,22 L26,46 M100,6 L100,52 M146,14 L146,52 M178,46 L196,36"/>' +
+      '<path d="M10,26 L42,26 L40,44 L12,44 Z M82,24 L118,24 L116,50 L84,50 Z M82,10 L118,10 L116,22 L84,22 Z M130,28 L164,28 L162,50 L132,50 Z"/>' +
+      '<path d="M100,14 Q125,22 146,18" stroke-dasharray="2 2"/>'
   };
   function renderFleet() {
     var el = document.getElementById("fleet");
